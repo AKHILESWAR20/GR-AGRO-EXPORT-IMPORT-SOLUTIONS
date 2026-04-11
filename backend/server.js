@@ -17,7 +17,7 @@ const shipmentRoutes  = require("./routes/shipment.routes");
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: "https://gr-agro-export-import-solutions.vercel.app/" }));
+app.use(cors({ origin: "https://gr-agro-export-import-solutions.vercel.app" }));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
