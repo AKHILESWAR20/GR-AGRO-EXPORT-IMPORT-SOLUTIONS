@@ -4,7 +4,7 @@
 ```
 gopi-backend/
 ├── server.js                  ← Main entry point
-├── .env.example               ← Copy to .env and fill values
+├── .env                        .env file
 ├── package.json               ← Dependencies
 ├── config/
 │   ├── db.js                  ← Oracle DB connection
