@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Dashboard | Gopi Exporting Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --navy:      #0B1F3A;
+      --navy-mid:  #162D4F;
+      --navy-lite: #1E3A5F;
+      --gold:      #C9A84C;
+      --gold-lite: #E2C97E;
+      --cream:     #F7F2E8;
+      --white:     #FFFFFF;
+      --text-dark: #1A1A2E;
+      --text-gray: #6B7280;
+      --border:    rgba(0,0,0,0.07);
+      --sidebar-w: 260px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #F0F4F8;
+      color: var(--text-dark);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ── SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--navy);
+      min-height: 100vh;
+      position: fixed; left:0; top:0;
+      display: flex; flex-direction: column;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .sidebar-logo-icon {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 700; color: var(--navy);
+      flex-shrink: 0;
+    }
+    .sidebar-logo-text span:first-child {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem; font-weight: 700; color: var(--white);
+      line-height: 1.2;
+    }
+    .sidebar-logo-text span:last-child {
+      font-size: 0.6rem; color: var(--gold);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    .sidebar-user {
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .user-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .user-name {
+      font-size: 0.92rem; font-weight: 700; color: var(--white);
+    }
+    .user-role {
+      font-size: 0.7rem; color: var(--gold);
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+
+    .sidebar-nav {
+      flex: 1; padding: 16px 0;
+      overflow-y: auto;
+    }
+    .nav-section-label {
+      font-size: 0.62rem; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.25);
+      padding: 12px 24px 6px; font-weight: 700;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 24px;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none; font-size: 0.88rem;
+      font-weight: 700; letter-spacing: 0.3px;
+      transition: all 0.25s; cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+    .nav-item i { width: 18px; text-align: center; font-size: 0.9rem; }
+    .nav-item:hover {
+      color: var(--white);
+      background: rgba(255,255,255,0.04);
+    }
+    .nav-item.active {
+      color: var(--gold);
+      background: rgba(201,168,76,0.08);
+      border-left-color: var(--gold);
+    }
+
+    .sidebar-footer {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .logout-btn {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,255,255,0.35);
+      font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; transition: color 0.3s;
+      background: none; border: none; width: 100%;
+    }
+    .logout-btn:hover { color: #e74c3c; }
+
+    /* ── MAIN CONTENT */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1; min-height: 100vh;
+    }
+
+    /* Top bar */
+    .topbar {
+      background: var(--white);
+      padding: 0 32px;
+      height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .topbar-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--navy);
+    }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-date {
+      font-size: 0.8rem; color: var(--text-gray);
+    }
+    .hamburger-btn {
+      display: none; background: none; border: none;
+      font-size: 1.3rem; color: var(--navy); cursor: pointer;
+    }
+
+    /* ── PAGES */
+    .page { display: none; padding: 32px; }
+    .page.active { display: block; }
+
+    /* ── STAT CARDS */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--border);
+      transition: all 0.3s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+    .stat-card-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .stat-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .stat-icon.gold  { background: rgba(201,168,76,0.12); color: var(--gold); }
+    .stat-icon.navy  { background: rgba(11,31,58,0.08);   color: var(--navy); }
+    .stat-icon.green { background: rgba(45,138,78,0.1);   color: #2d8a4e; }
+    .stat-icon.blue  { background: rgba(52,152,219,0.1);  color: #3498db; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 700; color: var(--navy);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.78rem; color: var(--text-gray);
+      text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+    }
+
+    /* ── SECTION HEADERS */
+    .section-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 700; color: var(--navy);
+    }
+    .btn-gold {
+      background: var(--gold); color: var(--navy);
+      border: none; border-radius: 8px;
+      padding: 10px 20px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-gold:hover { background: var(--gold-lite); }
+    .btn-outline-navy {
+      background: transparent; color: var(--navy);
+      border: 1.5px solid var(--navy);
+      border-radius: 8px; padding: 10px 20px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .btn-outline-navy:hover { background: var(--navy); color: var(--white); }
+
+    /* ── TABLE */
+    .table-card {
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      overflow: hidden; margin-bottom: 24px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #F8FAFC; }
+    thead th {
+      padding: 14px 20px;
+      font-size: 0.7rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--text-gray);
+      font-weight: 700; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #F8FAFC; }
+    tbody td {
+      padding: 14px 20px;
+      font-size: 0.88rem; color: var(--text-dark);
+    }
+
+    /* Status badges */
+    .badge {
+      padding: 4px 12px; border-radius: 50px;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      display: inline-block;
+    }
+    .badge-processing { background: rgba(243,156,18,0.12); color: #f39c12; }
+    .badge-confirmed  { background: rgba(52,152,219,0.12); color: #3498db; }
+    .badge-shipped    { background: rgba(155,89,182,0.12); color: #9b59b6; }
+    .badge-delivered  { background: rgba(45,138,78,0.12);  color: #2d8a4e; }
+    .badge-cancelled  { background: rgba(231,76,60,0.12);  color: #e74c3c; }
+    .badge-transit    { background: rgba(52,152,219,0.12); color: #3498db; }
+
+    /* ── FORM CARD */
+    .form-card {
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 0.72rem; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-gray);
+      font-weight: 700;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      border: 1.5px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem; color: var(--text-dark);
+      outline: none; transition: border-color 0.3s;
+      background: #FAFAFA;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); background: var(--white); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    /* ── TRACK CARD */
+    .track-card {
+      background: var(--white);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .track-input-row {
+      display: flex; gap: 12px; margin-bottom: 28px;
+    }
+    .track-input-row input {
+      flex: 1;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.92rem; outline: none;
+      transition: border-color 0.3s;
+    }
+    .track-input-row input:focus { border-color: var(--gold); }
+
+    /* Shipment timeline */
+    .timeline { padding: 0; }
+    .timeline-item {
+      display: flex; gap: 16px;
+      padding-bottom: 28px; position: relative;
+    }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-item::before {
+      content: '';
+      position: absolute; left: 19px; top: 36px;
+      width: 2px; height: calc(100% - 24px);
+      background: #E5E7EB;
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; z-index: 1;
+    }
+    .timeline-dot.done  { background: rgba(45,138,78,0.12);  color: #2d8a4e; }
+    .timeline-dot.active{ background: rgba(201,168,76,0.15); color: var(--gold); }
+    .timeline-dot.pending{ background: #F0F4F8; color: #9CA3AF; }
+    .timeline-content { padding-top: 8px; }
+    .timeline-content strong {
+      display: block; font-size: 0.92rem;
+      color: var(--navy); margin-bottom: 4px;
+    }
+    .timeline-content span { font-size: 0.82rem; color: var(--text-gray); }
+
+    /* ── UPLOAD AREA */
+    .upload-area {
+      border: 2px dashed #E5E7EB;
+      border-radius: 12px;
+      padding: 48px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+    .upload-area:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.02);
+    }
+    .upload-area i { font-size: 2.5rem; color: #D1D5DB; margin-bottom: 12px; }
+    .upload-area p { color: var(--text-gray); font-size: 0.9rem; }
+    .upload-area span { color: var(--gold); font-weight: 700; }
+
+    /* ── ALERT */
+    .alert {
+      padding: 12px 16px; border-radius: 8px;
+      font-size: 0.85rem; margin-bottom: 16px;
+      display: none; align-items: center; gap: 10px;
+    }
+    .alert.show { display: flex; }
+    .alert-success { background: rgba(45,138,78,0.08); border: 1px solid rgba(45,138,78,0.2); color: #2d8a4e; }
+    .alert-error   { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.2); color: #e74c3c; }
+
+    /* ── EMPTY STATE */
+    .empty-state {
+      text-align: center; padding: 60px 20px;
+      color: var(--text-gray);
+    }
+    .empty-state i { font-size: 3rem; color: #D1D5DB; margin-bottom: 16px; }
+    .empty-state p { font-size: 0.92rem; }
+
+    /* ── RESPONSIVE */
+    @media (max-width: 1024px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .hamburger-btn { display: block; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .page { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <div class="sidebar-logo-icon">GE</div>
+    <div class="sidebar-logo-text">
+      <span>Gopi Exporting Hub</span>
+      <span>Client Portal</span>
+    </div>
+  </a>
+
+  <div class="sidebar-user">
+    <div class="user-avatar" id="avatarText">U</div>
+    <div class="user-name" id="userName">Loading...</div>
+    <div class="user-role">Client Account</div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a class="nav-item active" onclick="showPage('overview')">
+      <i class="fas fa-grid-2"></i> Overview
+    </a>
+    <a class="nav-item" onclick="showPage('orders')">
+      <i class="fas fa-box"></i> My Orders
+    </a>
+    <a class="nav-item" onclick="showPage('place-order')">
+      <i class="fas fa-plus-circle"></i> Place Order
+    </a>
+
+    <div class="nav-section-label">Shipments</div>
+    <a class="nav-item" onclick="showPage('track')">
+      <i class="fas fa-satellite-dish"></i> Track Shipment
+    </a>
+
+    <div class="nav-section-label">Documents</div>
+    <a class="nav-item" onclick="showPage('documents')">
+      <i class="fas fa-file-lines"></i> My Documents
+    </a>
+    <a class="nav-item" onclick="showPage('upload')">
+      <i class="fas fa-upload"></i> Upload File
+    </a>
+
+    <div class="nav-section-label">Account</div>
+    <a class="nav-item" onclick="showPage('inquiry')">
+      <i class="fas fa-envelope"></i> Send Inquiry
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="handleLogout()">
+      <i class="fas fa-right-from-bracket"></i> Sign Out
+    </button>
+  </div>
+</aside>
+
+<!-- ── MAIN CONTENT -->
+<div class="main">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <button class="hamburger-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="topbar-title" id="pageTitle">Overview</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="currentDate"></div>
+    </div>
+  </div>
+
+  <!-- ════ PAGE: OVERVIEW ════ -->
+  <div class="page active" id="page-overview">
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-num" id="stat-orders">0</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+          <div class="stat-icon navy"><i class="fas fa-box"></i></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-num" id="stat-processing">0</div>
+            <div class="stat-label">Processing</div>
+          </div>
+          <div class="stat-icon gold"><i class="fas fa-hourglass-half"></i></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-num" id="stat-shipped">0</div>
+            <div class="stat-label">Shipped</div>
+          </div>
+          <div class="stat-icon blue"><i class="fas fa-truck"></i></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-num" id="stat-delivered">0</div>
+            <div class="stat-label">Delivered</div>
+          </div>
+          <div class="stat-icon green"><i class="fas fa-circle-check"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="section-header">
+      <div class="section-title">Recent Orders</div>
+      <button class="btn-gold" onclick="showPage('place-order')">
+        <i class="fas fa-plus"></i> New Order
+      </button>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="overviewOrdersTable">
+          <tr><td colspan="6">
+            <div class="empty-state">
+              <i class="fas fa-box-open"></i>
+              <p>No orders yet. Place your first order!</p>
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ PAGE: MY ORDERS ════ -->
+  <div class="page" id="page-orders">
+    <div class="section-header">
+      <div class="section-title">My Orders</div>
+      <button class="btn-gold" onclick="showPage('place-order')">
+        <i class="fas fa-plus"></i> Place New Order
+      </button>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTable">
+          <tr><td colspan="6">
+            <div class="empty-state">
+              <i class="fas fa-box-open"></i>
+              <p>No orders found.</p>
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ PAGE: PLACE ORDER ════ -->
+  <div class="page" id="page-place-order">
+    <div class="section-header">
+      <div class="section-title">Place New Order</div>
+    </div>
+    <div class="alert alert-success" id="orderSuccess">
+      <i class="fas fa-circle-check"></i>
+      <span>Order placed! Confirmation sent to your email.</span>
+    </div>
+    <div class="alert alert-error" id="orderError">
+      <i class="fas fa-circle-exclamation"></i>
+      <span id="orderErrorMsg">Something went wrong.</span>
+    </div>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Select Product *</label>
+          <select id="orderProduct">
+            <option value="">-- Select a product --</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Quantity *</label>
+          <input type="number" id="orderQty" placeholder="Enter quantity" min="1"/>
+        </div>
+        <div class="form-group full">
+          <label>Additional Notes</label>
+          <textarea id="orderNotes" placeholder="Any special requirements or notes..."></textarea>
+        </div>
+      </div>
+      <button class="btn-gold" onclick="placeOrder()" style="margin-top:8px">
+        <i class="fas fa-paper-plane"></i> Submit Order
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ PAGE: TRACK SHIPMENT ════ -->
+  <div class="page" id="page-track">
+    <div class="section-header">
+      <div class="section-title">Track Your Shipment</div>
+    </div>
+    <div class="track-card">
+      <div class="track-input-row">
+        <input type="text" id="trackingInput" placeholder="Enter your Tracking ID (e.g. TRK-20250101-001)"/>
+        <button class="btn-gold" onclick="trackShipment()">
+          <i class="fas fa-search"></i> Track
+        </button>
+      </div>
+      <div id="trackResult" style="display:none">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px">
+          <div style="background:#F8FAFC;border-radius:10px;padding:18px;">
+            <div style="font-size:0.7rem;color:var(--text-gray);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:6px">Tracking ID</div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--navy)" id="tr-id">—</div>
+          </div>
+          <div style="background:#F8FAFC;border-radius:10px;padding:18px;">
+            <div style="font-size:0.7rem;color:var(--text-gray);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:6px">Carrier</div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--navy)" id="tr-carrier">—</div>
+          </div>
+          <div style="background:#F8FAFC;border-radius:10px;padding:18px;">
+            <div style="font-size:0.7rem;color:var(--text-gray);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:6px">Status</div>
+            <div id="tr-status">—</div>
+          </div>
+          <div style="background:#F8FAFC;border-radius:10px;padding:18px;">
+            <div style="font-size:0.7rem;color:var(--text-gray);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:6px">Origin</div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--navy)" id="tr-origin">—</div>
+          </div>
+          <div style="background:#F8FAFC;border-radius:10px;padding:18px;">
+            <div style="font-size:0.7rem;color:var(--text-gray);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:6px">Destination</div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--navy)" id="tr-dest">—</div>
+          </div>
+          <div style="background:#F8FAFC;border-radius:10px;padding:18px;">
+            <div style="font-size:0.7rem;color:var(--text-gray);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:6px">Est. Delivery</div>
+            <div style="font-size:0.95rem;font-weight:700;color:var(--navy)" id="tr-delivery">—</div>
+          </div>
+        </div>
+        <!-- Timeline -->
+        <div class="timeline" id="trackTimeline"></div>
+      </div>
+      <div id="trackEmpty" style="text-align:center;padding:40px;color:var(--text-gray)">
+        <i class="fas fa-satellite-dish" style="font-size:2.5rem;color:#D1D5DB;margin-bottom:12px;display:block"></i>
+        <p>Enter your tracking ID above to see shipment status</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ PAGE: DOCUMENTS ════ -->
+  <div class="page" id="page-documents">
+    <div class="section-header">
+      <div class="section-title">My Documents</div>
+      <button class="btn-gold" onclick="showPage('upload')">
+        <i class="fas fa-upload"></i> Upload
+      </button>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>File Name</th>
+            <th>Type</th>
+            <th>Size</th>
+            <th>Uploaded</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="docsTable">
+          <tr><td colspan="5">
+            <div class="empty-state">
+              <i class="fas fa-file-lines"></i>
+              <p>No documents uploaded yet.</p>
+            </div>
+          </td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ PAGE: UPLOAD ════ -->
+  <div class="page" id="page-upload">
+    <div class="section-header">
+      <div class="section-title">Upload Document</div>
+    </div>
+    <div class="alert alert-success" id="uploadSuccess">
+      <i class="fas fa-circle-check"></i>
+      <span>File uploaded successfully!</span>
+    </div>
+    <div class="alert alert-error" id="uploadError">
+      <i class="fas fa-circle-exclamation"></i>
+      <span id="uploadErrorMsg">Upload failed.</span>
+    </div>
+    <div class="form-card">
+      <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <i class="fas fa-cloud-arrow-up"></i>
+        <p>Click to browse or drag & drop your file</p>
+        <p style="margin-top:6px;font-size:0.8rem">
+          <span>Supported:</span> PDF, Images, Word, Excel — Max 5MB
+        </p>
+        <input type="file" id="fileInput" style="display:none" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"/>
+      </div>
+      <div id="filePreview" style="margin-bottom:16px;display:none">
+        <div style="display:flex;align-items:center;gap:12px;padding:14px;background:#F8FAFC;border-radius:8px;border:1px solid #E5E7EB">
+          <i class="fas fa-file" style="color:var(--gold)"></i>
+          <span id="fileName" style="font-size:0.88rem;color:var(--navy);font-weight:700"></span>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Order ID (optional)</label>
+          <input type="number" id="uploadOrderId" placeholder="Link to an order"/>
+        </div>
+        <div class="form-group">
+          <label>Document Type</label>
+          <select id="uploadDocType">
+            <option>Invoice</option>
+            <option>Certificate</option>
+            <option>Shipping Document</option>
+            <option>Contract</option>
+            <option>General</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-gold" onclick="uploadFile()" style="margin-top:8px">
+        <i class="fas fa-upload"></i> Upload File
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ PAGE: INQUIRY ════ -->
+  <div class="page" id="page-inquiry">
+    <div class="section-header">
+      <div class="section-title">Send an Inquiry</div>
+    </div>
+    <div class="alert alert-success" id="inquirySuccess">
+      <i class="fas fa-circle-check"></i>
+      <span>Inquiry sent! We will get back to you soon.</span>
+    </div>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" id="inqName" placeholder="Full name"/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="inqEmail" placeholder="your@email.com"/>
+        </div>
+        <div class="form-group">
+          <label>Service</label>
+          <select id="inqService">
+            <option>Export Management</option>
+            <option>Import Solutions</option>
+            <option>Trade Documentation</option>
+            <option>Logistics & Tracking</option>
+            <option>Market Intelligence</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Message</label>
+          <textarea id="inqMessage" placeholder="Describe your requirement..."></textarea>
+        </div>
+      </div>
+      <button class="btn-gold" onclick="sendInquiry()" style="margin-top:8px">
+        <i class="fas fa-paper-plane"></i> Send Inquiry
+      </button>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<script>
+  const BASE_URL = "http://localhost:5000/api";
+  const token    = localStorage.getItem("token");
+  const user     = JSON.parse(localStorage.getItem("user") || "{}");
+
+  // ── Auth guard
+  if (!token) window.location.href = "login.html";
+
+  // ── Set user info
+  document.getElementById("userName").textContent    = user.name || "Client";
+  document.getElementById("avatarText").textContent  = (user.name || "C")[0].toUpperCase();
+
+  // ── Set date
+  document.getElementById("currentDate").textContent =
+    new Date().toLocaleDateString("en-IN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+
+  // ── Pre-fill inquiry form
+  if (document.getElementById("inqName"))  document.getElementById("inqName").value  = user.name  || "";
+  if (document.getElementById("inqEmail")) document.getElementById("inqEmail").value = user.email || "";
+
+  // ── Navigation
+  function showPage(pageId) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    document.getElementById("page-" + pageId).classList.add("active");
+    event?.currentTarget?.classList.add("active");
+
+    const titles = {
+      "overview":    "Overview",
+      "orders":      "My Orders",
+      "place-order": "Place New Order",
+      "track":       "Track Shipment",
+      "documents":   "My Documents",
+      "upload":      "Upload Document",
+      "inquiry":     "Send Inquiry"
+    };
+    document.getElementById("pageTitle").textContent = titles[pageId] || pageId;
+
+    if (pageId === "overview" || pageId === "orders") loadOrders();
+    if (pageId === "place-order") loadProducts();
+    if (pageId === "documents") loadDocuments();
+
+    // Close sidebar on mobile
+    document.getElementById("sidebar").classList.remove("open");
+  }
+
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+  }
+
+  // ── File preview
+  document.getElementById("fileInput")?.addEventListener("change", function() {
+    const file = this.files[0];
+    if (file) {
+      document.getElementById("fileName").textContent = file.name;
+      document.getElementById("filePreview").style.display = "block";
+    }
+  });
+
+  // ── LOAD ORDERS
+  async function loadOrders() {
+    try {
+      const res  = await fetch(`${BASE_URL}/orders/my`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const data = await res.json();
+
+      if (data.success && data.orders.length > 0) {
+        const rows = data.orders.map(o => `
+          <tr>
+            <td><strong>#${o.ORDER_ID}</strong></td>
+            <td>${o.PRODUCT_NAME}</td>
+            <td>${o.QUANTITY}</td>
+            <td>₹${parseFloat(o.TOTAL_PRICE).toLocaleString()}</td>
+            <td><span class="badge badge-${o.STATUS.toLowerCase()}">${o.STATUS}</span></td>
+            <td>${new Date(o.CREATED_AT).toLocaleDateString("en-IN")}</td>
+          </tr>`).join("");
+
+        document.getElementById("ordersTable").innerHTML = rows;
+        document.getElementById("overviewOrdersTable").innerHTML = rows;
+
+        // Stats
+        document.getElementById("stat-orders").textContent    = data.orders.length;
+        document.getElementById("stat-processing").textContent = data.orders.filter(o => o.STATUS === "Processing").length;
+        document.getElementById("stat-shipped").textContent    = data.orders.filter(o => o.STATUS === "Shipped").length;
+        document.getElementById("stat-delivered").textContent  = data.orders.filter(o => o.STATUS === "Delivered").length;
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOAD PRODUCTS
+  async function loadProducts() {
+    try {
+      const res  = await fetch(`${BASE_URL}/products`);
+      const data = await res.json();
+      const sel  = document.getElementById("orderProduct");
+      sel.innerHTML = '<option value="">-- Select a product --</option>';
+      if (data.success && data.products.length > 0) {
+        data.products.forEach(p => {
+          sel.innerHTML += `<option value="${p.PRODUCT_ID}">${p.NAME} — ₹${p.PRICE}/${p.UNIT || "unit"}</option>`;
+        });
+      } else {
+        sel.innerHTML += '<option disabled>No products available yet</option>';
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── PLACE ORDER
+  async function placeOrder() {
+    const productId = document.getElementById("orderProduct").value;
+    const quantity  = document.getElementById("orderQty").value;
+    const notes     = document.getElementById("orderNotes").value;
+
+    document.getElementById("orderSuccess").classList.remove("show");
+    document.getElementById("orderError").classList.remove("show");
+
+    if (!productId || !quantity) {
+      document.getElementById("orderErrorMsg").textContent = "Please select a product and enter quantity.";
+      document.getElementById("orderError").classList.add("show");
+      return;
+    }
+
+    try {
+      const res  = await fetch(`${BASE_URL}/orders`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body:    JSON.stringify({ productId, quantity: parseInt(quantity), notes })
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById("orderSuccess").classList.add("show");
+        document.getElementById("orderProduct").value = "";
+        document.getElementById("orderQty").value     = "";
+        document.getElementById("orderNotes").value   = "";
+      } else {
+        document.getElementById("orderErrorMsg").textContent = data.message;
+        document.getElementById("orderError").classList.add("show");
+      }
+    } catch(err) {
+      document.getElementById("orderErrorMsg").textContent = "Server error. Try again.";
+      document.getElementById("orderError").classList.add("show");
+    }
+  }
+
+  // ── TRACK SHIPMENT
+  async function trackShipment() {
+    const trackingId = document.getElementById("trackingInput").value.trim();
+    if (!trackingId) return;
+
+    try {
+      const res  = await fetch(`${BASE_URL}/shipments/track/${trackingId}`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        const s = data.shipment;
+        document.getElementById("tr-id").textContent       = s.TRACKING_ID;
+        document.getElementById("tr-carrier").textContent  = s.CARRIER || "N/A";
+        document.getElementById("tr-origin").textContent   = s.ORIGIN  || "N/A";
+        document.getElementById("tr-dest").textContent     = s.DESTINATION || "N/A";
+        document.getElementById("tr-delivery").textContent = s.ESTIMATED_DELIVERY
+          ? new Date(s.ESTIMATED_DELIVERY).toLocaleDateString("en-IN") : "TBD";
+        document.getElementById("tr-status").innerHTML =
+          `<span class="badge badge-transit">${s.STATUS}</span>`;
+
+        // Timeline
+        const steps = ["Pending","In Transit","Out for Delivery","Delivered"];
+        const curIdx = steps.indexOf(s.STATUS);
+        document.getElementById("trackTimeline").innerHTML = steps.map((step, i) => `
+          <div class="timeline-item">
+            <div class="timeline-dot ${i < curIdx ? 'done' : i === curIdx ? 'active' : 'pending'}">
+              <i class="fas ${i < curIdx ? 'fa-check' : i === curIdx ? 'fa-truck' : 'fa-circle'}"></i>
+            </div>
+            <div class="timeline-content">
+              <strong>${step}</strong>
+              <span>${i <= curIdx ? 'Completed' : 'Pending'}</span>
+            </div>
+          </div>`).join("");
+
+        document.getElementById("trackResult").style.display = "block";
+        document.getElementById("trackEmpty").style.display  = "none";
+      } else {
+        alert("Shipment not found. Check your tracking ID.");
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOAD DOCUMENTS
+  async function loadDocuments() {
+    document.getElementById("docsTable").innerHTML = `
+      <tr><td colspan="5">
+        <div class="empty-state">
+          <i class="fas fa-file-lines"></i>
+          <p>No documents uploaded yet.</p>
+        </div>
+      </td></tr>`;
+  }
+
+  // ── UPLOAD FILE
+  async function uploadFile() {
+    const fileInput = document.getElementById("fileInput");
+    const file      = fileInput.files[0];
+    const orderId   = document.getElementById("uploadOrderId").value;
+    const docType   = document.getElementById("uploadDocType").value;
+
+    document.getElementById("uploadSuccess").classList.remove("show");
+    document.getElementById("uploadError").classList.remove("show");
+
+    if (!file) {
+      document.getElementById("uploadErrorMsg").textContent = "Please select a file first.";
+      document.getElementById("uploadError").classList.add("show");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    if (orderId) formData.append("orderId", orderId);
+    formData.append("docType", docType);
+
+    try {
+      const res  = await fetch(`${BASE_URL}/files/upload`, {
+        method:  "POST",
+        headers: { "Authorization": `Bearer ${token}` },
+        body:    formData
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        document.getElementById("uploadSuccess").classList.add("show");
+        fileInput.value = "";
+        document.getElementById("filePreview").style.display = "none";
+      } else {
+        document.getElementById("uploadErrorMsg").textContent = data.message;
+        document.getElementById("uploadError").classList.add("show");
+      }
+    } catch(err) {
+      document.getElementById("uploadErrorMsg").textContent = "Upload failed. Try again.";
+      document.getElementById("uploadError").classList.add("show");
+    }
+  }
+
+  // ── SEND INQUIRY
+  async function sendInquiry() {
+    const name    = document.getElementById("inqName").value.trim();
+    const email   = document.getElementById("inqEmail").value.trim();
+    const service = document.getElementById("inqService").value;
+    const message = document.getElementById("inqMessage").value.trim();
+
+    document.getElementById("inquirySuccess").classList.remove("show");
+    if (!name || !email || !message) { alert("Please fill all fields."); return; }
+
+    try {
+      const res  = await fetch(`${BASE_URL}/contact`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ name, email, service, message })
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById("inquirySuccess").classList.add("show");
+        document.getElementById("inqMessage").value = "";
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOGOUT
+  function handleLogout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+  }
+
+  // ── Init
+  loadOrders();
+</script>
+</body>
+</html>

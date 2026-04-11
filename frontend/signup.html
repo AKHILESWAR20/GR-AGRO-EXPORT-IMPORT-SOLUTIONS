@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | Gopi Exporting Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --navy:      #0B1F3A;
+      --navy-mid:  #162D4F;
+      --gold:      #C9A84C;
+      --gold-lite: #E2C97E;
+      --cream:     #F7F2E8;
+      --white:     #FFFFFF;
+      --text-gray: #6B7280;
+      --error:     #e74c3c;
+      --success:   #2d8a4e;
+      --border:    rgba(201,168,76,0.25);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Background Effects */
+    .bg-glow {
+      position: fixed; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(30,58,95,0.5) 0%, transparent 50%),
+        linear-gradient(135deg, #0B1F3A 0%, #162D4F 50%, #0B1F3A 100%);
+    }
+
+    .bg-grid {
+      position: fixed; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* ── Page Layout */
+    .page-wrapper {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Left Panel */
+    .left-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px;
+      max-width: 480px;
+      animation: slideIn 0.8s ease both;
+    }
+
+    @keyframes slideIn {
+      from { opacity:0; transform: translateX(-30px); }
+      to   { opacity:1; transform: translateX(0); }
+    }
+
+    .logo {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; margin-bottom: 60px;
+    }
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--navy);
+    }
+    .logo-text span:first-child {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 700; color: var(--white);
+    }
+    .logo-text span:last-child {
+      font-size: 0.65rem; color: var(--gold);
+      letter-spacing: 2.5px; text-transform: uppercase;
+    }
+
+    .panel-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 700;
+      color: var(--white); line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .panel-heading em { color: var(--gold); font-style: italic; }
+
+    .panel-desc {
+      color: rgba(255,255,255,0.55);
+      font-size: 1rem; line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    .features {
+      display: flex; flex-direction: column; gap: 18px;
+    }
+    .feature-item {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .feature-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: 0.85rem;
+    }
+    .feature-text {
+      font-size: 0.9rem; color: rgba(255,255,255,0.65);
+    }
+    .feature-text strong {
+      display: block; color: var(--white);
+      font-size: 0.92rem; margin-bottom: 2px;
+    }
+
+    /* ── Right Panel — Form */
+    .right-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    .form-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 16px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 480px;
+      backdrop-filter: blur(10px);
+    }
+
+    .form-card h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--white); margin-bottom: 6px;
+    }
+    .form-card p {
+      font-size: 0.88rem; color: rgba(255,255,255,0.45);
+      margin-bottom: 32px;
+    }
+    .form-card p a {
+      color: var(--gold); text-decoration: none;
+      font-weight: 700;
+    }
+    .form-card p a:hover { text-decoration: underline; }
+
+    /* ── Form Rows */
+    .form-row {
+      margin-bottom: 18px;
+    }
+    .form-row label {
+      display: block;
+      font-size: 0.72rem; letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      font-weight: 700; margin-bottom: 8px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap i {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.25); font-size: 0.85rem;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 13px 14px 13px 40px;
+      color: var(--white);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .input-wrap input::placeholder { color: rgba(255,255,255,0.2); }
+    .input-wrap input:focus {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.05);
+    }
+    .input-wrap input:focus + .focus-line { width: 100%; }
+
+    /* Two column row */
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    /* Password toggle */
+    .pass-toggle {
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.25);
+      cursor: pointer; font-size: 0.85rem;
+      transition: color 0.3s;
+    }
+    .pass-toggle:hover { color: var(--gold); }
+
+    /* ── Terms */
+    .terms-row {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 24px;
+    }
+    .terms-row input[type="checkbox"] {
+      width: 16px; height: 16px; flex-shrink: 0;
+      accent-color: var(--gold); margin-top: 2px;
+    }
+    .terms-row label {
+      font-size: 0.82rem; color: rgba(255,255,255,0.45);
+      line-height: 1.5;
+    }
+    .terms-row label a {
+      color: var(--gold); text-decoration: none;
+    }
+
+    /* ── Submit Button */
+    .btn-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--navy);
+      border: none; border-radius: 8px;
+      padding: 15px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.85rem; letter-spacing: 1.5px;
+      text-transform: uppercase; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-submit:hover { background: var(--gold-lite); }
+    .btn-submit:disabled {
+      opacity: 0.7; cursor: not-allowed;
+    }
+    .btn-submit.loading {
+      color: transparent;
+    }
+    .btn-submit.loading::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%230B1F3A' stroke-width='3' fill='none' stroke-dasharray='31.4' stroke-dashoffset='10'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='0.8s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E") center/20px no-repeat;
+    }
+
+    /* ── Alert Messages */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center; gap: 10px;
+    }
+    .alert.show { display: flex; }
+    .alert-error {
+      background: rgba(231,76,60,0.1);
+      border: 1px solid rgba(231,76,60,0.3);
+      color: #f1948a;
+    }
+    .alert-success {
+      background: rgba(45,138,78,0.1);
+      border: 1px solid rgba(45,138,78,0.3);
+      color: #82e0aa;
+    }
+
+    /* ── Divider */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: rgba(255,255,255,0.08);
+    }
+    .divider span {
+      font-size: 0.75rem; color: rgba(255,255,255,0.25);
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    /* ── Responsive */
+    @media (max-width: 900px) {
+      .left-panel { display: none; }
+      .right-panel { padding: 24px; }
+      .form-card { padding: 36px 28px; }
+      .form-row-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
+
+<div class="page-wrapper">
+
+  <!-- ── LEFT PANEL -->
+  <div class="left-panel">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">GE</div>
+      <div class="logo-text">
+        <span>Gopi Exporting Hub</span>
+        <span>Global Trade Solutions</span>
+      </div>
+    </a>
+
+    <h1 class="panel-heading">
+      Join the Global<br>
+      <em>Trade Network</em>
+    </h1>
+    <p class="panel-desc">
+      Create your free account and get access to our full range of 
+      import/export services, shipment tracking, and trade solutions.
+    </p>
+
+    <div class="features">
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-ship"></i></div>
+        <div class="feature-text">
+          <strong>Real-Time Shipment Tracking</strong>
+          Track your orders from dispatch to delivery worldwide.
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-file-invoice"></i></div>
+        <div class="feature-text">
+          <strong>Document Management</strong>
+          Access invoices, certificates and shipping docs anytime.
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+        <div class="feature-text">
+          <strong>Dedicated Support</strong>
+          24/7 trade specialist support for all your inquiries.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="form-card">
+      <h2>Create Account</h2>
+      <p>Already have an account? <a href="login.html">Sign in here</a></p>
+
+      <!-- Alert Box -->
+      <div class="alert alert-error" id="alertError">
+        <i class="fas fa-circle-exclamation"></i>
+        <span id="alertErrorMsg">Something went wrong.</span>
+      </div>
+      <div class="alert alert-success" id="alertSuccess">
+        <i class="fas fa-circle-check"></i>
+        <span id="alertSuccessMsg">Account created successfully!</span>
+      </div>
+
+      <!-- Form -->
+      <div class="form-row-2">
+        <div class="form-row" style="margin-bottom:0">
+          <label>Full Name *</label>
+          <div class="input-wrap">
+            <i class="fas fa-user"></i>
+            <input type="text" id="name" placeholder="John Doe" required/>
+          </div>
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label>Phone Number</label>
+          <div class="input-wrap">
+            <i class="fas fa-phone"></i>
+            <input type="tel" id="phone" placeholder="+91 98765 43210"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Email Address *</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="email" placeholder="john@company.com" required/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Company Name</label>
+        <div class="input-wrap">
+          <i class="fas fa-building"></i>
+          <input type="text" id="company" placeholder="Your company name"/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Password *</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="Min. 8 characters" required/>
+          <i class="fas fa-eye pass-toggle" id="togglePass" onclick="togglePassword()"></i>
+        </div>
+      </div>
+
+      <div class="terms-row">
+        <input type="checkbox" id="terms"/>
+        <label for="terms">
+          I agree to the <a href="#">Terms of Service</a> and
+          <a href="#">Privacy Policy</a> of Gopi Exporting Hub
+        </label>
+      </div>
+
+      <button class="btn-submit" id="signupBtn" onclick="handleSignup()">
+        Create My Account
+      </button>
+
+      <div class="divider"><span>or</span></div>
+
+      <p style="text-align:center; font-size:0.82rem; color:rgba(255,255,255,0.35); margin:0">
+        <a href="index.html" style="color:rgba(255,255,255,0.35); text-decoration:none;">
+          <i class="fas fa-arrow-left"></i> Back to Homepage
+        </a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const BASE_URL = "http://localhost:5000/api";
+
+  // ── Toggle password visibility
+  function togglePassword() {
+    const input = document.getElementById("password");
+    const icon  = document.getElementById("togglePass");
+    if (input.type === "password") {
+      input.type = "text";
+      icon.classList.replace("fa-eye", "fa-eye-slash");
+    } else {
+      input.type = "password";
+      icon.classList.replace("fa-eye-slash", "fa-eye");
+    }
+  }
+
+  // ── Show alert
+  function showAlert(type, message) {
+    document.getElementById("alertError").classList.remove("show");
+    document.getElementById("alertSuccess").classList.remove("show");
+    if (type === "error") {
+      document.getElementById("alertErrorMsg").textContent = message;
+      document.getElementById("alertError").classList.add("show");
+    } else {
+      document.getElementById("alertSuccessMsg").textContent = message;
+      document.getElementById("alertSuccess").classList.add("show");
+    }
+  }
+
+  // ── Handle Signup
+  async function handleSignup() {
+    const name     = document.getElementById("name").value.trim();
+    const email    = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const phone    = document.getElementById("phone").value.trim();
+    const company  = document.getElementById("company").value.trim();
+    const terms    = document.getElementById("terms").checked;
+    const btn      = document.getElementById("signupBtn");
+
+    // ── Validation
+    if (!name || !email || !password) {
+      return showAlert("error", "Please fill in all required fields.");
+    }
+    if (password.length < 8) {
+      return showAlert("error", "Password must be at least 8 characters.");
+    }
+    if (!terms) {
+      return showAlert("error", "Please agree to the Terms of Service.");
+    }
+
+    // ── Loading state
+    btn.classList.add("loading");
+    btn.disabled = true;
+
+    try {
+      const res  = await fetch(`${BASE_URL}/auth/signup`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ name, email, password, phone, company }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        showAlert("success", "🎉 Account created! Check your email. Redirecting to login...");
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 2500);
+      } else {
+        showAlert("error", data.message || "Signup failed. Please try again.");
+      }
+
+    } catch (err) {
+      showAlert("error", "Cannot connect to server. Make sure backend is running.");
+    } finally {
+      btn.classList.remove("loading");
+      btn.disabled = false;
+    }
+  }
+
+  // ── Allow Enter key to submit
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") handleSignup();
+  });
+</script>
+</body>
+</html>

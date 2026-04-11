@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard | Gopi Exporting Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --navy:      #0B1F3A;
+      --navy-mid:  #162D4F;
+      --navy-lite: #1E3A5F;
+      --gold:      #C9A84C;
+      --gold-lite: #E2C97E;
+      --cream:     #F7F2E8;
+      --white:     #FFFFFF;
+      --text-dark: #1A1A2E;
+      --text-gray: #6B7280;
+      --border:    rgba(0,0,0,0.07);
+      --sidebar-w: 270px;
+      --red:       #e74c3c;
+      --green:     #2d8a4e;
+      --blue:      #3498db;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #EEF2F7;
+      color: var(--text-dark);
+      min-height: 100vh; display: flex;
+    }
+
+    /* ── SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--navy);
+      min-height: 100vh;
+      position: fixed; left:0; top:0;
+      display: flex; flex-direction: column;
+      z-index: 100;
+      transition: transform 0.3s;
+    }
+    .sidebar-logo {
+      padding: 24px 22px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 700; color: var(--navy); flex-shrink: 0;
+    }
+    .logo-text span:first-child {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem; font-weight: 700; color: var(--white);
+    }
+    .logo-text span:last-child {
+      font-size: 0.6rem; color: var(--gold);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    /* Admin badge */
+    .admin-badge {
+      margin: 16px 22px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .admin-badge i { color: var(--gold); font-size: 1rem; }
+    .admin-badge-text span:first-child {
+      display: block; font-size: 0.88rem;
+      font-weight: 700; color: var(--white);
+    }
+    .admin-badge-text span:last-child {
+      font-size: 0.68rem; color: var(--gold);
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+
+    .sidebar-nav { flex:1; padding: 8px 0; overflow-y: auto; }
+    .nav-label {
+      font-size: 0.6rem; letter-spacing: 2.5px;
+      text-transform: uppercase; color: rgba(255,255,255,0.22);
+      padding: 14px 22px 6px; font-weight: 700;
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 11px 22px;
+      color: rgba(255,255,255,0.48);
+      text-decoration: none; font-size: 0.87rem; font-weight: 700;
+      transition: all 0.25s; cursor: pointer;
+      border-left: 3px solid transparent;
+    }
+    .nav-item i { width: 18px; text-align: center; }
+    .nav-item:hover { color: var(--white); background: rgba(255,255,255,0.04); }
+    .nav-item.active { color: var(--gold); background: rgba(201,168,76,0.08); border-left-color: var(--gold); }
+
+    .sidebar-footer {
+      padding: 16px 22px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; gap: 10px;
+    }
+    .logout-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(231,76,60,0.1); border: 1px solid rgba(231,76,60,0.2);
+      border-radius: 8px; padding: 10px;
+      color: #e74c3c; font-size: 0.8rem; font-weight: 700;
+      cursor: pointer; transition: all 0.3s; font-family: 'Lato', sans-serif;
+    }
+    .logout-btn:hover { background: rgba(231,76,60,0.2); }
+
+    /* ── MAIN */
+    .main { margin-left: var(--sidebar-w); flex:1; min-height: 100vh; }
+
+    .topbar {
+      background: var(--white);
+      padding: 0 30px; height: 66px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      position: sticky; top:0; z-index: 50;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+    }
+    .topbar-left { display: flex; align-items: center; gap: 16px; }
+    .page-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--navy);
+    }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .topbar-date { font-size: 0.8rem; color: var(--text-gray); }
+    .hamburger-btn {
+      display: none; background: none; border: none;
+      font-size: 1.3rem; color: var(--navy); cursor: pointer;
+    }
+
+    /* ── PAGES */
+    .page { display: none; padding: 28px 30px; }
+    .page.active { display: block; }
+
+    /* ── STATS GRID */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(5,1fr);
+      gap: 18px; margin-bottom: 26px;
+    }
+    .stat-card {
+      background: var(--white); border-radius: 12px;
+      padding: 22px 20px; border: 1px solid var(--border);
+      transition: all 0.3s; cursor: default;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    .stat-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+    .stat-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .icon-gold  { background: rgba(201,168,76,0.12); color: var(--gold); }
+    .icon-navy  { background: rgba(11,31,58,0.08);   color: var(--navy); }
+    .icon-green { background: rgba(45,138,78,0.1);   color: var(--green); }
+    .icon-blue  { background: rgba(52,152,219,0.1);  color: var(--blue); }
+    .icon-red   { background: rgba(231,76,60,0.1);   color: var(--red); }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 700; color: var(--navy); line-height: 1;
+    }
+    .stat-lbl {
+      font-size: 0.72rem; color: var(--text-gray);
+      text-transform: uppercase; letter-spacing: 1px; font-weight: 700;
+    }
+
+    /* ── SECTION HEADER */
+    .sec-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 18px; flex-wrap: wrap; gap: 12px;
+    }
+    .sec-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 700; color: var(--navy);
+    }
+
+    /* ── BUTTONS */
+    .btn-gold {
+      background: var(--gold); color: var(--navy);
+      border: none; border-radius: 8px; padding: 10px 18px;
+      font-family: 'Lato', sans-serif; font-size: 0.78rem;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+      display: inline-flex; align-items: center; gap: 7px;
+    }
+    .btn-gold:hover { background: var(--gold-lite); }
+    .btn-sm {
+      padding: 6px 14px; font-size: 0.72rem; border-radius: 6px;
+    }
+    .btn-danger {
+      background: rgba(231,76,60,0.1); color: var(--red);
+      border: 1px solid rgba(231,76,60,0.2); border-radius: 6px;
+      padding: 6px 12px; font-size: 0.72rem; font-weight: 700;
+      cursor: pointer; transition: all 0.3s; font-family: 'Lato', sans-serif;
+    }
+    .btn-danger:hover { background: rgba(231,76,60,0.2); }
+
+    /* ── TABLE */
+    .table-card {
+      background: var(--white); border-radius: 12px;
+      border: 1px solid var(--border); overflow: hidden; margin-bottom: 22px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: #F8FAFC; }
+    thead th {
+      padding: 13px 18px; font-size: 0.68rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      color: var(--text-gray); font-weight: 700; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.2s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #F8FAFC; }
+    tbody td { padding: 13px 18px; font-size: 0.87rem; color: var(--text-dark); }
+
+    /* Status badges */
+    .badge {
+      padding: 4px 11px; border-radius: 50px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; display: inline-block;
+    }
+    .badge-processing { background: rgba(243,156,18,0.12); color: #f39c12; }
+    .badge-confirmed  { background: rgba(52,152,219,0.12); color: #3498db; }
+    .badge-shipped    { background: rgba(155,89,182,0.12); color: #9b59b6; }
+    .badge-delivered  { background: rgba(45,138,78,0.12);  color: #2d8a4e; }
+    .badge-cancelled  { background: rgba(231,76,60,0.12);  color: #e74c3c; }
+    .badge-transit    { background: rgba(52,152,219,0.12); color: #3498db; }
+    .badge-admin      { background: rgba(201,168,76,0.12); color: var(--gold); }
+    .badge-client     { background: rgba(11,31,58,0.08);   color: var(--navy); }
+
+    /* ── FORM CARD */
+    .form-card {
+      background: var(--white); border-radius: 12px;
+      border: 1px solid var(--border); padding: 28px; margin-bottom: 22px;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: 0.7rem; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text-gray); font-weight: 700;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      border: 1.5px solid #E5E7EB; border-radius: 8px;
+      padding: 11px 13px; font-family: 'Lato', sans-serif;
+      font-size: 0.9rem; color: var(--text-dark); outline: none;
+      transition: border-color 0.3s; background: #FAFAFA;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); background: var(--white); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+
+    /* ── ALERT */
+    .alert {
+      padding: 11px 15px; border-radius: 8px; font-size: 0.84rem;
+      margin-bottom: 16px; display: none; align-items: center; gap: 10px;
+    }
+    .alert.show { display: flex; }
+    .alert-success { background: rgba(45,138,78,0.08); border: 1px solid rgba(45,138,78,0.2); color: #2d8a4e; }
+    .alert-error   { background: rgba(231,76,60,0.08); border: 1px solid rgba(231,76,60,0.2); color: #e74c3c; }
+
+    /* ── EMPTY STATE */
+    .empty-state {
+      text-align: center; padding: 48px 20px; color: var(--text-gray);
+    }
+    .empty-state i { font-size: 2.8rem; color: #D1D5DB; margin-bottom: 12px; display: block; }
+    .empty-state p { font-size: 0.9rem; }
+
+    /* ── MODAL */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      z-index: 200; display: none; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: var(--white); border-radius: 16px;
+      padding: 36px; width: 90%; max-width: 500px;
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity:0; transform: scale(0.95); }
+      to   { opacity:1; transform: scale(1); }
+    }
+    .modal h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 20px;
+    }
+    .modal-footer { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+    .btn-cancel {
+      background: #F3F4F6; color: var(--text-gray);
+      border: none; border-radius: 8px; padding: 10px 20px;
+      font-family: 'Lato', sans-serif; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; transition: background 0.3s;
+    }
+    .btn-cancel:hover { background: #E5E7EB; }
+
+    /* ── RESPONSIVE */
+    @media (max-width: 1200px) { .stats-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .hamburger-btn { display: block; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .page { padding: 20px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <a href="index.html" class="sidebar-logo">
+    <div class="logo-icon">GE</div>
+    <div class="logo-text">
+      <span>Gopi Exporting Hub</span>
+      <span>Admin Panel</span>
+    </div>
+  </a>
+
+  <div class="admin-badge">
+    <i class="fas fa-shield-halved"></i>
+    <div class="admin-badge-text">
+      <span id="adminName">Admin</span>
+      <span>Owner Access</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-label">Dashboard</div>
+    <a class="nav-item active" onclick="showPage('overview')">
+      <i class="fas fa-chart-pie"></i> Overview
+    </a>
+
+    <div class="nav-label">Manage</div>
+    <a class="nav-item" onclick="showPage('orders')">
+      <i class="fas fa-box"></i> All Orders
+    </a>
+    <a class="nav-item" onclick="showPage('products')">
+      <i class="fas fa-tags"></i> Products
+    </a>
+    <a class="nav-item" onclick="showPage('shipments')">
+      <i class="fas fa-ship"></i> Shipments
+    </a>
+    <a class="nav-item" onclick="showPage('clients')">
+      <i class="fas fa-users"></i> Clients
+    </a>
+
+    <div class="nav-label">Communications</div>
+    <a class="nav-item" onclick="showPage('inquiries')">
+      <i class="fas fa-envelope"></i> Inquiries
+    </a>
+
+    <div class="nav-label">Content</div>
+    <a class="nav-item" onclick="showPage('add-product')">
+      <i class="fas fa-plus-circle"></i> Add Product
+    </a>
+    <a class="nav-item" onclick="showPage('add-shipment')">
+      <i class="fas fa-truck-fast"></i> Add Shipment
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="handleLogout()">
+      <i class="fas fa-right-from-bracket"></i> Sign Out
+    </button>
+  </div>
+</aside>
+
+<!-- ── MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="hamburger-btn" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="page-title" id="pageTitle">Overview</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-date" id="topDate"></div>
+    </div>
+  </div>
+
+  <!-- ════ OVERVIEW ════ -->
+  <div class="page active" id="page-overview">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-top">
+          <div><div class="stat-num" id="s-clients">0</div><div class="stat-lbl">Total Clients</div></div>
+          <div class="stat-icon icon-navy"><i class="fas fa-users"></i></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div><div class="stat-num" id="s-orders">0</div><div class="stat-lbl">Total Orders</div></div>
+          <div class="stat-icon icon-gold"><i class="fas fa-box"></i></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div><div class="stat-num" id="s-shipments">0</div><div class="stat-lbl">Shipments</div></div>
+          <div class="stat-icon icon-blue"><i class="fas fa-ship"></i></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div><div class="stat-num" id="s-products">0</div><div class="stat-lbl">Products</div></div>
+          <div class="stat-icon icon-green"><i class="fas fa-tags"></i></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-top">
+          <div><div class="stat-num" id="s-inquiries">0</div><div class="stat-lbl">Inquiries</div></div>
+          <div class="stat-icon icon-red"><i class="fas fa-envelope"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="sec-header">
+      <div class="sec-title">Recent Orders</div>
+      <button class="btn-gold btn-sm" onclick="showPage('orders')">View All</button>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th><th>Client</th><th>Product</th>
+            <th>Qty</th><th>Total</th><th>Status</th><th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="recentOrdersTable">
+          <tr><td colspan="7"><div class="empty-state"><i class="fas fa-box-open"></i><p>No orders yet.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ ALL ORDERS ════ -->
+  <div class="page" id="page-orders">
+    <div class="sec-header">
+      <div class="sec-title">All Orders</div>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th><th>Client</th><th>Email</th><th>Product</th>
+            <th>Qty</th><th>Total</th><th>Status</th><th>Update</th>
+          </tr>
+        </thead>
+        <tbody id="allOrdersTable">
+          <tr><td colspan="8"><div class="empty-state"><i class="fas fa-box-open"></i><p>No orders yet.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ PRODUCTS ════ -->
+  <div class="page" id="page-products">
+    <div class="sec-header">
+      <div class="sec-title">Products</div>
+      <button class="btn-gold btn-sm" onclick="showPage('add-product')">
+        <i class="fas fa-plus"></i> Add Product
+      </button>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Category</th>
+            <th>Price</th><th>Stock</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="productsTable">
+          <tr><td colspan="6"><div class="empty-state"><i class="fas fa-tags"></i><p>No products yet.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ SHIPMENTS ════ -->
+  <div class="page" id="page-shipments">
+    <div class="sec-header">
+      <div class="sec-title">All Shipments</div>
+      <button class="btn-gold btn-sm" onclick="showPage('add-shipment')">
+        <i class="fas fa-plus"></i> Add Shipment
+      </button>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Tracking ID</th><th>Client</th><th>Product</th>
+            <th>Carrier</th><th>Origin</th><th>Destination</th>
+            <th>Status</th><th>Update</th>
+          </tr>
+        </thead>
+        <tbody id="shipmentsTable">
+          <tr><td colspan="8"><div class="empty-state"><i class="fas fa-ship"></i><p>No shipments yet.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ CLIENTS ════ -->
+  <div class="page" id="page-clients">
+    <div class="sec-header">
+      <div class="sec-title">All Clients</div>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Email</th>
+            <th>Phone</th><th>Company</th><th>Joined</th>
+          </tr>
+        </thead>
+        <tbody id="clientsTable">
+          <tr><td colspan="6"><div class="empty-state"><i class="fas fa-users"></i><p>No clients yet.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ INQUIRIES ════ -->
+  <div class="page" id="page-inquiries">
+    <div class="sec-header">
+      <div class="sec-title">Client Inquiries</div>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Name</th><th>Email</th><th>Service</th><th>Message</th><th>Date</th></tr>
+        </thead>
+        <tbody id="inquiriesTable">
+          <tr><td colspan="6"><div class="empty-state"><i class="fas fa-envelope"></i><p>No inquiries yet.</p></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════ ADD PRODUCT ════ -->
+  <div class="page" id="page-add-product">
+    <div class="sec-header"><div class="sec-title">Add New Product</div></div>
+    <div class="alert alert-success" id="productSuccess">
+      <i class="fas fa-circle-check"></i><span>Product added successfully!</span>
+    </div>
+    <div class="alert alert-error" id="productError">
+      <i class="fas fa-circle-exclamation"></i><span id="productErrorMsg">Error.</span>
+    </div>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Product Name *</label>
+          <input type="text" id="pName" placeholder="e.g. Basmati Rice"/>
+        </div>
+        <div class="form-group">
+          <label>Category *</label>
+          <input type="text" id="pCategory" placeholder="e.g. Grains, Textiles"/>
+        </div>
+        <div class="form-group">
+          <label>Price (₹) *</label>
+          <input type="number" id="pPrice" placeholder="e.g. 5000"/>
+        </div>
+        <div class="form-group">
+          <label>Unit</label>
+          <input type="text" id="pUnit" placeholder="e.g. kg, ton, piece"/>
+        </div>
+        <div class="form-group">
+          <label>Origin Country</label>
+          <input type="text" id="pOrigin" placeholder="e.g. India"/>
+        </div>
+        <div class="form-group">
+          <label>Stock Status</label>
+          <select id="pStock">
+            <option>Available</option>
+            <option>Limited Stock</option>
+            <option>Out of Stock</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label>Description</label>
+          <textarea id="pDesc" placeholder="Product description..."></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Product Image</label>
+          <input type="file" id="pImage" accept="image/*"/>
+        </div>
+      </div>
+      <button class="btn-gold" onclick="addProduct()" style="margin-top:8px">
+        <i class="fas fa-plus"></i> Add Product
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ ADD SHIPMENT ════ -->
+  <div class="page" id="page-add-shipment">
+    <div class="sec-header"><div class="sec-title">Create Shipment</div></div>
+    <div class="alert alert-success" id="shipSuccess">
+      <i class="fas fa-circle-check"></i><span>Shipment created successfully!</span>
+    </div>
+    <div class="alert alert-error" id="shipError">
+      <i class="fas fa-circle-exclamation"></i><span id="shipErrorMsg">Error.</span>
+    </div>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Order ID *</label>
+          <input type="number" id="sOrderId" placeholder="Order ID to link"/>
+        </div>
+        <div class="form-group">
+          <label>Tracking ID *</label>
+          <input type="text" id="sTrackId" placeholder="e.g. TRK-20250101-001"/>
+        </div>
+        <div class="form-group">
+          <label>Carrier</label>
+          <input type="text" id="sCarrier" placeholder="e.g. DHL, FedEx, Blue Dart"/>
+        </div>
+        <div class="form-group">
+          <label>Origin</label>
+          <input type="text" id="sOrigin" placeholder="e.g. Chennai, India"/>
+        </div>
+        <div class="form-group">
+          <label>Destination</label>
+          <input type="text" id="sDest" placeholder="e.g. Dubai, UAE"/>
+        </div>
+        <div class="form-group">
+          <label>Estimated Delivery</label>
+          <input type="date" id="sDelivery"/>
+        </div>
+      </div>
+      <button class="btn-gold" onclick="addShipment()" style="margin-top:8px">
+        <i class="fas fa-truck-fast"></i> Create Shipment
+      </button>
+    </div>
+  </div>
+
+</div><!-- end main -->
+
+<!-- ── ORDER STATUS MODAL -->
+<div class="modal-overlay" id="statusModal">
+  <div class="modal">
+    <h3>Update Order Status</h3>
+    <input type="hidden" id="modalOrderId"/>
+    <div class="form-group">
+      <label>New Status</label>
+      <select id="modalStatus">
+        <option>Processing</option>
+        <option>Confirmed</option>
+        <option>Shipped</option>
+        <option>Delivered</option>
+        <option>Cancelled</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('statusModal')">Cancel</button>
+      <button class="btn-gold" onclick="updateOrderStatus()">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── SHIPMENT STATUS MODAL -->
+<div class="modal-overlay" id="shipModal">
+  <div class="modal">
+    <h3>Update Shipment Status</h3>
+    <input type="hidden" id="modalShipId"/>
+    <div class="form-group">
+      <label>New Status</label>
+      <select id="modalShipStatus">
+        <option>Pending</option>
+        <option>In Transit</option>
+        <option>Out for Delivery</option>
+        <option>Delivered</option>
+        <option>On Hold</option>
+        <option>Returned</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('shipModal')">Cancel</button>
+      <button class="btn-gold" onclick="updateShipmentStatus()">Update Status</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BASE_URL   = "http://localhost:5000/api";
+  const adminToken = localStorage.getItem("adminToken");
+  const adminUser  = JSON.parse(localStorage.getItem("adminUser") || "{}");
+
+  // Auth guard
+  if (!adminToken) window.location.href = "admin-login.html";
+
+  // Set info
+  document.getElementById("adminName").textContent = adminUser.name || "Admin";
+  document.getElementById("topDate").textContent   =
+    new Date().toLocaleDateString("en-IN", { weekday:"long", year:"numeric", month:"long", day:"numeric" });
+
+  const titles = {
+    overview:"Overview", orders:"All Orders", products:"Products",
+    shipments:"Shipments", clients:"Clients", inquiries:"Inquiries",
+    "add-product":"Add Product", "add-shipment":"Add Shipment"
+  };
+
+  // ── Navigation
+  function showPage(id) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    document.getElementById("page-" + id).classList.add("active");
+    event?.currentTarget?.classList.add("active");
+    document.getElementById("pageTitle").textContent = titles[id] || id;
+    document.getElementById("sidebar").classList.remove("open");
+
+    if (id === "overview")      loadDashboard();
+    if (id === "orders")        loadAllOrders();
+    if (id === "products")      loadProducts();
+    if (id === "shipments")     loadShipments();
+    if (id === "clients")       loadClients();
+    if (id === "inquiries")     loadInquiries();
+  }
+
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+  }
+
+  // ── HEADERS
+  const adminHeaders = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${adminToken}`
+  };
+
+  // ── LOAD DASHBOARD
+  async function loadDashboard() {
+    try {
+      const res  = await fetch(`${BASE_URL}/admin/dashboard`, { headers: adminHeaders });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById("s-clients").textContent   = data.stats.totalClients;
+        document.getElementById("s-orders").textContent    = data.stats.totalOrders;
+        document.getElementById("s-shipments").textContent = data.stats.totalShipments;
+        document.getElementById("s-products").textContent  = data.stats.totalProducts;
+        document.getElementById("s-inquiries").textContent = data.stats.totalInquiries;
+
+        if (data.recentOrders.length > 0) {
+          document.getElementById("recentOrdersTable").innerHTML =
+            data.recentOrders.map(o => `
+              <tr>
+                <td><strong>#${o.ORDER_ID}</strong></td>
+                <td>${o.CLIENT_NAME}</td>
+                <td>${o.PRODUCT_NAME}</td>
+                <td>${o.QUANTITY}</td>
+                <td>₹${parseFloat(o.TOTAL_PRICE).toLocaleString()}</td>
+                <td><span class="badge badge-${o.STATUS.toLowerCase()}">${o.STATUS}</span></td>
+                <td>${new Date(o.CREATED_AT).toLocaleDateString("en-IN")}</td>
+              </tr>`).join("");
+        }
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOAD ALL ORDERS
+  async function loadAllOrders() {
+    try {
+      const res  = await fetch(`${BASE_URL}/orders`, { headers: adminHeaders });
+      const data = await res.json();
+      if (data.success && data.orders.length > 0) {
+        document.getElementById("allOrdersTable").innerHTML =
+          data.orders.map(o => `
+            <tr>
+              <td><strong>#${o.ORDER_ID}</strong></td>
+              <td>${o.CLIENT_NAME}</td>
+              <td>${o.CLIENT_EMAIL}</td>
+              <td>${o.PRODUCT_NAME}</td>
+              <td>${o.QUANTITY}</td>
+              <td>₹${parseFloat(o.TOTAL_PRICE).toLocaleString()}</td>
+              <td><span class="badge badge-${o.STATUS.toLowerCase()}">${o.STATUS}</span></td>
+              <td>
+                <button class="btn-gold btn-sm" onclick="openStatusModal(${o.ORDER_ID},'${o.STATUS}')">
+                  Update
+                </button>
+              </td>
+            </tr>`).join("");
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOAD PRODUCTS
+  async function loadProducts() {
+    try {
+      const res  = await fetch(`${BASE_URL}/products`);
+      const data = await res.json();
+      if (data.success && data.products.length > 0) {
+        document.getElementById("productsTable").innerHTML =
+          data.products.map(p => `
+            <tr>
+              <td>#${p.PRODUCT_ID}</td>
+              <td><strong>${p.NAME}</strong></td>
+              <td>${p.CATEGORY}</td>
+              <td>₹${parseFloat(p.PRICE).toLocaleString()}</td>
+              <td><span class="badge ${p.STOCK_STATUS==='Available'?'badge-delivered':'badge-processing'}">${p.STOCK_STATUS}</span></td>
+              <td>
+                <button class="btn-danger" onclick="deleteProduct(${p.PRODUCT_ID})">
+                  <i class="fas fa-trash"></i> Delete
+                </button>
+              </td>
+            </tr>`).join("");
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOAD SHIPMENTS
+  async function loadShipments() {
+    try {
+      const res  = await fetch(`${BASE_URL}/shipments`, { headers: adminHeaders });
+      const data = await res.json();
+      if (data.success && data.shipments.length > 0) {
+        document.getElementById("shipmentsTable").innerHTML =
+          data.shipments.map(s => `
+            <tr>
+              <td><strong>${s.TRACKING_ID}</strong></td>
+              <td>${s.CLIENT_NAME}</td>
+              <td>${s.PRODUCT_NAME}</td>
+              <td>${s.CARRIER || '—'}</td>
+              <td>${s.ORIGIN || '—'}</td>
+              <td>${s.DESTINATION || '—'}</td>
+              <td><span class="badge badge-transit">${s.STATUS}</span></td>
+              <td>
+                <button class="btn-gold btn-sm" onclick="openShipModal(${s.SHIPMENT_ID},'${s.STATUS}')">
+                  Update
+                </button>
+              </td>
+            </tr>`).join("");
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOAD CLIENTS
+  async function loadClients() {
+    try {
+      const res  = await fetch(`${BASE_URL}/admin/clients`, { headers: adminHeaders });
+      const data = await res.json();
+      if (data.success && data.clients.length > 0) {
+        document.getElementById("clientsTable").innerHTML =
+          data.clients.map(c => `
+            <tr>
+              <td>#${c.USER_ID}</td>
+              <td><strong>${c.NAME}</strong></td>
+              <td>${c.EMAIL}</td>
+              <td>${c.PHONE || '—'}</td>
+              <td>${c.COMPANY || '—'}</td>
+              <td>${new Date(c.CREATED_AT).toLocaleDateString("en-IN")}</td>
+            </tr>`).join("");
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── LOAD INQUIRIES
+  async function loadInquiries() {
+    try {
+      const res  = await fetch(`${BASE_URL}/contact`, { headers: adminHeaders });
+      const data = await res.json();
+      if (data.success && data.inquiries.length > 0) {
+        document.getElementById("inquiriesTable").innerHTML =
+          data.inquiries.map(i => `
+            <tr>
+              <td>#${i.INQUIRY_ID}</td>
+              <td><strong>${i.NAME}</strong></td>
+              <td>${i.EMAIL}</td>
+              <td>${i.SERVICE || '—'}</td>
+              <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i.MESSAGE}</td>
+              <td>${new Date(i.CREATED_AT).toLocaleDateString("en-IN")}</td>
+            </tr>`).join("");
+      }
+    } catch(err) { console.error(err); }
+  }
+
+  // ── ADD PRODUCT
+  async function addProduct() {
+    document.getElementById("productSuccess").classList.remove("show");
+    document.getElementById("productError").classList.remove("show");
+
+    const name     = document.getElementById("pName").value.trim();
+    const category = document.getElementById("pCategory").value.trim();
+    const price    = document.getElementById("pPrice").value;
+
+    if (!name || !category || !price) {
+      document.getElementById("productErrorMsg").textContent = "Name, category and price are required.";
+      document.getElementById("productError").classList.add("show");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("name",          name);
+    formData.append("category",      category);
+    formData.append("price",         price);
+    formData.append("unit",          document.getElementById("pUnit").value);
+    formData.append("originCountry", document.getElementById("pOrigin").value);
+    formData.append("stockStatus",   document.getElementById("pStock").value);
+    formData.append("description",   document.getElementById("pDesc").value);
+    const imageFile = document.getElementById("pImage").files[0];
+    if (imageFile) formData.append("image", imageFile);
+
+    try {
+      const res  = await fetch(`${BASE_URL}/products`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${adminToken}` },
+        body:   formData
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById("productSuccess").classList.add("show");
+        ["pName","pCategory","pPrice","pUnit","pOrigin","pDesc"].forEach(id => document.getElementById(id).value = "");
+        document.getElementById("pStock").value = "Available";
+      } else {
+        document.getElementById("productErrorMsg").textContent = data.message;
+        document.getElementById("productError").classList.add("show");
+      }
+    } catch(err) {
+      document.getElementById("productErrorMsg").textContent = "Server error.";
+      document.getElementById("productError").classList.add("show");
+    }
+  }
+
+  // ── DELETE PRODUCT
+  async function deleteProduct(id) {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+    try {
+      const res  = await fetch(`${BASE_URL}/products/${id}`, {
+        method: "DELETE", headers: adminHeaders
+      });
+      const data = await res.json();
+      if (data.success) loadProducts();
+    } catch(err) { console.error(err); }
+  }
+
+  // ── ADD SHIPMENT
+  async function addShipment() {
+    document.getElementById("shipSuccess").classList.remove("show");
+    document.getElementById("shipError").classList.remove("show");
+
+    const orderId  = document.getElementById("sOrderId").value;
+    const trackId  = document.getElementById("sTrackId").value.trim();
+
+    if (!orderId || !trackId) {
+      document.getElementById("shipErrorMsg").textContent = "Order ID and Tracking ID are required.";
+      document.getElementById("shipError").classList.add("show");
+      return;
+    }
+
+    try {
+      const res  = await fetch(`${BASE_URL}/shipments`, {
+        method: "POST", headers: adminHeaders,
+        body: JSON.stringify({
+          orderId:           parseInt(orderId),
+          trackingId:        trackId,
+          carrier:           document.getElementById("sCarrier").value,
+          origin:            document.getElementById("sOrigin").value,
+          destination:       document.getElementById("sDest").value,
+          estimatedDelivery: document.getElementById("sDelivery").value
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById("shipSuccess").classList.add("show");
+        ["sOrderId","sTrackId","sCarrier","sOrigin","sDest","sDelivery"].forEach(id => document.getElementById(id).value = "");
+      } else {
+        document.getElementById("shipErrorMsg").textContent = data.message;
+        document.getElementById("shipError").classList.add("show");
+      }
+    } catch(err) {
+      document.getElementById("shipErrorMsg").textContent = "Server error.";
+      document.getElementById("shipError").classList.add("show");
+    }
+  }
+
+  // ── STATUS MODALS
+  function openStatusModal(orderId, currentStatus) {
+    document.getElementById("modalOrderId").value = orderId;
+    document.getElementById("modalStatus").value  = currentStatus;
+    document.getElementById("statusModal").classList.add("show");
+  }
+
+  async function updateOrderStatus() {
+    const id     = document.getElementById("modalOrderId").value;
+    const status = document.getElementById("modalStatus").value;
+    try {
+      await fetch(`${BASE_URL}/orders/${id}/status`, {
+        method: "PUT", headers: adminHeaders,
+        body: JSON.stringify({ status })
+      });
+      closeModal("statusModal");
+      loadAllOrders();
+    } catch(err) { console.error(err); }
+  }
+
+  function openShipModal(shipId, currentStatus) {
+    document.getElementById("modalShipId").value    = shipId;
+    document.getElementById("modalShipStatus").value = currentStatus;
+    document.getElementById("shipModal").classList.add("show");
+  }
+
+  async function updateShipmentStatus() {
+    const id     = document.getElementById("modalShipId").value;
+    const status = document.getElementById("modalShipStatus").value;
+    try {
+      await fetch(`${BASE_URL}/shipments/${id}/status`, {
+        method: "PUT", headers: adminHeaders,
+        body: JSON.stringify({ status })
+      });
+      closeModal("shipModal");
+      loadShipments();
+    } catch(err) { console.error(err); }
+  }
+
+  function closeModal(id) {
+    document.getElementById(id).classList.remove("show");
+  }
+
+  // ── LOGOUT
+  function handleLogout() {
+    localStorage.removeItem("adminToken");
+    localStorage.removeItem("adminUser");
+    window.location.href = "admin-login.html";
+  }
+
+  // ── INIT
+  loadDashboard();
+</script>
+</body>
+</html>
