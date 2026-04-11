@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Access | Gopi Exporting Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --navy:      #0B1F3A;
+      --navy-mid:  #162D4F;
+      --navy-dark: #060F1E;
+      --gold:      #C9A84C;
+      --gold-lite: #E2C97E;
+      --white:     #FFFFFF;
+      --red:       #e74c3c;
+      --green:     #2d8a4e;
+      --border:    rgba(201,168,76,0.2);
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--navy-dark);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Dark dramatic background */
+    .bg {
+      position: fixed; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 0% 100%, rgba(11,31,58,0.8) 0%, transparent 50%),
+        linear-gradient(180deg, #060F1E 0%, #0B1F3A 100%);
+    }
+
+    /* Scanline effect for security feel */
+    .scanlines {
+      position: fixed; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0,0,0,0.03) 0px,
+        rgba(0,0,0,0.03) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      z-index: 0;
+    }
+
+    /* Animated border corners */
+    .corner {
+      position: fixed;
+      width: 60px; height: 60px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .corner::before, .corner::after {
+      content: '';
+      position: absolute;
+      background: var(--gold);
+      opacity: 0.4;
+      animation: pulse-corner 3s ease-in-out infinite;
+    }
+    .corner::before { width: 2px; height: 30px; }
+    .corner::after  { width: 30px; height: 2px; }
+    .corner.tl { top: 20px; left: 20px; }
+    .corner.tl::before { top:0; left:0; }
+    .corner.tl::after  { top:0; left:0; }
+    .corner.tr { top: 20px; right: 20px; }
+    .corner.tr::before { top:0; right:0; }
+    .corner.tr::after  { top:0; right:0; }
+    .corner.bl { bottom: 20px; left: 20px; }
+    .corner.bl::before { bottom:0; left:0; }
+    .corner.bl::after  { bottom:0; left:0; }
+    .corner.br { bottom: 20px; right: 20px; }
+    .corner.br::before { bottom:0; right:0; }
+    .corner.br::after  { bottom:0; right:0; }
+
+    @keyframes pulse-corner {
+      0%,100% { opacity: 0.3; }
+      50%      { opacity: 0.8; }
+    }
+
+    /* ── Main container */
+    .container {
+      position: relative; z-index: 2;
+      width: 100%;
+      max-width: 460px;
+      padding: 24px;
+      animation: fadeIn 0.6s ease both;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    /* ── Shield icon header */
+    .admin-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+    .shield-wrap {
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      width: 80px; height: 80px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+    .shield-wrap::before {
+      content: '';
+      position: absolute; inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.15);
+    }
+    .shield-wrap::after {
+      content: '';
+      position: absolute; inset: -8px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.07);
+    }
+    .shield-wrap i {
+      font-size: 2rem; color: var(--gold);
+    }
+    .admin-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem; font-weight: 700;
+      color: var(--white); margin-bottom: 6px;
+    }
+    .admin-header p {
+      font-size: 0.8rem; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* ── Warning badge */
+    .warning-badge {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(231,76,60,0.08);
+      border: 1px solid rgba(231,76,60,0.2);
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin-bottom: 28px;
+    }
+    .warning-badge i { color: #e74c3c; font-size: 0.85rem; }
+    .warning-badge span {
+      font-size: 0.78rem; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.5px; line-height: 1.5;
+    }
+
+    /* ── Form card */
+    .form-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 40px 36px;
+      backdrop-filter: blur(12px);
+    }
+
+    .form-row { margin-bottom: 20px; }
+    .form-row label {
+      display: block;
+      font-size: 0.7rem; letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      font-weight: 700; margin-bottom: 8px;
+    }
+
+    .input-wrap { position: relative; }
+    .input-wrap i.icon {
+      position: absolute; left: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.18); font-size: 0.85rem;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 14px 14px 14px 42px;
+      color: var(--white);
+      font-family: 'Lato', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: all 0.3s;
+      letter-spacing: 0.5px;
+    }
+    .input-wrap input::placeholder { color: rgba(255,255,255,0.15); }
+    .input-wrap input:focus {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.04);
+    }
+
+    /* Secret key field — special styling */
+    .secret-field input {
+      letter-spacing: 3px;
+      font-family: monospace;
+      font-size: 0.95rem;
+    }
+
+    .pass-toggle {
+      position: absolute; right: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255,255,255,0.2);
+      cursor: pointer; font-size: 0.85rem;
+      transition: color 0.3s;
+    }
+    .pass-toggle:hover { color: var(--gold); }
+
+    /* Separator */
+    .separator {
+      display: flex; align-items: center; gap: 12px;
+      margin: 24px 0 20px;
+    }
+    .separator::before, .separator::after {
+      content: ''; flex: 1; height: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+    .separator span {
+      font-size: 0.68rem; color: rgba(255,255,255,0.2);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    /* Alert */
+    .alert {
+      padding: 12px 16px; border-radius: 8px;
+      font-size: 0.83rem; margin-bottom: 20px;
+      display: none; align-items: center; gap: 10px;
+      line-height: 1.4;
+    }
+    .alert.show { display: flex; }
+    .alert-error {
+      background: rgba(231,76,60,0.08);
+      border: 1px solid rgba(231,76,60,0.25);
+      color: #f1948a;
+    }
+    .alert-success {
+      background: rgba(45,138,78,0.08);
+      border: 1px solid rgba(45,138,78,0.25);
+      color: #82e0aa;
+    }
+
+    /* Submit */
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
+      color: var(--navy);
+      border: none; border-radius: 8px;
+      padding: 15px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.82rem; letter-spacing: 2px;
+      text-transform: uppercase; font-weight: 700;
+      cursor: pointer; transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(201,168,76,0.25);
+    }
+    .btn-submit:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+    .btn-submit.loading { color: transparent; }
+    .btn-submit.loading::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' stroke='%230B1F3A' stroke-width='3' fill='none' stroke-dasharray='31.4' stroke-dashoffset='10'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='0.8s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/svg%3E") center/20px no-repeat;
+    }
+
+    /* Attempt counter */
+    .attempt-info {
+      text-align: center; margin-top: 16px;
+      font-size: 0.75rem; color: rgba(255,255,255,0.2);
+    }
+    .attempt-info span { color: var(--gold); }
+
+    /* Back link */
+    .back-link {
+      text-align: center; margin-top: 24px;
+    }
+    .back-link a {
+      font-size: 0.78rem; color: rgba(255,255,255,0.2);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .back-link a:hover { color: rgba(255,255,255,0.5); }
+
+    /* Locked state */
+    .locked-overlay {
+      display: none;
+      text-align: center; padding: 20px 0;
+    }
+    .locked-overlay.show { display: block; }
+    .locked-overlay i {
+      font-size: 2.5rem; color: var(--red);
+      margin-bottom: 12px;
+    }
+    .locked-overlay h3 {
+      color: var(--white); font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .locked-overlay p {
+      color: rgba(255,255,255,0.4); font-size: 0.85rem;
+    }
+    .countdown {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--gold); margin: 12px 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="scanlines"></div>
+
+<!-- Corner decorations -->
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+<div class="container">
+
+  <!-- Header -->
+  <div class="admin-header">
+    <div class="shield-wrap">
+      <i class="fas fa-shield-halved"></i>
+    </div>
+    <h1>Admin Access</h1>
+    <p>Gopi Exporting Hub — Owner Portal</p>
+  </div>
+
+  <!-- Warning -->
+  <div class="warning-badge">
+    <i class="fas fa-triangle-exclamation"></i>
+    <span>This page is restricted to authorized personnel only. Unauthorized access attempts are logged.</span>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card">
+
+    <!-- Alert -->
+    <div class="alert alert-error" id="alertError">
+      <i class="fas fa-ban"></i>
+      <span id="alertErrorMsg">Access denied.</span>
+    </div>
+    <div class="alert alert-success" id="alertSuccess">
+      <i class="fas fa-circle-check"></i>
+      <span id="alertSuccessMsg">Access granted. Loading dashboard...</span>
+    </div>
+
+    <!-- Locked overlay -->
+    <div class="locked-overlay" id="lockedOverlay">
+      <i class="fas fa-lock"></i>
+      <h3>Access Temporarily Locked</h3>
+      <p>Too many failed attempts. Try again in:</p>
+      <div class="countdown" id="countdown">30</div>
+      <p>seconds</p>
+    </div>
+
+    <!-- Form fields -->
+    <div id="formFields">
+      <div class="form-row">
+        <label>Admin Email</label>
+        <div class="input-wrap">
+          <i class="fas fa-envelope icon"></i>
+          <input type="email" id="email" placeholder="gangireddygopinathreddy715@gmail.com "/>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label>Password</label>
+        <div class="input-wrap">
+          <i class="fas fa-lock icon"></i>
+          <input type="password" id="password" placeholder="Admin password"/>
+          <i class="fas fa-eye pass-toggle" id="togglePass" onclick="togglePass('password','togglePass')"></i>
+        </div>
+      </div>
+
+      <div class="separator"><span>owner verification</span></div>
+
+      <div class="form-row secret-field">
+        <label><i class="fas fa-key" style="color:var(--gold);margin-right:6px"></i>Secret Key</label>
+        <div class="input-wrap">
+          <i class="fas fa-fingerprint icon"></i>
+          <input type="password" id="secretKey" placeholder="Owner secret key"/>
+          <i class="fas fa-eye pass-toggle" id="toggleKey" onclick="togglePass('secretKey','toggleKey')"></i>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="loginBtn" onclick="handleAdminLogin()">
+        <i class="fas fa-shield-halved"></i> &nbsp;Verify & Access
+      </button>
+
+      <div class="attempt-info">
+        Failed attempts: <span id="attemptCount">0</span> / 5
+      </div>
+    </div>
+
+  </div>
+
+  <div class="back-link">
+    <a href="index.html"><i class="fas fa-arrow-left"></i> Return to Website</a>
+  </div>
+
+</div>
+
+<script>
+  const BASE_URL    = "http://localhost:5000/api";
+  let attempts      = 0;
+  const MAX_ATTEMPTS = 5;
+  const LOCKOUT_SEC  = 30;
+
+  // Toggle password visibility
+  function togglePass(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon  = document.getElementById(iconId);
+    input.type  = input.type === "password" ? "text" : "password";
+    icon.classList.toggle("fa-eye");
+    icon.classList.toggle("fa-eye-slash");
+  }
+
+  // Show alert
+  function showAlert(type, message) {
+    document.getElementById("alertError").classList.remove("show");
+    document.getElementById("alertSuccess").classList.remove("show");
+    if (type === "error") {
+      document.getElementById("alertErrorMsg").textContent = message;
+      document.getElementById("alertError").classList.add("show");
+    } else {
+      document.getElementById("alertSuccessMsg").textContent = message;
+      document.getElementById("alertSuccess").classList.add("show");
+    }
+  }
+
+  // Lockout countdown
+  function startLockout() {
+    document.getElementById("formFields").style.display = "none";
+    document.getElementById("lockedOverlay").classList.add("show");
+    let secs = LOCKOUT_SEC;
+    const timer = setInterval(() => {
+      secs--;
+      document.getElementById("countdown").textContent = secs;
+      if (secs <= 0) {
+        clearInterval(timer);
+        attempts = 0;
+        document.getElementById("attemptCount").textContent = "0";
+        document.getElementById("formFields").style.display = "block";
+        document.getElementById("lockedOverlay").classList.remove("show");
+        document.getElementById("alertError").classList.remove("show");
+      }
+    }, 1000);
+  }
+
+  // Admin login handler
+  async function handleAdminLogin() {
+    const email     = document.getElementById("email").value.trim();
+    const password  = document.getElementById("password").value;
+    const secretKey = document.getElementById("secretKey").value.trim();
+    const btn       = document.getElementById("loginBtn");
+
+    if (!email || !password || !secretKey) {
+      return showAlert("error", "All three fields are required.");
+    }
+
+    btn.classList.add("loading");
+    btn.disabled = true;
+
+    try {
+      const res  = await fetch(`${BASE_URL}/auth/admin/login`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ email, password, secretKey }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        // Save admin token and info
+        localStorage.setItem("adminToken", data.token);
+        localStorage.setItem("adminUser",  JSON.stringify(data.user));
+
+        showAlert("success", `Welcome, ${data.user.name}! Loading admin dashboard...`);
+
+        setTimeout(() => {
+          window.location.href = "admin-dashboard.html";
+        }, 1500);
+
+      } else {
+        attempts++;
+        document.getElementById("attemptCount").textContent = attempts;
+
+        if (attempts >= MAX_ATTEMPTS) {
+          showAlert("error", "Too many failed attempts. Access locked for 30 seconds.");
+          setTimeout(startLockout, 500);
+        } else {
+          showAlert("error", `Access denied. ${MAX_ATTEMPTS - attempts} attempts remaining.`);
+        }
+      }
+
+    } catch (err) {
+      showAlert("error", "Cannot connect to server. Make sure backend is running.");
+    } finally {
+      btn.classList.remove("loading");
+      btn.disabled = false;
+    }
+  }
+
+  // Enter key support
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") handleAdminLogin();
+  });
+
+  // If admin already logged in
+  if (localStorage.getItem("adminToken")) {
+    window.location.href = "admin-dashboard.html";
+  }
+</script>
+</body>
+</html>
