@@ -44,6 +44,6 @@ const PORT = process.env.PORT || 5000;
 
 initPool().then(() => {
   app.listen(PORT, () => {
-    console.log(` Server running on${PORT}`);
+    console.log(` Server running on ${PORT}`);
   });
 });
