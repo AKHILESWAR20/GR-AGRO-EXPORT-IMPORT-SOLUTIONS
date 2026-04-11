@@ -90,4 +90,8 @@ if (form) {
       btn.disabled = false;
     }, 3000);
   });
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 75ee7dc8fe97ee908cca227c253795cfe5530868
