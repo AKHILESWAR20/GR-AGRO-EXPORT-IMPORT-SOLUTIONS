@@ -63,7 +63,7 @@ if (form) {
     btn.disabled = true;
 
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch("https://gr-agro-export-import-solutions.onrender.com/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
