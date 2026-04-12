@@ -429,31 +429,31 @@
 
   <nav class="sidebar-nav">
     <div class="nav-section-label">Main</div>
-    <a class="nav-item active" onclick="showPage('overview')">
+    <a class="nav-item active" onclick="showPage('overview', this)">
       <i class="fas fa-grid-2"></i> Overview
     </a>
-    <a class="nav-item" onclick="showPage('orders')">
+    <a class="nav-item" onclick="showPage('orders', this)">
       <i class="fas fa-box"></i> My Orders
     </a>
-    <a class="nav-item" onclick="showPage('place-order')">
+    <a class="nav-item" onclick="showPage('place-order' , this)">
       <i class="fas fa-plus-circle"></i> Place Order
     </a>
 
     <div class="nav-section-label">Shipments</div>
-    <a class="nav-item" onclick="showPage('track')">
+    <a class="nav-item" onclick="showPage('track', this)">
       <i class="fas fa-satellite-dish"></i> Track Shipment
     </a>
 
     <div class="nav-section-label">Documents</div>
-    <a class="nav-item" onclick="showPage('documents')">
+    <a class="nav-item" onclick="showPage('documents', this)">
       <i class="fas fa-file-lines"></i> My Documents
     </a>
-    <a class="nav-item" onclick="showPage('upload')">
+    <a class="nav-item" onclick="showPage('upload', this)">
       <i class="fas fa-upload"></i> Upload File
     </a>
 
     <div class="nav-section-label">Account</div>
-    <a class="nav-item" onclick="showPage('inquiry')">
+    <a class="nav-item" onclick="showPage('inquiry', this)">
       <i class="fas fa-envelope"></i> Send Inquiry
     </a>
   </nav>
@@ -814,11 +814,13 @@
   if (document.getElementById("inqEmail")) document.getElementById("inqEmail").value = user.email || "";
 
   // ── Navigation
-  function showPage(pageId) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-    document.getElementById("page-" + pageId).classList.add("active");
-    event?.currentTarget?.classList.add("active");
+  function showPage(pageId, el) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+  document.getElementById("page-" + pageId).classList.add("active");
+
+  if (el) el.classList.add("active");
+}
 
     const titles = {
       "overview":    "Overview",
@@ -837,7 +839,7 @@
 
     // Close sidebar on mobile
     document.getElementById("sidebar").classList.remove("open");
-  }
+  
 
   function toggleSidebar() {
     document.getElementById("sidebar").classList.toggle("open");
@@ -903,7 +905,7 @@
   // ── PLACE ORDER
   async function placeOrder() {
     const productId = document.getElementById("orderProduct").value;
-    const quantity  = document.getElementById("orderQty").value;
+    const quantity = parseInt(document.getElementById("orderQty").value);
     const notes     = document.getElementById("orderNotes").value;
 
     document.getElementById("orderSuccess").classList.remove("show");
