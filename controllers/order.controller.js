@@ -140,23 +140,34 @@ const getAllOrders = async (req, res) => {
 // ─────────────────────────────────────────
 const updateOrderStatus = async (req, res) => {
   try {
-    const { id }     = req.params;
+    const { id } = req.params;
     const { status } = req.body;
 
     const validStatuses = ["Processing", "Confirmed", "Shipped", "Delivered", "Cancelled"];
+
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ success: false, message: "Invalid status value." });
+      return res.status(400).json({
+        success: false,
+        message: "Invalid status value."
+      });
     }
 
     await query(
-      `UPDATE ORDERS SET STATUS = :status WHERE ORDER_ID = :id`,
-      { status, id }
+      `UPDATE orders SET status = $1 WHERE order_id = $2`,
+      [status, id]
     );
 
-    return res.status(200).json({ success: true, message: `Order status updated to "${status}".` });
+    return res.status(200).json({
+      success: true,
+      message: `Order status updated to "${status}".`
+    });
+
   } catch (err) {
     console.error("Update Order Status Error:", err.message);
-    return res.status(500).json({ success: false, message: "Failed to update order status." });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update order status."
+    });
   }
 };
 
