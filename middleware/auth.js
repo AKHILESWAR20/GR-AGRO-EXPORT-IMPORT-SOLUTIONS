@@ -11,15 +11,29 @@ require("dotenv").config();
 // Add this to any route that needs login
 // ─────────────────────────────────────────
 const verifyToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // Bearer <token>
 
-  if (!token) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({
-      success: false,
-      message: "Access denied. No token provided.",
+      success:false,
+      message:"Invalid authorization header"
     });
   }
+
+  const token = authHeader.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch(err){
+    return res.status(403).json({
+      success:false,
+      message:"Invalid or expired token"
+    });
+  }
+};
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -31,7 +45,7 @@ const verifyToken = (req, res, next) => {
       message: "Invalid or expired token. Please login again.",
     });
   }
-};
+;
 
 
 // ─────────────────────────────────────────

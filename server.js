@@ -17,7 +17,15 @@ const shipmentRoutes  = require("./routes/shipment.routes");
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: "https://gr-agro-export-import-solutions.vercel.app" }));
+app.use(cors({
+  origin: [
+    "https://gr-agro-export-import-solutions.vercel.app",
+    "http://localhost:5500"
+  ],
+  methods: ["GET","POST","PUT","DELETE"],
+  allowedHeaders: ["Content-Type","Authorization"],
+  credentials: true
+}));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -37,7 +45,11 @@ app.get("/", (req, res) => {
 
 app.use((err, req, res, next) => {
   console.error("❌ Error:", err.stack);
-  res.status(500).json({ success: false, message: err.message });
+
+  res.status(500).json({
+    success: false,
+    message: "Internal server error"
+  });
 });
 
 const PORT = process.env.PORT || 5000;
