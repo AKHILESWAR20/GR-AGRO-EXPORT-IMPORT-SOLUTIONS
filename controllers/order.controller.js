@@ -23,9 +23,12 @@ const placeOrder = async (req, res) => {
     const clientName  = req.user.name;
     const clientEmail = req.user.email;
 
-    if (!productId || !quantity) {
-      return res.status(400).json({ success: false, message: "Product and quantity are required." });
-    }
+   if (!productId || !quantity || isNaN(productId) || isNaN(quantity)) {
+  return res.status(400).json({
+    success: false,
+    message: "Invalid product or quantity."
+  });
+}
 
     // Fetch product details
     const productResult = await query(
