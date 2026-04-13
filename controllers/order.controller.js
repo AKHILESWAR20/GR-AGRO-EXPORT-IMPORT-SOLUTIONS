@@ -19,16 +19,20 @@ const { sendOrderNotifyAdmin, sendOrderConfirmClient } = require("../config/mail
 const placeOrder = async (req, res) => {
   try {
     const { productId, quantity, notes } = req.body;
+
+const productIdNum = parseInt(productId);
+const quantityNum  = parseInt(quantity);
     const clientId    = req.user.id;
     const clientName  = req.user.name;
     const clientEmail = req.user.email;
 
-   if (!productId || !quantity || isNaN(productId) || isNaN(quantity)) {
+   if (!productIdNum || !quantityNum) {
   return res.status(400).json({
     success: false,
     message: "Invalid product or quantity."
   });
 }
+ 
 
     // Fetch product details
     const productResult = await query(
@@ -41,22 +45,14 @@ const placeOrder = async (req, res) => {
     }
 
     const product    = productResult.rows[0];
-    const totalPrice = product.PRICE * quantity;
+    const totalPrice = product.PRICE * quantityNum;
 
     // Insert order
-    const orderResult = await query(
-      `INSERT INTO ORDERS (CLIENT_ID, PRODUCT_ID, QUANTITY, TOTAL_PRICE, NOTES, STATUS, CREATED_AT)
-       VALUES (:clientId, :productId, :quantity, :totalPrice, :notes, 'Processing', SYSDATE)
-       RETURNING ORDER_ID INTO :orderId`,
-      {
-        clientId,
-        productId,
-        quantity,
-        totalPrice,
-        notes:   notes || null,
-        orderId: { dir: require("oracledb").BIND_OUT, type: require("oracledb").NUMBER },
-      }
-    );
+   const orderResult = await query(
+  `INSERT INTO orders (client_id, product_id, quantity, total_price, notes, status)
+   VALUES ($1,$2,$3,$4,$5,'Processing') RETURNING order_id`,
+  [clientId, productId, quantity, totalPrice, notes||null]
+);
 
     const orderId = orderResult.outBinds.orderId[0];
 
