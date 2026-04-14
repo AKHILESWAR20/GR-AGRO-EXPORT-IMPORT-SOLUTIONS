@@ -1,46 +1,37 @@
 // ─────────────────────────────────────────
 // FILE: config/db.js
-// SECTION: Oracle Database Connection Pool
+// SECTION: PostgreSQL Database Connection (Railway)
 // ─────────────────────────────────────────
 
-const oracledb = require("oracledb");
+const { Pool } = require("pg");
 require("dotenv").config();
 
-// Return results as objects (not arrays)
-oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
-oracledb.autoCommit = true;
-
-let pool;
-
-// ─────────────────────────────────────────
-// INITIALIZE CONNECTION POOL
-// ─────────────────────────────────────────
-const initPool = async () => {
-  try {
-    pool = await oracledb.createPool({
-      user:          process.env.DB_USER,
-      password:      process.env.DB_PASSWORD,
-      connectString: process.env.DB_CONNECT_STRING,
-      poolMin:       2,
-      poolMax:       10,
-      poolIncrement: 1,
-    });
-    console.log("✅ Oracle DB Pool Created Successfully");
-  } catch (err) {
-    console.error("❌ Oracle DB Connection Failed:", err.message);
-    process.exit(1);
+// Create connection pool using Railway DATABASE_URL
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
   }
-};
+});
+
+// Test connection on startup
+pool.connect()
+  .then(client => {
+    console.log("✅ PostgreSQL Connected Successfully");
+    client.release();
+  })
+  .catch(err => {
+    console.error("❌ PostgreSQL Connection Failed:", err.message);
+    process.exit(1);
+  });
 
 // ─────────────────────────────────────────
-// EXECUTE QUERY HELPER
-// Usage: await query("SELECT * FROM USERS WHERE ID = :id", { id: 1 })
+// QUERY HELPER
+// Usage: await query("SELECT * FROM users WHERE id=$1", [1])
 // ─────────────────────────────────────────
-const query = async (sql, binds = {}, opts = {}) => {
-  let conn;
+const query = async (text, params = []) => {
   try {
-    conn = await pool.getConnection();
-    const result = await conn.execute(sql, binds, opts);
+    const result = await pool.query(text, params);
     return result;
   } catch (err) {
     console.error("❌ DB Query Error:", err.message);
@@ -50,4 +41,4 @@ const query = async (sql, binds = {}, opts = {}) => {
   }
 };
 
-module.exports = { initPool, query };
+module.exports = { query };
