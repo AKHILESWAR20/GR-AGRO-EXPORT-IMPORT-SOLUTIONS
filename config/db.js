@@ -36,9 +36,7 @@ const query = async (text, params = []) => {
   } catch (err) {
     console.error("❌ DB Query Error:", err.message);
     throw err;
-  } finally {
-    if (conn) await conn.close();
   }
 };
 
-module.exports = { query };
+module.exports = { query,pool };
