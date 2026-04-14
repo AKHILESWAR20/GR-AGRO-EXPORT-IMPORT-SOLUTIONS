@@ -42,12 +42,10 @@ const getAllProducts = async (req, res) => {
 // ─────────────────────────────────────────
 const getProduct = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const result = await query(
-      `SELECT * FROM PRODUCTS WHERE PRODUCT_ID = :id`,
-      { id }
-    );
+   const result = await query(
+  `SELECT * FROM products WHERE product_id = $1`,
+  [id]
+);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ success: false, message: "Product not found." });
@@ -79,17 +77,17 @@ const addProduct = async (req, res) => {
 
     await query(
       `INSERT INTO PRODUCTS (NAME, CATEGORY, DESCRIPTION, PRICE, UNIT, ORIGIN_COUNTRY, STOCK_STATUS, IMAGE_URL, CREATED_AT)
-       VALUES (:name, :category, :description, :price, :unit, :originCountry, :stockStatus, :imageUrl, SYSDATE)`,
-      {
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now())`,
+      [ 
         name,
         category,
-        description: description || null,
-        price:       parseFloat(price),
-        unit:        unit || null,
-        originCountry: originCountry || null,
-        stockStatus:   stockStatus || "Available",
+        description || null,
+        parseFloat(price),
+        unit || null,
+        originCountry || null,
+        stockStatus || "Available",
         imageUrl,
-      }
+      ]
     );
 
     return res.status(201).json({ success: true, message: "Product added successfully." });

@@ -29,18 +29,17 @@ const uploadFile = async (req, res) => {
     const fileSize   = req.file.size;
 
     await query(
-      `INSERT INTO DOCUMENTS (ORDER_ID, FILE_NAME, FILE_URL, FILE_SIZE, DOC_TYPE, UPLOADED_BY, CREATED_AT)
-       VALUES (:orderId, :fileName, :fileUrl, :fileSize, :docType, :uploadedBy, SYSDATE)`,
-      {
-        orderId:    orderId    || null,
-        fileName,
-        fileUrl,
-        fileSize,
-        docType:    docType    || "General",
-        uploadedBy,
-      }
-    );
-
+`INSERT INTO documents
+(order_id,file_name,file_url,file_size,doc_type,uploaded_by,created_at)
+VALUES ($1,$2,$3,$4,$5,$6,NOW())`,
+[orderId || null, 
+  fileName,
+  fileUrl,
+  fileSize,
+  docType || "General",
+  uploadedBy
+]
+);
     return res.status(201).json({
       success: true,
       message: "File uploaded successfully.",
@@ -66,9 +65,9 @@ const getFilesByOrder = async (req, res) => {
       `SELECT D.*, U.NAME AS UPLOADED_BY_NAME
        FROM DOCUMENTS D
        JOIN USERS U ON D.UPLOADED_BY = U.USER_ID
-       WHERE D.ORDER_ID = :orderId
+       WHERE D.order_id = $1
        ORDER BY D.CREATED_AT DESC`,
-      { orderId }
+      [orderId]
     );
 
     return res.status(200).json({
@@ -93,8 +92,8 @@ const deleteFile = async (req, res) => {
     const { id } = req.params;
 
     const result = await query(
-      `SELECT FILE_URL FROM DOCUMENTS WHERE DOC_ID = :id`,
-      { id }
+      `SELECT FILE_URL FROM DOCUMENTS WHERE doc_id = $1`,
+      [id]
     );
 
     if (result.rows.length === 0) {

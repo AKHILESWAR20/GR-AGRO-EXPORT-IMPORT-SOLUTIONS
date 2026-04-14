@@ -37,8 +37,8 @@ const signup = async (req, res) => {
 
     // Check if email already exists
     const existing = await query(
-      `SELECT EMAIL FROM USERS WHERE EMAIL = :email`,
-      { email }
+      `SELECT email FROM users WHERE email = $1 AND role = 'client'`,
+      [email]
     );
     if (existing.rows.length > 0) {
       return res.status(409).json({ success: false, message: "Email already registered." });
@@ -83,9 +83,9 @@ const login = async (req, res) => {
 
     // Find client user only (role = 'client')
     const result = await query(
-      `SELECT * FROM USERS WHERE EMAIL = :email AND ROLE = 'client'`,
-      { email }
-    );
+  `SELECT * FROM users WHERE email = $1 AND role = 'client'`,
+  [email]
+);
 
     if (result.rows.length === 0) {
       return res.status(401).json({ success: false, message: "Invalid email or password." });
@@ -145,9 +145,9 @@ const adminLogin = async (req, res) => {
 
     // Step 2: Find admin user
     const result = await query(
-      `SELECT * FROM USERS WHERE EMAIL = :email AND ROLE = 'admin'`,
-      { email }
-    );
+  `SELECT * FROM users WHERE email = $1 AND role = 'admin'`,
+  [email]
+  );
 
     if (result.rows.length === 0) {
       return res.status(401).json({ success: false, message: "Admin account not found." });
