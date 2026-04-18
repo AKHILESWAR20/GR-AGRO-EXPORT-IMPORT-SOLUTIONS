@@ -261,6 +261,7 @@ const sendOrderConfirmClient = async (clientEmail, clientName, orderId, productN
 
 
 module.exports = {
+  transporter,
   sendWelcomeMail,
   sendContactAutoReply,
   sendContactNotifyAdmin,

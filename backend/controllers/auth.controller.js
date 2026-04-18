@@ -130,5 +130,85 @@ const adminLogin = async (req, res) => {
     return res.status(500).json({ success: false, message: "Admin login failed." });
   }
 };
+// ── FORGOT PASSWORD
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
 
-module.exports = { signup, login, adminLogin };
+    if (!email) {
+      return res.status(400).json({ success: false, message: "Email is required." });
+    }
+
+    const result = await query(
+      `SELECT user_id, name, email FROM users WHERE email = $1 AND role = 'client'`,
+      [email]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No account found with this email address."
+      });
+    }
+
+    const user   = result.rows[0];
+    const crypto = require("crypto");
+    const token  = crypto.randomBytes(32).toString("hex");
+    const expiry = new Date(Date.now() + 3600000);
+
+    await query(
+      `UPDATE users SET reset_token = $1, reset_token_expiry = $2 WHERE user_id = $3`,
+      [token, expiry, user.user_id]
+    );
+
+    const { transporter } = require("../config/mailer");
+    const resetLink = `${process.env.CLIENT_URL}/reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
+
+    await transporter.sendMail({
+      from:    process.env.MAIL_FROM,
+      to:      email,
+      subject: "Password Reset Request – GR Global Agro",
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;border:1px solid #e0e0e0;border-radius:8px;overflow:hidden;">
+          <div style="background:#0B1F3A;padding:30px;text-align:center;">
+            <h1 style="color:#C9A84C;margin:0;font-size:24px;">GR Global Agro</h1>
+            <p style="color:rgba(255,255,255,0.7);margin:6px 0 0;">Password Reset Request</p>
+          </div>
+          <div style="padding:36px;">
+            <h2 style="color:#0B1F3A;">Hi ${user.name},</h2>
+            <p style="color:#555;line-height:1.7;">
+              We received a request to reset your password. Click the button below.
+              This link expires in <strong>1 hour</strong>.
+            </p>
+            <div style="margin:32px 0;text-align:center;">
+              <a href="${resetLink}"
+                 style="background:#C9A84C;color:#0B1F3A;padding:14px 36px;border-radius:4px;
+                        text-decoration:none;font-weight:bold;font-size:14px;">
+                RESET MY PASSWORD
+              </a>
+            </div>
+            <p style="color:#888;font-size:13px;">If you did not request this, ignore this email.</p>
+          </div>
+          <div style="background:#f7f2e8;padding:16px;text-align:center;">
+            <p style="color:#999;font-size:12px;margin:0;">© 2025 GR Global Agro. All rights reserved.</p>
+          </div>
+        </div>
+      `
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Password reset link sent! Check your email inbox."
+    });
+
+  } catch (err) {
+    console.error("Forgot Password Error:", err.message);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send reset email. Please try again."
+    });
+  }
+};
+
+module.exports = { signup, login, adminLogin, forgotPassword };
+
