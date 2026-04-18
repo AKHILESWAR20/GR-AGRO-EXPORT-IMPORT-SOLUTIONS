@@ -128,50 +128,51 @@ async function loadProducts() {
 
 // ── Contact Form
 const form = document.querySelector(".inquiry-form");
-
 if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn     = form.querySelector(".form-submit");
-    const name    = document.getElementById('inqName')?.value?.trim()    || '';
-    const email   = document.getElementById('inqEmail')?.value?.trim()   || '';
-    const service = document.getElementById('inqService')?.value         || 'General';
-    const message = document.getElementById('inqMessage')?.value?.trim() || '';
+    const allText = form.querySelectorAll('input[type="text"]');
+    const name    = allText[0]?.value?.trim() || '';
+    const email   = form.querySelector('input[type="email"]')?.value?.trim() || '';
+    const service = form.querySelector('select')?.value || 'General';
+    const message = form.querySelector('textarea')?.value?.trim() || '';
 
-    if (!name || !email || !message) { alert('Please fill in all required fields.'); return; }
+    if (!name || !email || !message) {
+      alert('Please fill in all required fields.');
+      return;
+    }
 
     btn.textContent = "Sending...";
     btn.disabled    = true;
 
     try {
       const res    = await fetch(`${BASE_URL}/contact`, {
-        method: "POST",
+        method:  "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, service, message })
+        body:    JSON.stringify({ name, email, service, message })
       });
       const result = await res.json();
 
       if (result.success) {
-        btn.textContent = "Inquiry Sent!";
+        btn.textContent      = "✓ Inquiry Sent!";
         btn.style.background = "#2d8a4e";
         form.reset();
       } else {
-        btn.textContent = "Failed! Try Again";
+        btn.textContent      = "❌ Failed! Try Again";
         btn.style.background = "#e74c3c";
+        console.error('Error:', result.message);
       }
     } catch (err) {
-      btn.textContent = "Server Error!";
+      btn.textContent      = "❌ Server Error!";
       btn.style.background = "#e74c3c";
       console.error(err);
     }
 
     setTimeout(() => {
-      btn.textContent = "Send Inquiry";
+      btn.textContent      = "Send Inquiry";
       btn.style.background = "";
-      btn.disabled = false;
+      btn.disabled         = false;
     }, 3000);
   });
 }
-
-// ── Init
-loadProducts();
