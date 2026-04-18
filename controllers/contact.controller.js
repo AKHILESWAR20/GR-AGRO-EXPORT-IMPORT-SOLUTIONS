@@ -1,75 +1,76 @@
 // ─────────────────────────────────────────
 // FILE: controllers/contact.controller.js
-// SECTION: Contact Form
-//   - Submit inquiry (Public)
-//   - Sends auto-reply to client
-//   - Sends notification to admin
-//   - Get all inquiries (Admin)
+// SECTION: Contact Form (PostgreSQL)
 // ─────────────────────────────────────────
 
 const { query } = require("../config/db");
 const { sendContactAutoReply, sendContactNotifyAdmin } = require("../config/mailer");
 
-
-// ─────────────────────────────────────────
-// SUBMIT CONTACT FORM
-// POST /api/contact
-// Public — no login required
-// ─────────────────────────────────────────
 const submitContact = async (req, res) => {
   try {
     const { name, email, service, message } = req.body;
 
     if (!name || !email || !message) {
-      return res.status(400).json({ success: false, message: "Name, email and message are required." });
+      return res.status(400).json({
+        success: false,
+        message: "Name, email and message are required."
+      });
     }
 
-    // Save inquiry to DB
+    // Step 1: Save to database
     await query(
-      `INSERT INTO INQUIRIES (NAME, EMAIL, SERVICE, MESSAGE, CREATED_AT)
-       VALUES (:name, :email, :service, :message, SYSDATE)`,
-      { name, email, service: service || "General", message }
+      `INSERT INTO inquiries (name, email, service, message) VALUES ($1, $2, $3, $4)`,
+      [name, email, service || "General", message]
     );
 
-    // Send auto-reply to client
-    await sendContactAutoReply(email, name);
+    // Step 2: Send auto-reply to CLIENT — independently so it won't block admin mail
+    try {
+      await sendContactAutoReply(email, name);
+      console.log(`✅ Auto-reply sent to client: ${email}`);
+    } catch (clientMailErr) {
+      // Log but don't fail — still send admin mail
+      console.error(`❌ Client auto-reply failed for ${email}:`, clientMailErr.message);
+    }
 
-    // Notify admin
-    await sendContactNotifyAdmin(name, email, message, service || "General");
+    // Step 3: Send notification to ADMIN — independently
+    try {
+      await sendContactNotifyAdmin(name, email, message, service || "General");
+      console.log(`✅ Admin notification sent`);
+    } catch (adminMailErr) {
+      console.error(`❌ Admin notification failed:`, adminMailErr.message);
+    }
 
+    // Step 4: Always return success if DB save worked
     return res.status(200).json({
       success: true,
-      message: "Your inquiry has been submitted. We will get back to you soon!",
+      message: "Inquiry submitted! We will get back to you soon.",
     });
 
   } catch (err) {
-    console.error("Contact Form Error:", err.message);
-    return res.status(500).json({ success: false, message: "Failed to submit inquiry." });
+    console.error("Contact Error:", err.message);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to submit inquiry."
+    });
   }
 };
 
-
-// ─────────────────────────────────────────
-// GET ALL INQUIRIES
-// GET /api/contact
-// Admin only
-// ─────────────────────────────────────────
 const getAllInquiries = async (req, res) => {
   try {
     const result = await query(
-      `SELECT * FROM INQUIRIES ORDER BY CREATED_AT DESC`
+      `SELECT * FROM inquiries ORDER BY created_at DESC`
     );
-
     return res.status(200).json({
       success: true,
-      count:     result.rows.length,
-      inquiries: result.rows,
+      count: result.rows.length,
+      inquiries: result.rows
     });
   } catch (err) {
-    console.error("Get Inquiries Error:", err.message);
-    return res.status(500).json({ success: false, message: "Failed to fetch inquiries." });
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch inquiries."
+    });
   }
 };
-
 
 module.exports = { submitContact, getAllInquiries };
