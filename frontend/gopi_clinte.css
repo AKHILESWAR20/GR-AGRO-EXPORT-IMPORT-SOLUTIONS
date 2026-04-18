@@ -781,3 +781,84 @@
     .reveal.visible {
       opacity: 1; transform: translateY(0);
     }
+    
+    /* ─────────────────────────────────────────
+   MOBILE MENU ANIMATION FIX
+   ───────────────────────────────────────── */
+
+/* Override the display:none with animation */
+.mobile-menu {
+  display: flex !important;
+  flex-direction: column;
+  position: fixed;
+  top: 72px; left: 0; width: 100%;
+  background: rgba(11,31,58,0.98);
+  padding: 24px 8%;
+  z-index: 999;
+  border-top: 1px solid rgba(201,168,76,0.25);
+  gap: 20px;
+  /* Animation properties */
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.35s ease;
+  backdrop-filter: blur(12px);
+}
+
+.mobile-menu.open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+.mobile-menu a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding-bottom: 16px;
+  /* Stagger animation for each link */
+  transform: translateX(-20px);
+  opacity: 0;
+  transition: transform 0.3s ease, opacity 0.3s ease, color 0.2s;
+}
+
+.mobile-menu.open a { transform: translateX(0); opacity: 1; }
+.mobile-menu.open a:nth-child(1) { transition-delay: 0.05s; }
+.mobile-menu.open a:nth-child(2) { transition-delay: 0.1s; }
+.mobile-menu.open a:nth-child(3) { transition-delay: 0.15s; }
+.mobile-menu.open a:nth-child(4) { transition-delay: 0.2s; }
+.mobile-menu.open a:nth-child(5) { transition-delay: 0.25s; }
+.mobile-menu.open a:nth-child(6) { transition-delay: 0.3s; }
+
+.mobile-menu a:last-child { border-bottom: none; }
+.mobile-menu a:hover { color: var(--gold); }
+
+/* Hamburger animation when open */
+.hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0; transform: scaleX(0);
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+.hamburger span { transition: all 0.3s ease; }
+
+/* Menu overlay */
+.menu-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 998;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.menu-overlay.show {
+  display: block;
+  opacity: 1;
+}

@@ -16,23 +16,29 @@ if (navbar) {
 
 // ── Mobile menu open/close
 function toggleMenu() {
-  const menu    = document.getElementById('mobileMenu');
-  const overlay = document.getElementById('menuOverlay');
+  const menu       = document.getElementById('mobileMenu');
+  const overlay    = document.getElementById('menuOverlay');
+  const hamburger  = document.getElementById('hamburger');
   if (!menu) return;
-  if (menu.classList.contains('open')) {
+
+  const isOpen = menu.classList.contains('open');
+  if (isOpen) {
     closeMenu();
   } else {
     menu.classList.add('open');
-    if (overlay) overlay.classList.add('show');
+    if (overlay)   overlay.classList.add('show');
+    if (hamburger) hamburger.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 }
 
 function closeMenu() {
-  const menu    = document.getElementById('mobileMenu');
-  const overlay = document.getElementById('menuOverlay');
-  if (menu)    menu.classList.remove('open');
-  if (overlay) overlay.classList.remove('show');
+  const menu      = document.getElementById('mobileMenu');
+  const overlay   = document.getElementById('menuOverlay');
+  const hamburger = document.getElementById('hamburger');
+  if (menu)      menu.classList.remove('open');
+  if (overlay)   overlay.classList.remove('show');
+  if (hamburger) hamburger.classList.remove('active');
   document.body.style.overflow = '';
 }
 
@@ -100,7 +106,6 @@ async function loadProducts() {
         </div>`).join('');
       container.querySelectorAll('.reveal').forEach(r => observer.observe(r));
     } else {
-      // Keep default placeholder cards if no products yet
       container.innerHTML = `
         <div class="product-card reveal">
           <div class="product-img"><span class="product-tag">Export</span><i class="fas fa-box-open"></i></div>
@@ -138,33 +143,29 @@ if (form) {
     const service = form.querySelector('select')?.value || 'General';
     const message = form.querySelector('textarea')?.value?.trim() || '';
 
-    if (!name || !email || !message) {
-      alert('Please fill in all required fields.');
-      return;
-    }
+    if (!name || !email || !message) { alert('Please fill in all required fields.'); return; }
 
     btn.textContent = "Sending...";
     btn.disabled    = true;
 
     try {
       const res    = await fetch(`${BASE_URL}/contact`, {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ name, email, service, message })
+        body: JSON.stringify({ name, email, service, message })
       });
       const result = await res.json();
 
       if (result.success) {
-        btn.textContent      = "✓ Inquiry Sent!";
+        btn.textContent      = "Inquiry Sent!";
         btn.style.background = "#2d8a4e";
         form.reset();
       } else {
-        btn.textContent      = "❌ Failed! Try Again";
+        btn.textContent      = "Failed! Try Again";
         btn.style.background = "#e74c3c";
-        console.error('Error:', result.message);
       }
     } catch (err) {
-      btn.textContent      = "❌ Server Error!";
+      btn.textContent      = "Server Error!";
       btn.style.background = "#e74c3c";
       console.error(err);
     }
@@ -176,3 +177,6 @@ if (form) {
     }, 3000);
   });
 }
+
+// ── Init
+loadProducts();
