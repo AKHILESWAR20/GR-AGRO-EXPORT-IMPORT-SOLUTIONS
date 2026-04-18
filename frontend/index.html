@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gopi Exporting Hub | Global Trade Solutions</title>
+  <title>GR Global Agro | Agri Export & Import Solutions</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
@@ -20,8 +20,8 @@
 <nav id="navbar">
   <a href="#" class="logo">
     <div class="logo-icon">GR</div>
-      <div class="logo-text">
-      <span>GR GLOBAL AGRO </span>
+    <div class="logo-text">
+      <span>GR GLOBAL AGRO</span>
       <span>Agri Export & Import solutions</span>
     </div>
   </a>
@@ -30,6 +30,7 @@
     <li><a href="#services">Services</a></li>
     <li><a href="#products">Products</a></li>
     <li><a href="#testimonials">Clients</a></li>
+    <li><a href="login.html" class="nav-login">Login</a></li>
     <li><a href="#inquiry" class="nav-cta">Get a Quote</a></li>
   </ul>
   <div class="hamburger" id="hamburger" onclick="toggleMenu()">
@@ -37,13 +38,19 @@
   </div>
 </nav>
 
+<!-- Mobile Menu Overlay — tap to close -->
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
 <!-- Mobile Menu -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#about" onclick="toggleMenu()">About</a>
-  <a href="#services" onclick="toggleMenu()">Services</a>
-  <a href="#products" onclick="toggleMenu()">Products</a>
-  <a href="#testimonials" onclick="toggleMenu()">Clients</a>
-  <a href="#inquiry" onclick="toggleMenu()">Get a Quote</a>
+  <a href="#about"        onclick="closeMenu()">About</a>
+  <a href="#services"     onclick="closeMenu()">Services</a>
+  <a href="#products"     onclick="closeMenu()">Products</a>
+  <a href="#testimonials" onclick="closeMenu()">Clients</a>
+  <a href="#inquiry"      onclick="closeMenu()">Get a Quote</a>
+  <a href="login.html"    class="mobile-login-btn">
+    <i class="fas fa-sign-in-alt"></i> Login / Sign Up
+  </a>
 </div>
 
 <!-- ════════════════ HERO ════════════════ -->
@@ -77,13 +84,15 @@
       <em>Crossing Borders</em>
     </h1>
     <p class="hero-sub">
-      Gopi Exporting Hub delivers end-to-end import and export solutions — 
-      seamlessly bridging manufacturers, suppliers, and international buyers 
+      GR Global Agro delivers end-to-end import and export solutions —
+      seamlessly bridging manufacturers, suppliers, and international buyers
       with reliability and precision.
     </p>
     <div class="hero-btns">
       <a href="#inquiry" class="btn-primary">Request a Quote</a>
-      <a href="#services" class="btn-outline">Explore Services</a>
+      <a href="signup.html" class="btn-outline">
+        <i class="fas fa-user-plus"></i> Create Account
+      </a>
     </div>
   </div>
 </section>
@@ -126,8 +135,8 @@
       <span class="section-tag">Who We Are</span>
       <h2 class="section-title">A Legacy of <em>Global Excellence</em></h2>
       <p class="section-desc">
-        Founded with a vision to simplify global trade, Gopi Exporting Hub has grown into a trusted name 
-        in international commerce. We connect businesses across continents with transparent, efficient, 
+        Founded with a vision to simplify global trade, GR Global Agro has grown into a trusted name
+        in international commerce. We connect businesses across continents with transparent, efficient,
         and compliant trade solutions.
       </p>
       <div class="about-points">
@@ -196,7 +205,7 @@
     <div class="service-card reveal" style="transition-delay:0.4s">
       <div class="service-icon"><i class="fas fa-credit-card"></i></div>
       <h3>Trade Finance</h3>
-      <p>Flexible payment solutions including letters of credit, invoice financing, and Razorpay integration.</p>
+      <p>Flexible payment solutions including letters of credit, invoice financing, and trade support.</p>
       <a href="#" class="service-link">Learn more <i class="fas fa-arrow-right"></i></a>
     </div>
     <div class="service-card reveal" style="transition-delay:0.5s">
@@ -259,86 +268,38 @@
     <a href="login.html" class="btn-primary" style="white-space:nowrap">View All Products</a>
   </div>
   <div class="product-cards" id="productContainer">
-    <div class="product-card reveal">
-      <div class="product-img">
-        <span class="product-tag">Export</span>
-        <i class="fas fa-box-open"></i>
-      </div>
-      <div class="product-info">
-        <h4>Product Category A</h4>
-        <p>Available for international export. MOQ applicable.</p>
-        <a href="login.html">Inquire Now →</a>
-      </div>
-    </div>
-    <div class="product-card reveal" style="transition-delay:0.1s">
-      <div class="product-img">
-        <span class="product-tag">Import</span>
-        <i class="fas fa-cubes"></i>
-      </div>
-      <div class="product-info">
-        <h4>Product Category B</h4>
-        <p>Premium imported goods sourced globally.</p>
-        <a href="login.html">Inquire Now →</a>
-      </div>
-    </div>
-    <div class="product-card reveal" style="transition-delay:0.2s">
-      <div class="product-img">
-        <span class="product-tag">Export</span>
-        <i class="fas fa-industry"></i>
-      </div>
-      <div class="product-info">
-        <h4>Product Category C</h4>
-        <p>Industrial grade. Bulk orders welcome.</p>
-        <a href="login.html">Inquire Now →</a>
-      </div>
-    </div>
-    <div class="product-card reveal" style="transition-delay:0.3s">
-      <div class="product-img" style="background: linear-gradient(135deg, #1a3a2a, #2d5a3d);">
-        <span class="product-tag">New</span>
-        <i class="fas fa-seedling"></i>
-      </div>
-      <div class="product-info">
-        <h4>Product Category D</h4>
-        <p>Newly added. Contact us for specifications.</p>
-        <a href="login.html">Inquire Now →</a>
-      </div>
-    </div>
+    <!-- Products load dynamically from backend -->
   </div>
 </section>
 
 <!-- ════════════════ INQUIRY CTA ════════════════ -->
-<section id="inquiry"> 
-<form class="inquiry-form">
-
-  <div class="form-row">
-    <label>Full Name</label>
-    <input type="text" placeholder="Your name" required>
-  </div>
-
-  <div class="form-row">
-    <label>Email</label>
-    <input type="email" placeholder="Your email" required>
-  </div>
-
-  <div class="form-row">
-    <label>Service Needed</label>
-    <select>
-      <option>Export Management</option>
-      <option>Import Services</option>
-    </select>
-  </div>
-
-  <div class="form-row">
-    <label>Message</label>
-    <textarea placeholder="Describe your requirement"></textarea>
-  </div>
-
-  <!-- ✅ FIXED BUTTON -->
-  <button type="submit" class="form-submit">
-    Send Inquiry
-  </button>
-
-</form></section>
+<section id="inquiry">
+  <form class="inquiry-form">
+    <div class="form-row">
+      <label>Full Name</label>
+      <input type="text" id="inqName" placeholder="Your name" required>
+    </div>
+    <div class="form-row">
+      <label>Email</label>
+      <input type="email" id="inqEmail" placeholder="Your email" required>
+    </div>
+    <div class="form-row">
+      <label>Service Needed</label>
+      <select id="inqService">
+        <option>Export Management</option>
+        <option>Import Services</option>
+        <option>Trade Documentation</option>
+        <option>Logistics & Tracking</option>
+        <option>Market Intelligence</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Message</label>
+      <textarea id="inqMessage" placeholder="Describe your requirement"></textarea>
+    </div>
+    <button type="submit" class="form-submit">Send Inquiry</button>
+  </form>
+</section>
 
 <!-- ════════════════ TESTIMONIALS ════════════════ -->
 <section id="testimonials">
@@ -349,7 +310,7 @@
   <div class="testi-grid">
     <div class="testi-card reveal">
       <div class="testi-stars">★★★★★</div>
-      <p>Gopi Exporting Hub made our first international shipment seamless. Their team handled everything professionally and kept us informed at every step.</p>
+      <p>GR Global Agro made our first international shipment seamless. Their team handled everything professionally and kept us informed at every step.</p>
       <div class="testi-author">
         <div class="testi-avatar">R</div>
         <div class="testi-author-info">
@@ -371,7 +332,7 @@
     </div>
     <div class="testi-card reveal" style="transition-delay:0.2s">
       <div class="testi-stars">★★★★★</div>
-      <p>Competitive rates, transparent communication and zero surprises. Gopi Exporting Hub is our go-to partner for all global trade needs.</p>
+      <p>Competitive rates, transparent communication and zero surprises. GR Global Agro is our go-to partner for all global trade needs.</p>
       <div class="testi-author">
         <div class="testi-avatar">A</div>
         <div class="testi-author-info">
@@ -388,10 +349,10 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <a href="#" class="logo">
-        <div class="logo-icon">GE</div>
+        <div class="logo-icon">GR</div>
         <div class="logo-text">
-          <span>Gopi Exporting Hub</span>
-          <span>Global Trade Solutions</span>
+          <span>GR Global Agro</span>
+          <span>Agri Export & Import Solutions</span>
         </div>
       </a>
       <p>Bridging global markets with integrity, efficiency, and expertise. Your trusted partner in international trade.</p>
@@ -409,7 +370,7 @@
         <li><a href="#services">Services</a></li>
         <li><a href="#products">Products</a></li>
         <li><a href="#inquiry">Get a Quote</a></li>
-        <li><a href="#">Track Shipment</a></li>
+        <li><a href="login.html">Login / Sign Up</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -443,7 +404,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2010 <span>Gopi Exporting Hub</span>. All rights reserved.</p>
+    <p>© 2025 <span>GR Global Agro</span>. All rights reserved.</p>
     <div class="footer-bottom-links">
       <a href="#">Privacy Policy</a>
       <a href="#">Terms of Service</a>

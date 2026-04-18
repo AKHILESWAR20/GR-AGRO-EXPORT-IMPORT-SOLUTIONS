@@ -14,14 +14,35 @@ if (navbar) {
   });
 }
 
-// ── Mobile menu
+// ── Mobile menu open/close
 function toggleMenu() {
-  const menu = document.getElementById('mobileMenu');
-  if (menu) menu.classList.toggle('open');
+  const menu    = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('menuOverlay');
+  if (!menu) return;
+  if (menu.classList.contains('open')) {
+    closeMenu();
+  } else {
+    menu.classList.add('open');
+    if (overlay) overlay.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
 }
 
+function closeMenu() {
+  const menu    = document.getElementById('mobileMenu');
+  const overlay = document.getElementById('menuOverlay');
+  if (menu)    menu.classList.remove('open');
+  if (overlay) overlay.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+// Close on ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMenu();
+});
+
 // ── Scroll reveal
-const reveals = document.querySelectorAll('.reveal');
+const reveals  = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) e.target.classList.add('visible');
@@ -32,14 +53,10 @@ reveals.forEach(r => observer.observe(r));
 // ── Counter animation
 function animateCounter(el, target, duration = 1800) {
   let start = 0;
-  const step = target / (duration / 16);
+  const step  = target / (duration / 16);
   const timer = setInterval(() => {
     start += step;
-    if (start >= target) {
-      el.textContent = target.toLocaleString();
-      clearInterval(timer);
-      return;
-    }
+    if (start >= target) { el.textContent = target.toLocaleString(); clearInterval(timer); return; }
     el.textContent = Math.floor(start).toLocaleString();
   }, 16);
 }
@@ -47,8 +64,7 @@ function animateCounter(el, target, duration = 1800) {
 const counterObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
     if (e.isIntersecting) {
-      const target = +e.target.dataset.target;
-      animateCounter(e.target, target);
+      animateCounter(e.target, +e.target.dataset.target);
       counterObs.unobserve(e.target);
     }
   });
@@ -57,11 +73,14 @@ document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObs.obs
 
 // ── Load Products from Backend
 async function loadProducts() {
+  const container = document.getElementById('productContainer');
+  if (!container) return;
+
+  container.innerHTML = `<div style="text-align:center;padding:40px;grid-column:1/-1"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#C9A84C"></i></div>`;
+
   try {
     const res  = await fetch(`${BASE_URL}/products`);
     const data = await res.json();
-    const container = document.getElementById('productContainer');
-    if (!container) return;
 
     if (data.success && data.products && data.products.length > 0) {
       container.innerHTML = data.products.slice(0, 4).map((p, i) => `
@@ -74,93 +93,85 @@ async function loadProducts() {
             <h4>${p.name}</h4>
             <p>${p.description || 'Available for international trade. MOQ applicable.'}</p>
             <p style="margin-top:6px;font-weight:700;color:#C9A84C">
-              ₹${parseFloat(p.price).toLocaleString()} / ${p.unit || 'unit'}
+              Rs.${parseFloat(p.price).toLocaleString()} / ${p.unit || 'unit'}
             </p>
-            <a href="login.html">Inquire Now →</a>
+            <a href="login.html">Inquire Now</a>
           </div>
         </div>`).join('');
-
-      // Re-observe new reveal elements
-      document.querySelectorAll('.reveal:not(.visible)').forEach(r => observer.observe(r));
+      container.querySelectorAll('.reveal').forEach(r => observer.observe(r));
     } else {
       // Keep default placeholder cards if no products yet
       container.innerHTML = `
         <div class="product-card reveal">
           <div class="product-img"><span class="product-tag">Export</span><i class="fas fa-box-open"></i></div>
-          <div class="product-info"><h4>Product Category A</h4><p>Available for international export. MOQ applicable.</p><a href="login.html">Inquire Now →</a></div>
+          <div class="product-info"><h4>Agricultural Products</h4><p>Premium quality agri exports. MOQ applicable.</p><a href="login.html">Inquire Now</a></div>
         </div>
         <div class="product-card reveal" style="transition-delay:0.1s">
           <div class="product-img"><span class="product-tag">Import</span><i class="fas fa-cubes"></i></div>
-          <div class="product-info"><h4>Product Category B</h4><p>Premium imported goods sourced globally.</p><a href="login.html">Inquire Now →</a></div>
+          <div class="product-info"><h4>Imported Commodities</h4><p>Premium imported goods sourced globally.</p><a href="login.html">Inquire Now</a></div>
         </div>
         <div class="product-card reveal" style="transition-delay:0.2s">
           <div class="product-img"><span class="product-tag">Export</span><i class="fas fa-industry"></i></div>
-          <div class="product-info"><h4>Product Category C</h4><p>Industrial grade. Bulk orders welcome.</p><a href="login.html">Inquire Now →</a></div>
+          <div class="product-info"><h4>Industrial Goods</h4><p>Industrial grade. Bulk orders welcome.</p><a href="login.html">Inquire Now</a></div>
         </div>
         <div class="product-card reveal" style="transition-delay:0.3s">
           <div class="product-img" style="background:linear-gradient(135deg,#1a3a2a,#2d5a3d)"><span class="product-tag">New</span><i class="fas fa-seedling"></i></div>
-          <div class="product-info"><h4>Product Category D</h4><p>Newly added. Contact us for specifications.</p><a href="login.html">Inquire Now →</a></div>
+          <div class="product-info"><h4>Organic Products</h4><p>Newly added. Contact us for specifications.</p><a href="login.html">Inquire Now</a></div>
         </div>`;
+      container.querySelectorAll('.reveal').forEach(r => observer.observe(r));
     }
   } catch(err) {
-    console.error('Products load error:', err);
+    console.error('Products error:', err);
+    container.innerHTML = `<div style="text-align:center;padding:40px;grid-column:1/-1;color:#6B7280"><p>Products coming soon. <a href="login.html" style="color:#C9A84C">Login to inquire.</a></p></div>`;
   }
 }
 
-// ── Contact Form Submission
+// ── Contact Form
 const form = document.querySelector(".inquiry-form");
 
 if (form) {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    const btn     = form.querySelector(".form-submit");
+    const name    = document.getElementById('inqName')?.value?.trim()    || '';
+    const email   = document.getElementById('inqEmail')?.value?.trim()   || '';
+    const service = document.getElementById('inqService')?.value         || 'General';
+    const message = document.getElementById('inqMessage')?.value?.trim() || '';
 
-    const btn = form.querySelector(".form-submit");
-    
-    const data = {
-      name:    form.querySelector('input[type="text"]')?.value?.trim() || '',
-      email:   form.querySelector('input[type="email"]')?.value?.trim() || '',
-      service: form.querySelector("select")?.value || 'General',
-      message: form.querySelector("textarea")?.value?.trim() || ''
-    };
-
-    if (!data.name || !data.email || !data.message) {
-      alert('Please fill in all required fields.');
-      return;
-    }
+    if (!name || !email || !message) { alert('Please fill in all required fields.'); return; }
 
     btn.textContent = "Sending...";
     btn.disabled    = true;
 
     try {
       const res    = await fetch(`${BASE_URL}/contact`, {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(data)
+        body: JSON.stringify({ name, email, service, message })
       });
       const result = await res.json();
 
       if (result.success) {
-        btn.textContent      = "✓ Inquiry Sent!";
+        btn.textContent = "Inquiry Sent!";
         btn.style.background = "#2d8a4e";
         form.reset();
       } else {
-        btn.textContent      = "❌ Failed! Try Again";
+        btn.textContent = "Failed! Try Again";
         btn.style.background = "#e74c3c";
-        console.error('Server error:', result.message);
       }
     } catch (err) {
-      btn.textContent      = "❌ Failed!";
+      btn.textContent = "Server Error!";
       btn.style.background = "#e74c3c";
-      console.error('Network error:', err);
+      console.error(err);
     }
 
     setTimeout(() => {
-      btn.textContent      = "Send Inquiry";
+      btn.textContent = "Send Inquiry";
       btn.style.background = "";
-      btn.disabled         = false;
+      btn.disabled = false;
     }, 3000);
   });
 }
 
-// ── Initialize
+// ── Init
 loadProducts();

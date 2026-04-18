@@ -116,6 +116,47 @@
       display: block; width: 26px; height: 2px;
       background: var(--white); transition: all 0.3s;
     }
+     /* ── Login Button in Nav */
+    .nav-login {
+      background: transparent;
+      color: var(--gold) !important;
+      border: 1.5px solid var(--gold);
+      padding: 7px 20px;
+      border-radius: 4px;
+      font-weight: 700 !important;
+      font-size: 0.82rem !important;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: all 0.3s !important;
+      text-decoration: none;
+    }
+    .nav-login:hover {
+      background: var(--gold) !important;
+      color: var(--navy) !important;
+    }
+    .nav-login::after { display: none !important; }
+
+    /* ── Mobile menu overlay — closes menu on outside tap */
+    .menu-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 998;
+      background: rgba(0,0,0,0.4);
+    }
+    .menu-overlay.show { display: block; }
+
+    /* ── Mobile login button */
+    .mobile-menu .mobile-login-btn {
+      background: var(--gold);
+      color: var(--navy) !important;
+      text-align: center;
+      padding: 12px !important;
+      border-radius: 4px;
+      font-weight: 700 !important;
+      margin-top: 4px;
+      border-bottom: none !important;
+    }
 
     /* ─── HERO ─── */
     #hero {
