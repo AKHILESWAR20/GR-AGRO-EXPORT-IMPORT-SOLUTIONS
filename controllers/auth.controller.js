@@ -1,12 +1,13 @@
 // ─────────────────────────────────────────
 // FILE: controllers/auth.controller.js
-// SECTION: Authentication (PostgreSQL version)
+// SECTION: Authentication (PostgreSQL)
 // ─────────────────────────────────────────
 
 const bcrypt = require("bcryptjs");
 const jwt    = require("jsonwebtoken");
+const crypto = require("crypto");
 const { query } = require("../config/db");
-const { sendWelcomeMail } = require("../config/mailer");
+const { sendWelcomeMail, transporter } = require("../config/mailer");
 require("dotenv").config();
 
 const generateToken = (user) => {
@@ -39,11 +40,11 @@ const signup = async (req, res) => {
       [name, email, hashedPassword, phone || null, company || null]
     );
 
-    await sendWelcomeMail(email, name);
+    try { await sendWelcomeMail(email, name); } catch(e) { console.error("Welcome mail error:", e.message); }
 
     return res.status(201).json({
       success: true,
-      message: "Account created successfully! Welcome to Gopi Exporting Hub.",
+      message: "Account created successfully! Welcome to GR Global Agro.",
     });
   } catch (err) {
     console.error("Signup Error:", err.message);
@@ -131,17 +132,11 @@ const adminLogin = async (req, res) => {
   }
 };
 
-module.exports = { signup, login, adminLogin };
-
-
-// ─────────────────────────────────────────
-// FORGOT PASSWORD
-// POST /api/auth/forgot-password
-// Sends reset link to client email
-// ─────────────────────────────────────────
+// ── FORGOT PASSWORD
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
+
     if (!email) {
       return res.status(400).json({ success: false, message: "Email is required." });
     }
@@ -153,12 +148,15 @@ const forgotPassword = async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, message: "No account found with this email." });
+      return res.status(404).json({
+        success: false,
+        message: "No account found with this email address."
+      });
     }
 
     const user  = result.rows[0];
-    const token = require("crypto").randomBytes(32).toString("hex");
-    const expiry = new Date(Date.now() + 3600000); // 1 hour
+    const token = crypto.randomBytes(32).toString("hex");
+    const expiry = new Date(Date.now() + 3600000); // 1 hour from now
 
     // Store reset token in DB
     await query(
@@ -166,10 +164,10 @@ const forgotPassword = async (req, res) => {
       [token, expiry, user.user_id]
     );
 
-    // Send reset email
-    const { transporter } = require("../config/mailer");
-    const resetLink = `${process.env.CLIENT_URL}/reset-password.html?token=${token}&email=${email}`;
+    // Build reset link
+    const resetLink = `${process.env.CLIENT_URL}/reset-password.html?token=${token}&email=${encodeURIComponent(email)}`;
 
+    // Send reset email
     await transporter.sendMail({
       from:    process.env.MAIL_FROM,
       to:      email,
@@ -183,7 +181,7 @@ const forgotPassword = async (req, res) => {
           <div style="padding:36px;">
             <h2 style="color:#0B1F3A;">Hi ${user.name},</h2>
             <p style="color:#555;line-height:1.7;">
-              We received a request to reset your password. Click the button below to set a new password.
+              We received a request to reset your password. Click the button below.
               This link is valid for <strong>1 hour</strong>.
             </p>
             <div style="margin:32px 0;text-align:center;">
@@ -194,8 +192,7 @@ const forgotPassword = async (req, res) => {
               </a>
             </div>
             <p style="color:#888;font-size:13px;">
-              If you did not request a password reset, please ignore this email.
-              Your password will remain unchanged.
+              If you did not request this, please ignore this email.
             </p>
           </div>
           <div style="background:#f7f2e8;padding:16px;text-align:center;">
@@ -207,12 +204,12 @@ const forgotPassword = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "Password reset link sent to your email!"
+      message: "Password reset link sent! Check your email inbox."
     });
 
   } catch (err) {
     console.error("Forgot Password Error:", err.message);
-    return res.status(500).json({ success: false, message: "Failed to send reset email." });
+    return res.status(500).json({ success: false, message: "Failed to send reset email. Please try again." });
   }
 };
 
