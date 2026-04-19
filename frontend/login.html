@@ -17,34 +17,24 @@
       --border:    rgba(201,168,76,0.25);
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    /* ─────────────────────────────────────────
-   LOGO IMAGE STYLES - FIXED
-   ───────────────────────────────────────── */
-
-a.logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  width: auto;
-}
-
+/* ── LOGO IMAGE */
 .logo-img {
-  height: 44px !important;
-  width: auto !important;
-  max-width: 160px !important;
+  height: 48px;
+  width: auto;
+  max-width: 150px;
   object-fit: contain;
-  display: block;
   background: white;
   border-radius: 8px;
-  padding: 4px 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  transition: all 0.3s ease;
+  padding: 4px 8px;
 }
 
-.logo-img:hover {
-  transform: scale(1.03);
-}
+nav .logo-img { height: 42px; }
+footer .logo-img { height: 48px; }
+.left-panel .logo-img { height: 55px; }
 
+@media (max-width: 768px) {
+  nav .logo-img { height: 36px; }
+}
 /* Navbar */
 nav .logo-img {
   height: 40px !important;
@@ -115,14 +105,7 @@ footer .logo-img {
       from { opacity:0; transform: translateX(-30px); }
       to   { opacity:1; transform: translateX(0); }
     }
-    .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; margin-bottom: 70px; }
-    .logo-icon {
-      width: 48px; height: 48px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; font-weight: 700; color: var(--navy);
-    }
+    
     .logo-text span:first-child { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); }
     .logo-text span:last-child { font-size: 0.65rem; color: var(--gold); letter-spacing: 2.5px; text-transform: uppercase; }
     .welcome-back { font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
