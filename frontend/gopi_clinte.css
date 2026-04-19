@@ -51,10 +51,10 @@ footer .logo-img { height: 48px; }
   nav .logo-img { height: 36px; }
 }
     
-    .logo-text {
-      display: flex; flex-direction: column; line-height: 1.1;
+    span.logo-text {
+      display: flex; flex-direction: column; line-height: 1;
     }
-    .logo-text span:first-child {
+    span.logo-text span:first-child {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.25rem; font-weight: 700;
       color: var(--white); letter-spacing: 0.5px;
