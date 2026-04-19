@@ -33,88 +33,6 @@
       position: relative;
       overflow: hidden;
     }
-   /* ─────────────────────────────────────────
-   LOGO IMAGE STYLES - FIXED
-   ───────────────────────────────────────── */
-
-a.logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-  width: auto;
-}
-
-.logo-img {
-  height: 44px !important;
-  width: auto !important;
-  max-width: 160px !important;
-  object-fit: contain;
-  display: block;
-  background: white;
-  border-radius: 8px;
-  padding: 4px 10px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-  transition: all 0.3s ease;
-}
-
-.logo-img:hover {
-  transform: scale(1.03);
-}
-
-/* Navbar */
-nav .logo-img {
-  height: 40px !important;
-  max-width: 140px !important;
-}
-
-/* Footer */
-footer .logo-img {
-  height: 48px !important;
-  max-width: 160px !important;
-  margin-bottom: 16px;
-}
-
-/* Login & Signup left panel */
-.left-panel .logo-img {
-  height: 55px !important;
-  max-width: 180px !important;
-  margin-bottom: 40px;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  nav .logo-img {
-    height: 36px !important;
-    max-width: 120px !important;
-  }
-}
-
-/* Navbar logo size */
-nav .logo-img {
-  height: 42px;
-}
-
-/* Footer logo size */
-footer .logo-img {
-  height: 50px;
-  margin-bottom: 16px;
-}
-
-/* Login/Signup logo size */
-.left-panel .logo-img {
-  height: 60px;
-  margin-bottom: 70px;
-}
-
-/* Hover effect */
-.logo:hover .logo-img {
-  opacity: 0.85;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  nav .logo-img { height: 36px; }
-}
     /* ── Background Effects */
     .bg-glow {
       position: fixed; inset: 0; pointer-events: none;
@@ -409,12 +327,12 @@ footer .logo-img {
 
   <!-- ── LEFT PANEL -->
   <div class="left-panel">
-    <a href="index.html" class="logo">
-      <img src="new_logo.jpeg" alt="GR Global Agro" class="logo-img logo-img-light"/>
-       </a>
-        <span>Gopi Exporting Hub</span>
-        <span>Global Trade Solutions</span>
-      </div>
+      <a href="index.html" class="logo">
+        <div class="logo-icon">GR</div>
+        <div class="logo-text">
+          <span>GR Global Agro</span>
+          <span>Agri Export & Import</span>
+        </div>
     
 
     <h1 class="panel-heading">

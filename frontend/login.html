@@ -17,52 +17,6 @@
       --border:    rgba(201,168,76,0.25);
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-/* ── LOGO IMAGE */
-.logo-img {
-  height: 48px;
-  width: auto;
-  max-width: 150px;
-  object-fit: contain;
-  background: white;
-  border-radius: 8px;
-  padding: 4px 8px;
-}
-
-nav .logo-img { height: 42px; }
-footer .logo-img { height: 48px; }
-.left-panel .logo-img { height: 55px; }
-
-@media (max-width: 768px) {
-  nav .logo-img { height: 36px; }
-}
-/* Navbar */
-nav .logo-img {
-  height: 40px !important;
-  max-width: 140px !important;
-}
-
-/* Footer */
-footer .logo-img {
-  height: 48px !important;
-  max-width: 160px !important;
-  margin-bottom: 16px;
-}
-
-/* Login & Signup left panel */
-.left-panel .logo-img {
-  height: 55px !important;
-  max-width: 180px !important;
-  margin-bottom: 40px;
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  nav .logo-img {
-    height: 36px !important;
-    max-width: 120px !important;
-  }
-}
-    
     body {
       font-family: 'Lato', sans-serif;
       background: var(--navy);
@@ -105,7 +59,15 @@ footer .logo-img {
       from { opacity:0; transform: translateX(-30px); }
       to   { opacity:1; transform: translateX(0); }
     }
-    
+    .logo { display: flex; align-items: center; gap: 14px; text-decoration: none; margin-bottom: 70px; }
+
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--navy);
+    }
     .logo-text span:first-child { display: block; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 700; color: var(--white); }
     .logo-text span:last-child { font-size: 0.65rem; color: var(--gold); letter-spacing: 2.5px; text-transform: uppercase; }
     .welcome-back { font-size: 0.78rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
@@ -263,11 +225,12 @@ footer .logo-img {
   <!-- ── LEFT PANEL -->
   <div class="left-panel">
     <a href="index.html" class="logo">
-     <img src="new_logo.jpeg" alt="GR Global Agro" class="logo-img logo-img-light"/>
-        </a>
-       <span>GR Global Agro</span>
-        <span>Agri Export & Import</span>
+      <div class="logo-icon">GR</div>
+      <div class="logo-text">
+      <span>GR Global Agro</span>
+      <span>Agri Export & Import</span>
       </div>
+    </a>
     
     <div class="welcome-back">Welcome Back</div>
     <h1 class="panel-heading">Your Trade<br><em>Dashboard</em><br>Awaits</h1>
