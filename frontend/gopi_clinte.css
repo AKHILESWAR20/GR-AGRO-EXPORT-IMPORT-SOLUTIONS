@@ -50,7 +50,6 @@ footer .logo-img { height: 48px; }
 @media (max-width: 768px) {
   nav .logo-img { height: 36px; }
 }
-    
     .logo-text {
       display: flex; flex-direction: column; line-height: 1.1;
     }
