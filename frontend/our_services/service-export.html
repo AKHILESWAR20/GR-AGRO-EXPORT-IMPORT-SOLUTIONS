@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Export Management | GR Global Agro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --navy:#0B1F3A; --navy-mid:#162D4F; --gold:#C9A84C;
+      --gold-lite:#E2C97E; --cream:#F7F2E8; --white:#fff;
+      --text-dark:#1A1A2E; --text-gray:#6B7280;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Lato',sans-serif;background:var(--cream);color:var(--text-dark);}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;width:100%;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(11,31,58,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-lite));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);}
+    .logo-text span:first-child{display:block;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--white);}
+    .logo-text span:last-child{font-size:0.6rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+    .nav-back{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.82rem;letter-spacing:1px;text-transform:uppercase;font-weight:700;transition:color 0.3s;display:flex;align-items:center;gap:8px;}
+    .nav-back:hover{color:var(--gold);}
+    .nav-cta{background:var(--gold);color:var(--navy);padding:8px 20px;border-radius:4px;font-weight:700;font-size:0.8rem;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;}
+    .nav-cta:hover{background:var(--gold-lite);}
+
+    /* HERO */
+    .service-hero{min-height:70vh;background:var(--navy);display:flex;align-items:center;padding:100px 8% 60px;position:relative;overflow:hidden;}
+    .service-hero::before{content:'';position:absolute;top:-50%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(201,168,76,0.08),transparent 70%);pointer-events:none;}
+    .hero-icon-wrap{position:absolute;right:8%;top:50%;transform:translateY(-50%);width:280px;height:280px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:pulse 4s ease-in-out infinite;}
+    @keyframes pulse{0%,100%{transform:translateY(-50%) scale(1);}50%{transform:translateY(-50%) scale(1.05);}}
+    .hero-icon-wrap i{font-size:6rem;color:rgba(201,168,76,0.3);}
+    .hero-content{max-width:600px;position:relative;z-index:2;}
+    .service-tag{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;padding:6px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .hero-title em{color:var(--gold);font-style:italic;}
+    .hero-desc{font-size:1.05rem;line-height:1.8;color:rgba(255,255,255,0.65);margin-bottom:36px;}
+    .hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+    .btn-gold{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid var(--gold);}
+    .btn-gold:hover{background:transparent;color:var(--gold);}
+    .btn-outline{background:transparent;color:var(--white);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;border:2px solid rgba(255,255,255,0.3);transition:all 0.3s;}
+    .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+    /* STATS BAR */
+    .stats-bar{background:var(--gold);display:grid;grid-template-columns:repeat(4,1fr);}
+    .stat{padding:28px 20px;text-align:center;border-right:1px solid rgba(11,31,58,0.15);}
+    .stat:last-child{border-right:none;}
+    .stat strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--navy);}
+    .stat span{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(11,31,58,0.7);font-weight:700;}
+
+    /* SECTIONS */
+    .section{padding:90px 8%;}
+    .section-tag{font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;display:block;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--navy);margin-bottom:16px;line-height:1.15;}
+    .section-title em{color:var(--gold);font-style:italic;}
+    .section-desc{font-size:1rem;line-height:1.8;color:var(--text-gray);max-width:600px;margin-bottom:48px;}
+
+    /* SERVICES GRID */
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    .service-item{background:var(--white);border:1px solid rgba(0,0,0,0.07);border-radius:8px;padding:36px 28px;transition:all 0.3s;position:relative;overflow:hidden;}
+    .service-item::after{content:'';position:absolute;bottom:0;left:0;width:0;height:3px;background:var(--gold);transition:width 0.3s;}
+    .service-item:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.1);}
+    .service-item:hover::after{width:100%;}
+    .service-num{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:rgba(201,168,76,0.2);margin-bottom:12px;}
+    .service-item h3{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--navy);margin-bottom:10px;}
+    .service-item p{font-size:0.88rem;line-height:1.75;color:var(--text-gray);}
+
+    /* PROCESS */
+    .process-section{background:var(--navy);padding:90px 8%;}
+    .process-section .section-title{color:var(--white);}
+    .process-section .section-desc{color:rgba(255,255,255,0.5);}
+    .process-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:48px;position:relative;}
+    .process-steps::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:2px;background:rgba(201,168,76,0.2);}
+    .step{text-align:center;padding:0 16px;position:relative;}
+    .step-num{width:56px;height:56px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--navy);margin:0 auto 20px;position:relative;z-index:1;}
+    .step h4{font-size:0.9rem;font-weight:700;color:var(--white);margin-bottom:8px;}
+    .step p{font-size:0.78rem;color:rgba(255,255,255,0.4);line-height:1.6;}
+
+    /* WHY */
+    .why-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
+    .why-list{display:flex;flex-direction:column;gap:20px;}
+    .why-item{display:flex;gap:16px;align-items:flex-start;padding:20px;background:var(--white);border:1px solid rgba(0,0,0,0.06);border-radius:8px;transition:all 0.3s;}
+    .why-item:hover{border-color:rgba(201,168,76,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.06);}
+    .why-icon{width:44px;height:44px;flex-shrink:0;background:linear-gradient(135deg,var(--navy),#1E3A5F);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;}
+    .why-text h4{font-size:0.95rem;font-weight:700;color:var(--navy);margin-bottom:4px;}
+    .why-text p{font-size:0.85rem;color:var(--text-gray);line-height:1.6;}
+    .why-visual{background:linear-gradient(135deg,var(--navy),#1E3A5F);border-radius:12px;padding:48px;text-align:center;}
+    .why-visual i{font-size:5rem;color:rgba(201,168,76,0.3);margin-bottom:24px;display:block;}
+    .why-visual h3{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--white);margin-bottom:12px;}
+    .why-visual p{color:rgba(255,255,255,0.5);font-size:0.9rem;line-height:1.7;}
+
+    /* CTA */
+    .cta-section{background:linear-gradient(135deg,var(--navy),#162D4F);padding:80px 8%;text-align:center;}
+    .cta-section h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--white);margin-bottom:16px;}
+    .cta-section h2 em{color:var(--gold);font-style:italic;}
+    .cta-section p{color:rgba(255,255,255,0.55);margin-bottom:36px;font-size:1rem;line-height:1.7;max-width:500px;margin-left:auto;margin-right:auto;}
+
+    /* FOOTER */
+    footer{background:#060F1E;padding:32px 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.82rem;}
+    footer p span{color:var(--gold);}
+    .footer-links-row{display:flex;gap:24px;}
+    .footer-links-row a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.78rem;transition:color 0.3s;}
+    .footer-links-row a:hover{color:var(--gold);}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(24px);transition:all 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:768px){
+      .services-grid{grid-template-columns:1fr;}
+      .process-steps{grid-template-columns:1fr 1fr;}
+      .why-grid{grid-template-columns:1fr;}
+      .stats-bar{grid-template-columns:repeat(2,1fr);}
+      .hero-icon-wrap{display:none;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">GR</div>
+    <div class="logo-text">
+      <span>GR Global Agro</span>
+      <span>Agri Export & Import</span>
+    </div>
+  </a>
+  <a href="index.html#services" class="nav-back"><i class="fas fa-arrow-left"></i> All Services</a>
+  <a href="index.html#inquiry" class="nav-cta">Get a Quote</a>
+</nav>
+
+<!-- HERO -->
+<div class="service-hero">
+  <div class="hero-icon-wrap"><i class="fas fa-ship"></i></div>
+  <div class="hero-content">
+    <span class="service-tag"><i class="fas fa-ship"></i> &nbsp; Service 01</span>
+    <h1 class="hero-title">Export <em>Management</em></h1>
+    <p class="hero-desc">Complete end-to-end export solutions — from licensing and documentation to freight forwarding and customs clearance. We handle the complexity so you can focus on growing your business globally.</p>
+    <div class="hero-btns">
+      <a href="index.html#inquiry" class="btn-gold">Request a Quote</a>
+      <a href="login.html" class="btn-outline">Login to Portal</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><strong>5000+</strong><span>Shipments Done</span></div>
+  <div class="stat"><strong>50+</strong><span>Countries</span></div>
+  <div class="stat"><strong>98%</strong><span>On-Time Rate</span></div>
+  <div class="stat"><strong>15+</strong><span>Years Experience</span></div>
+</div>
+
+<!-- WHAT WE OFFER -->
+<div class="section" style="background:var(--cream)">
+  <span class="section-tag reveal">What's Included</span>
+  <h2 class="section-title reveal">Our Export <em>Services</em></h2>
+  <p class="section-desc reveal">Every aspect of your export journey is managed by our experienced trade specialists.</p>
+  <div class="services-grid">
+    <div class="service-item reveal">
+      <div class="service-num">01</div>
+      <h3>Export Licensing</h3>
+      <p>We handle all required export licenses, permits, and regulatory approvals for your specific goods and destination countries.</p>
+    </div>
+    <div class="service-item reveal" style="transition-delay:0.1s">
+      <div class="service-num">02</div>
+      <h3>Documentation</h3>
+      <p>Commercial invoices, packing lists, certificates of origin, phytosanitary certificates, and all other required export documents.</p>
+    </div>
+    <div class="service-item reveal" style="transition-delay:0.2s">
+      <div class="service-num">03</div>
+      <h3>Customs Clearance</h3>
+      <p>Seamless customs clearance at origin ports with our certified customs agents ensuring zero delays and full compliance.</p>
+    </div>
+    <div class="service-item reveal" style="transition-delay:0.3s">
+      <div class="service-num">04</div>
+      <h3>Freight Forwarding</h3>
+      <p>Sea, air, and land freight forwarding with competitive rates through our network of global carrier partnerships.</p>
+    </div>
+    <div class="service-item reveal" style="transition-delay:0.4s">
+      <div class="service-num">05</div>
+      <h3>Quality Inspection</h3>
+      <p>Pre-shipment quality inspections to ensure your goods meet international standards and buyer specifications.</p>
+    </div>
+    <div class="service-item reveal" style="transition-delay:0.5s">
+      <div class="service-num">06</div>
+      <h3>Cargo Insurance</h3>
+      <p>Comprehensive cargo insurance solutions to protect your shipments against loss, damage, and transit risks.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div class="process-section">
+  <span class="section-tag reveal" style="color:var(--gold)">How It Works</span>
+  <h2 class="section-title reveal">Our Export <em>Process</em></h2>
+  <p class="section-desc reveal">A streamlined 5-step process designed for efficiency and transparency.</p>
+  <div class="process-steps">
+    <div class="step reveal">
+      <div class="step-num">1</div>
+      <h4>Inquiry</h4>
+      <p>Submit your export requirements and product details</p>
+    </div>
+    <div class="step reveal" style="transition-delay:0.1s">
+      <div class="step-num">2</div>
+      <h4>Assessment</h4>
+      <p>We assess regulations, duties and optimal routes</p>
+    </div>
+    <div class="step reveal" style="transition-delay:0.2s">
+      <div class="step-num">3</div>
+      <h4>Documentation</h4>
+      <p>All export documents prepared and verified</p>
+    </div>
+    <div class="step reveal" style="transition-delay:0.3s">
+      <div class="step-num">4</div>
+      <h4>Shipment</h4>
+      <p>Goods dispatched with real-time tracking</p>
+    </div>
+    <div class="step reveal" style="transition-delay:0.4s">
+      <div class="step-num">5</div>
+      <h4>Delivery</h4>
+      <p>Confirmed delivery with full documentation</p>
+    </div>
+  </div>
+</div>
+
+<!-- WHY CHOOSE US -->
+<div class="section" style="background:var(--white)">
+  <div class="why-grid">
+    <div>
+      <span class="section-tag reveal">Why Choose Us</span>
+      <h2 class="section-title reveal">The GR <em>Advantage</em></h2>
+      <p class="section-desc reveal">Trusted by 1200+ exporters across India for reliable, compliant, and cost-effective export management.</p>
+      <div class="why-list">
+        <div class="why-item reveal">
+          <div class="why-icon"><i class="fas fa-shield-alt"></i></div>
+          <div class="why-text"><h4>100% Compliant</h4><p>Full compliance with Indian and international export regulations at all times.</p></div>
+        </div>
+        <div class="why-item reveal" style="transition-delay:0.1s">
+          <div class="why-icon"><i class="fas fa-clock"></i></div>
+          <div class="why-text"><h4>Fast Turnaround</h4><p>Documentation ready within 24-48 hours. Shipments dispatched on schedule.</p></div>
+        </div>
+        <div class="why-item reveal" style="transition-delay:0.2s">
+          <div class="why-icon"><i class="fas fa-headset"></i></div>
+          <div class="why-text"><h4>Dedicated Manager</h4><p>A personal export manager assigned to every client account.</p></div>
+        </div>
+        <div class="why-item reveal" style="transition-delay:0.3s">
+          <div class="why-icon"><i class="fas fa-globe"></i></div>
+          <div class="why-text"><h4>Global Network</h4><p>Partner agents in 50+ countries for seamless last-mile delivery.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="why-visual reveal">
+      <i class="fas fa-ship"></i>
+      <h3>Ready to Export?</h3>
+      <p>Join 1200+ businesses that trust GR Global Agro for their international export operations.</p>
+      <br/>
+      <a href="index.html#inquiry" class="btn-gold" style="display:inline-block;margin-top:16px">Start Exporting Today</a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <h2>Ready to Take Your Products <em>Global?</em></h2>
+  <p>Get a free export consultation from our trade specialists. No commitment required.</p>
+  <a href="index.html#inquiry" class="btn-gold">Get Free Consultation</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 <span>GR Global Agro</span>. All rights reserved.</p>
+  <div class="footer-links-row">
+    <a href="index.html">Home</a>
+    <a href="service-import.html">Import</a>
+    <a href="service-docs.html">Documentation</a>
+    <a href="service-logistics.html">Logistics</a>
+    <a href="index.html#inquiry">Contact</a>
+  </div>
+</footer>
+
+<script>
+const obs = new IntersectionObserver(e => e.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); }), {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

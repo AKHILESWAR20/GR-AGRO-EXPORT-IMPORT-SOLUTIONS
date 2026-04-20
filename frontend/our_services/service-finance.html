@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trade Finance | GR Global Agro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--navy:#0B1F3A;--gold:#C9A84C;--gold-lite:#E2C97E;--cream:#F7F2E8;--white:#fff;--text-gray:#6B7280;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Lato',sans-serif;background:var(--cream);}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(11,31,58,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-lite));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);}
+    .logo-text span:first-child{display:block;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--white);}
+    .logo-text span:last-child{font-size:0.6rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+    .nav-back{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.82rem;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:1px;}
+    .nav-back:hover{color:var(--gold);}
+    .nav-cta{background:var(--gold);color:var(--navy);padding:8px 20px;border-radius:4px;font-weight:700;font-size:0.8rem;text-decoration:none;text-transform:uppercase;letter-spacing:1px;}
+
+    .service-hero{min-height:70vh;background:linear-gradient(160deg,#0B1F3A 60%,#1a3a5c 100%);display:flex;align-items:center;padding:100px 8% 60px;position:relative;overflow:hidden;}
+    .hero-accent{position:absolute;right:6%;top:50%;transform:translateY(-50%);width:300px;height:300px;border:2px solid rgba(201,168,76,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;}
+    .hero-accent::before{content:'';position:absolute;width:230px;height:230px;border:1px solid rgba(201,168,76,0.06);border-radius:50%;}
+    .hero-accent i{font-size:6rem;color:rgba(201,168,76,0.15);}
+    .hero-content{max-width:620px;position:relative;z-index:2;}
+    .service-tag{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;padding:6px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .hero-title em{color:var(--gold);font-style:italic;}
+    .hero-desc{font-size:1.05rem;line-height:1.8;color:rgba(255,255,255,0.65);margin-bottom:36px;}
+    .btn-gold{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid var(--gold);display:inline-block;}
+    .btn-gold:hover{background:transparent;color:var(--gold);}
+
+    .stats-bar{background:var(--gold);display:grid;grid-template-columns:repeat(4,1fr);}
+    .stat{padding:28px 20px;text-align:center;border-right:1px solid rgba(11,31,58,0.15);}
+    .stat:last-child{border-right:none;}
+    .stat strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--navy);}
+    .stat span{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(11,31,58,0.7);font-weight:700;}
+
+    .section{padding:90px 8%;}
+    .section-tag{font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;display:block;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--navy);margin-bottom:16px;}
+    .section-title em{color:var(--gold);font-style:italic;}
+    .section-desc{font-size:1rem;line-height:1.8;color:var(--text-gray);max-width:600px;margin-bottom:48px;}
+
+    .finance-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;}
+    .finance-card{background:var(--white);border-radius:12px;padding:40px;border:1px solid rgba(0,0,0,0.07);transition:all 0.3s;position:relative;overflow:hidden;}
+    .finance-card::before{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:radial-gradient(circle,rgba(201,168,76,0.08),transparent);border-radius:0 12px 0 80px;}
+    .finance-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.08);}
+    .finance-icon{width:56px;height:56px;background:linear-gradient(135deg,var(--navy),#1E3A5F);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.3rem;margin-bottom:20px;}
+    .finance-card h3{font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:var(--navy);margin-bottom:12px;}
+    .finance-card p{font-size:0.88rem;line-height:1.75;color:var(--text-gray);margin-bottom:16px;}
+    .finance-card ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .finance-card li{font-size:0.82rem;color:var(--text-gray);display:flex;align-items:center;gap:8px;}
+    .finance-card li i{color:var(--gold);width:14px;}
+
+    .cta-section{background:linear-gradient(135deg,var(--navy),#162D4F);padding:80px 8%;text-align:center;}
+    .cta-section h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--white);margin-bottom:16px;}
+    .cta-section h2 em{color:var(--gold);font-style:italic;}
+    .cta-section p{color:rgba(255,255,255,0.55);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;}
+
+    footer{background:#060F1E;padding:32px 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.82rem;}
+    footer p span{color:var(--gold);}
+    .footer-links-row{display:flex;gap:24px;}
+    .footer-links-row a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.78rem;transition:color 0.3s;}
+    .footer-links-row a:hover{color:var(--gold);}
+
+    .reveal{opacity:0;transform:translateY(24px);transition:all 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:768px){.finance-grid{grid-template-columns:1fr;}.stats-bar{grid-template-columns:repeat(2,1fr);}.hero-accent{display:none;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">GR</div>
+    <div class="logo-text"><span>GR Global Agro</span><span>Agri Export & Import</span></div>
+  </a>
+  <a href="index.html#services" class="nav-back"><i class="fas fa-arrow-left"></i> All Services</a>
+  <a href="index.html#inquiry" class="nav-cta">Get a Quote</a>
+</nav>
+
+<div class="service-hero">
+  <div class="hero-accent"><i class="fas fa-coins"></i></div>
+  <div class="hero-content">
+    <span class="service-tag"><i class="fas fa-credit-card"></i> &nbsp; Service 05</span>
+    <h1 class="hero-title">Trade <em>Finance</em></h1>
+    <p class="hero-desc">Flexible payment solutions including letters of credit, invoice financing, and structured trade finance instruments to keep your cash flow healthy while trading globally.</p>
+    <a href="index.html#inquiry" class="btn-gold">Explore Finance Options</a>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><strong>Fast</strong><span>LC Processing</span></div>
+  <div class="stat"><strong>Flexible</strong><span>Payment Terms</span></div>
+  <div class="stat"><strong>Secure</strong><span>Transactions</span></div>
+  <div class="stat"><strong>Expert</strong><span>Advisory</span></div>
+</div>
+
+<div class="section" style="background:var(--cream)">
+  <span class="section-tag reveal">Finance Solutions</span>
+  <h2 class="section-title reveal">Trade Finance <em>Instruments</em></h2>
+  <p class="section-desc reveal">We offer a range of trade finance solutions to protect your payments and optimize your working capital.</p>
+  <div class="finance-grid">
+    <div class="finance-card reveal">
+      <div class="finance-icon"><i class="fas fa-file-contract"></i></div>
+      <h3>Letter of Credit (LC)</h3>
+      <p>Secure your international transactions with documentary letters of credit that guarantee payment on fulfillment of conditions.</p>
+      <ul>
+        <li><i class="fas fa-check"></i> Sight LC and usance LC</li>
+        <li><i class="fas fa-check"></i> Confirmed and unconfirmed LC</li>
+        <li><i class="fas fa-check"></i> LC amendment and transfer</li>
+        <li><i class="fas fa-check"></i> Fast processing with bank partners</li>
+      </ul>
+    </div>
+    <div class="finance-card reveal" style="transition-delay:0.1s">
+      <div class="finance-icon"><i class="fas fa-hand-holding-usd"></i></div>
+      <h3>Invoice Financing</h3>
+      <p>Unlock cash tied up in your export invoices with our invoice discounting and factoring solutions.</p>
+      <ul>
+        <li><i class="fas fa-check"></i> Up to 90% advance on invoices</li>
+        <li><i class="fas fa-check"></i> No collateral required</li>
+        <li><i class="fas fa-check"></i> Fast disbursement within 48 hours</li>
+        <li><i class="fas fa-check"></i> Recourse and non-recourse options</li>
+      </ul>
+    </div>
+    <div class="finance-card reveal" style="transition-delay:0.2s">
+      <div class="finance-icon"><i class="fas fa-exchange-alt"></i></div>
+      <h3>Bank Guarantees</h3>
+      <p>Performance bonds and bank guarantees to fulfil contractual obligations and build buyer confidence.</p>
+      <ul>
+        <li><i class="fas fa-check"></i> Bid bonds and performance bonds</li>
+        <li><i class="fas fa-check"></i> Advance payment guarantees</li>
+        <li><i class="fas fa-check"></i> Retention money guarantees</li>
+        <li><i class="fas fa-check"></i> Pan-India bank network</li>
+      </ul>
+    </div>
+    <div class="finance-card reveal" style="transition-delay:0.3s">
+      <div class="finance-icon"><i class="fas fa-globe"></i></div>
+      <h3>Forex & Payments</h3>
+      <p>Competitive foreign exchange rates and secure international payment processing for all trade transactions.</p>
+      <ul>
+        <li><i class="fas fa-check"></i> Competitive forex rates</li>
+        <li><i class="fas fa-check"></i> SWIFT wire transfers</li>
+        <li><i class="fas fa-check"></i> Multi-currency accounts</li>
+        <li><i class="fas fa-check"></i> Hedging against forex risk</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>Finance Your <em>Global Trade</em></h2>
+  <p>Speak to our trade finance specialists and find the right solution for your business.</p>
+  <a href="index.html#inquiry" class="btn-gold">Talk to Finance Expert</a>
+</div>
+
+<footer>
+  <p>© 2025 <span>GR Global Agro</span>. All rights reserved.</p>
+  <div class="footer-links-row">
+    <a href="index.html">Home</a>
+    <a href="service-export.html">Export</a>
+    <a href="service-import.html">Import</a>
+    <a href="service-intelligence.html">Intelligence</a>
+    <a href="index.html#inquiry">Contact</a>
+  </div>
+</footer>
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

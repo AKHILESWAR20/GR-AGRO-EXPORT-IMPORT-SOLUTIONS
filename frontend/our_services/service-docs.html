@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trade Documentation | GR Global Agro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--navy:#0B1F3A;--gold:#C9A84C;--gold-lite:#E2C97E;--cream:#F7F2E8;--white:#fff;--text-gray:#6B7280;}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Lato',sans-serif;background:var(--cream);}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(11,31,58,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-lite));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);}
+    .logo-text span:first-child{display:block;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--white);}
+    .logo-text span:last-child{font-size:0.6rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+    .nav-back{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.82rem;text-transform:uppercase;font-weight:700;transition:color 0.3s;display:flex;align-items:center;gap:8px;letter-spacing:1px;}
+    .nav-back:hover{color:var(--gold);}
+    .nav-cta{background:var(--gold);color:var(--navy);padding:8px 20px;border-radius:4px;font-weight:700;font-size:0.8rem;text-decoration:none;text-transform:uppercase;letter-spacing:1px;}
+
+    .service-hero{min-height:70vh;background:var(--navy);display:flex;align-items:center;padding:100px 8% 60px;position:relative;overflow:hidden;}
+    .hero-bg-pattern{position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(45deg,var(--gold) 0,var(--gold) 1px,transparent 0,transparent 50%);background-size:24px 24px;}
+    .hero-content{max-width:620px;position:relative;z-index:2;}
+    .service-tag{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;padding:6px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .hero-title em{color:var(--gold);font-style:italic;}
+    .hero-desc{font-size:1.05rem;line-height:1.8;color:rgba(255,255,255,0.65);margin-bottom:36px;}
+    .btn-gold{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid var(--gold);display:inline-block;}
+    .btn-gold:hover{background:transparent;color:var(--gold);}
+    .btn-outline{background:transparent;color:var(--white);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;border:2px solid rgba(255,255,255,0.3);transition:all 0.3s;display:inline-block;}
+    .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+    .stats-bar{background:var(--gold);display:grid;grid-template-columns:repeat(4,1fr);}
+    .stat{padding:28px 20px;text-align:center;border-right:1px solid rgba(11,31,58,0.15);}
+    .stat:last-child{border-right:none;}
+    .stat strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--navy);}
+    .stat span{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(11,31,58,0.7);font-weight:700;}
+
+    .section{padding:90px 8%;}
+    .section-tag{font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;display:block;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--navy);margin-bottom:16px;}
+    .section-title em{color:var(--gold);font-style:italic;}
+    .section-desc{font-size:1rem;line-height:1.8;color:var(--text-gray);max-width:600px;margin-bottom:48px;}
+
+    /* DOCUMENTS GRID */
+    .docs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .doc-card{background:var(--white);border:1px solid rgba(0,0,0,0.07);border-radius:10px;padding:28px;transition:all 0.3s;cursor:default;}
+    .doc-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.1);border-color:rgba(201,168,76,0.3);}
+    .doc-icon{width:48px;height:48px;background:linear-gradient(135deg,var(--navy),#1E3A5F);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.1rem;margin-bottom:16px;}
+    .doc-card h3{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);margin-bottom:8px;}
+    .doc-card p{font-size:0.83rem;line-height:1.7;color:var(--text-gray);}
+    .doc-tag{display:inline-block;margin-top:12px;font-size:0.68rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--gold);background:rgba(201,168,76,0.08);padding:3px 10px;border-radius:50px;}
+
+    /* ACCURACY SECTION */
+    .accuracy-section{background:var(--navy);padding:90px 8%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .accuracy-content .section-title{color:var(--white);}
+    .accuracy-content .section-desc{color:rgba(255,255,255,0.5);}
+    .accuracy-points{display:flex;flex-direction:column;gap:16px;margin-top:32px;}
+    .acc-point{display:flex;align-items:center;gap:12px;color:rgba(255,255,255,0.7);font-size:0.9rem;}
+    .acc-point i{color:var(--gold);width:20px;}
+    .accuracy-visual{display:flex;flex-direction:column;gap:16px;}
+    .metric-bar{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px 24px;}
+    .metric-label{display:flex;justify-content:space-between;margin-bottom:10px;}
+    .metric-label span:first-child{color:rgba(255,255,255,0.6);font-size:0.85rem;}
+    .metric-label span:last-child{color:var(--gold);font-weight:700;font-size:0.9rem;}
+    .bar-bg{background:rgba(255,255,255,0.07);border-radius:4px;height:6px;overflow:hidden;}
+    .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-lite));border-radius:4px;transition:width 1.5s ease;}
+
+    .cta-section{background:linear-gradient(135deg,var(--navy),#162D4F);padding:80px 8%;text-align:center;}
+    .cta-section h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--white);margin-bottom:16px;}
+    .cta-section h2 em{color:var(--gold);font-style:italic;}
+    .cta-section p{color:rgba(255,255,255,0.55);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;}
+
+    footer{background:#060F1E;padding:32px 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.82rem;}
+    footer p span{color:var(--gold);}
+    .footer-links-row{display:flex;gap:24px;}
+    .footer-links-row a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.78rem;transition:color 0.3s;}
+    .footer-links-row a:hover{color:var(--gold);}
+
+    .reveal{opacity:0;transform:translateY(24px);transition:all 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:768px){
+      .docs-grid{grid-template-columns:1fr 1fr;}
+      .accuracy-section{grid-template-columns:1fr;}
+      .stats-bar{grid-template-columns:repeat(2,1fr);}
+    }
+    @media(max-width:500px){.docs-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">GR</div>
+    <div class="logo-text"><span>GR Global Agro</span><span>Agri Export & Import</span></div>
+  </a>
+  <a href="index.html#services" class="nav-back"><i class="fas fa-arrow-left"></i> All Services</a>
+  <a href="index.html#inquiry" class="nav-cta">Get a Quote</a>
+</nav>
+
+<div class="service-hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-content">
+    <span class="service-tag"><i class="fas fa-file-contract"></i> &nbsp; Service 03</span>
+    <h1 class="hero-title">Trade <em>Documentation</em></h1>
+    <p class="hero-desc">Accurate preparation of all trade documents — commercial invoices, bills of lading, certificates of origin, phytosanitary certificates, and more. Zero errors, 100% compliance, every time.</p>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;">
+      <a href="index.html#inquiry" class="btn-gold">Get Documentation Support</a>
+      <a href="login.html" class="btn-outline">Access Your Documents</a>
+    </div>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><strong>20+</strong><span>Doc Types</span></div>
+  <div class="stat"><strong>100%</strong><span>Accuracy Rate</span></div>
+  <div class="stat"><strong>24hr</strong><span>Turnaround</span></div>
+  <div class="stat"><strong>0</strong><span>Rejection Rate</span></div>
+</div>
+
+<div class="section" style="background:var(--cream)">
+  <span class="section-tag reveal">Document Types</span>
+  <h2 class="section-title reveal">Documents We <em>Prepare</em></h2>
+  <p class="section-desc reveal">Our documentation experts handle every trade document required for seamless international commerce.</p>
+  <div class="docs-grid">
+    <div class="doc-card reveal">
+      <div class="doc-icon"><i class="fas fa-file-invoice"></i></div>
+      <h3>Commercial Invoice</h3>
+      <p>Accurate commercial invoices with all required fields for customs and payment purposes.</p>
+      <span class="doc-tag">Export / Import</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.08s">
+      <div class="doc-icon"><i class="fas fa-ship"></i></div>
+      <h3>Bill of Lading</h3>
+      <p>Sea waybills and bills of lading for ocean freight shipments worldwide.</p>
+      <span class="doc-tag">Sea Freight</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.16s">
+      <div class="doc-icon"><i class="fas fa-certificate"></i></div>
+      <h3>Certificate of Origin</h3>
+      <p>Preferential and non-preferential certificates of origin for all destination markets.</p>
+      <span class="doc-tag">All Trade</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.24s">
+      <div class="doc-icon"><i class="fas fa-leaf"></i></div>
+      <h3>Phytosanitary Certificate</h3>
+      <p>Official phytosanitary certificates for agricultural and plant-based products.</p>
+      <span class="doc-tag">Agri Products</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.32s">
+      <div class="doc-icon"><i class="fas fa-box-open"></i></div>
+      <h3>Packing List</h3>
+      <p>Detailed packing lists with HS codes, weights, dimensions, and package counts.</p>
+      <span class="doc-tag">All Shipments</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.4s">
+      <div class="doc-icon"><i class="fas fa-plane"></i></div>
+      <h3>Airway Bill</h3>
+      <p>Air waybills for all air freight consignments with complete routing details.</p>
+      <span class="doc-tag">Air Freight</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.48s">
+      <div class="doc-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3>Insurance Certificate</h3>
+      <p>Marine cargo insurance certificates covering all transit risks and perils.</p>
+      <span class="doc-tag">All Trade</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.56s">
+      <div class="doc-icon"><i class="fas fa-microscope"></i></div>
+      <h3>Quality Certificate</h3>
+      <p>Third-party quality inspection certificates from accredited agencies.</p>
+      <span class="doc-tag">Quality Control</span>
+    </div>
+    <div class="doc-card reveal" style="transition-delay:0.64s">
+      <div class="doc-icon"><i class="fas fa-file-signature"></i></div>
+      <h3>Letter of Credit</h3>
+      <p>LC document preparation and verification to ensure smooth payment settlement.</p>
+      <span class="doc-tag">Trade Finance</span>
+    </div>
+  </div>
+</div>
+
+<div class="accuracy-section">
+  <div class="accuracy-content reveal">
+    <span class="section-tag">Our Accuracy</span>
+    <h2 class="section-title">Why Our Documentation <em>Stands Out</em></h2>
+    <p class="section-desc">Every document goes through a 3-layer verification process before delivery.</p>
+    <div class="accuracy-points">
+      <div class="acc-point"><i class="fas fa-check-circle"></i> Prepared by certified trade documentation specialists</div>
+      <div class="acc-point"><i class="fas fa-check-circle"></i> Cross-verified against destination country requirements</div>
+      <div class="acc-point"><i class="fas fa-check-circle"></i> Digital and physical copies provided</div>
+      <div class="acc-point"><i class="fas fa-check-circle"></i> Stored securely in your client portal for easy access</div>
+      <div class="acc-point"><i class="fas fa-check-circle"></i> Amendments handled within 2 hours</div>
+    </div>
+  </div>
+  <div class="accuracy-visual reveal" style="transition-delay:0.15s">
+    <div class="metric-bar">
+      <div class="metric-label"><span>Documentation Accuracy</span><span>100%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>
+    </div>
+    <div class="metric-bar">
+      <div class="metric-label"><span>On-Time Delivery</span><span>98%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:98%"></div></div>
+    </div>
+    <div class="metric-bar">
+      <div class="metric-label"><span>Customs Acceptance</span><span>99.8%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:99.8%"></div></div>
+    </div>
+    <div class="metric-bar">
+      <div class="metric-label"><span>Client Satisfaction</span><span>97%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="width:97%"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>Need Your Documents <em>Fast?</em></h2>
+  <p>Submit your requirements today and receive your complete documentation within 24 hours.</p>
+  <a href="index.html#inquiry" class="btn-gold">Request Documentation</a>
+</div>
+
+<footer>
+  <p>© 2025 <span>GR Global Agro</span>. All rights reserved.</p>
+  <div class="footer-links-row">
+    <a href="index.html">Home</a>
+    <a href="service-export.html">Export</a>
+    <a href="service-import.html">Import</a>
+    <a href="service-logistics.html">Logistics</a>
+    <a href="index.html#inquiry">Contact</a>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

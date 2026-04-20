@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Market Intelligence | GR Global Agro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--navy:#0B1F3A;--gold:#C9A84C;--gold-lite:#E2C97E;--cream:#F7F2E8;--white:#fff;--text-gray:#6B7280;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Lato',sans-serif;background:var(--cream);}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(11,31,58,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-lite));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);}
+    .logo-text span:first-child{display:block;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--white);}
+    .logo-text span:last-child{font-size:0.6rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+    .nav-back{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.82rem;text-transform:uppercase;font-weight:700;display:flex;align-items:center;gap:8px;letter-spacing:1px;}
+    .nav-back:hover{color:var(--gold);}
+    .nav-cta{background:var(--gold);color:var(--navy);padding:8px 20px;border-radius:4px;font-weight:700;font-size:0.8rem;text-decoration:none;text-transform:uppercase;letter-spacing:1px;}
+
+    .service-hero{min-height:70vh;background:var(--navy);display:flex;align-items:center;padding:100px 8% 60px;position:relative;overflow:hidden;}
+    .hero-data-viz{position:absolute;right:6%;top:50%;transform:translateY(-50%);display:flex;align-items:flex-end;gap:12px;height:200px;opacity:0.15;}
+    .bar-v{width:32px;background:var(--gold);border-radius:4px 4px 0 0;animation:barGrow 2s ease infinite;}
+    @keyframes barGrow{0%,100%{transform:scaleY(1);}50%{transform:scaleY(1.2);}}
+    .hero-content{max-width:620px;position:relative;z-index:2;}
+    .service-tag{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;padding:6px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .hero-title em{color:var(--gold);font-style:italic;}
+    .hero-desc{font-size:1.05rem;line-height:1.8;color:rgba(255,255,255,0.65);margin-bottom:36px;}
+    .btn-gold{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid var(--gold);display:inline-block;}
+    .btn-gold:hover{background:transparent;color:var(--gold);}
+
+    .stats-bar{background:var(--gold);display:grid;grid-template-columns:repeat(4,1fr);}
+    .stat{padding:28px 20px;text-align:center;border-right:1px solid rgba(11,31,58,0.15);}
+    .stat:last-child{border-right:none;}
+    .stat strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--navy);}
+    .stat span{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(11,31,58,0.7);font-weight:700;}
+
+    .section{padding:90px 8%;}
+    .section-tag{font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;display:block;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--navy);margin-bottom:16px;}
+    .section-title em{color:var(--gold);font-style:italic;}
+    .section-desc{font-size:1rem;line-height:1.8;color:var(--text-gray);max-width:600px;margin-bottom:48px;}
+
+    .intel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    .intel-card{background:var(--white);border-radius:12px;padding:36px 28px;border:1px solid rgba(0,0,0,0.07);transition:all 0.3s;text-align:center;}
+    .intel-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.08);border-color:rgba(201,168,76,0.25);}
+    .intel-icon{width:64px;height:64px;background:linear-gradient(135deg,var(--navy),#1E3A5F);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.4rem;margin:0 auto 20px;}
+    .intel-card h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:700;color:var(--navy);margin-bottom:10px;}
+    .intel-card p{font-size:0.85rem;line-height:1.75;color:var(--text-gray);}
+
+    .reports-section{background:var(--navy);padding:90px 8%;}
+    .reports-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px;}
+    .report-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:24px 28px;display:flex;gap:16px;align-items:flex-start;transition:all 0.3s;}
+    .report-item:hover{border-color:rgba(201,168,76,0.2);background:rgba(201,168,76,0.04);}
+    .report-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:rgba(201,168,76,0.2);flex-shrink:0;}
+    .report-text h4{font-size:0.95rem;font-weight:700;color:var(--white);margin-bottom:6px;}
+    .report-text p{font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.6;}
+
+    .cta-section{background:linear-gradient(135deg,var(--navy),#162D4F);padding:80px 8%;text-align:center;}
+    .cta-section h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--white);margin-bottom:16px;}
+    .cta-section h2 em{color:var(--gold);font-style:italic;}
+    .cta-section p{color:rgba(255,255,255,0.55);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;}
+
+    footer{background:#060F1E;padding:32px 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.82rem;}
+    footer p span{color:var(--gold);}
+    .footer-links-row{display:flex;gap:24px;}
+    .footer-links-row a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.78rem;transition:color 0.3s;}
+    .footer-links-row a:hover{color:var(--gold);}
+
+    .reveal{opacity:0;transform:translateY(24px);transition:all 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    @media(max-width:768px){.intel-grid{grid-template-columns:1fr;}.reports-grid{grid-template-columns:1fr;}.stats-bar{grid-template-columns:repeat(2,1fr);}.hero-data-viz{display:none;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">GR</div>
+    <div class="logo-text"><span>GR Global Agro</span><span>Agri Export & Import</span></div>
+  </a>
+  <a href="index.html#services" class="nav-back"><i class="fas fa-arrow-left"></i> All Services</a>
+  <a href="index.html#inquiry" class="nav-cta">Get a Quote</a>
+</nav>
+
+<div class="service-hero">
+  <div class="hero-data-viz">
+    <div class="bar-v" style="height:60%;animation-delay:0s"></div>
+    <div class="bar-v" style="height:80%;animation-delay:0.2s"></div>
+    <div class="bar-v" style="height:45%;animation-delay:0.4s"></div>
+    <div class="bar-v" style="height:100%;animation-delay:0.6s"></div>
+    <div class="bar-v" style="height:70%;animation-delay:0.8s"></div>
+    <div class="bar-v" style="height:55%;animation-delay:1s"></div>
+  </div>
+  <div class="hero-content">
+    <span class="service-tag"><i class="fas fa-search"></i> &nbsp; Service 06</span>
+    <h1 class="hero-title">Market <em>Intelligence</em></h1>
+    <p class="hero-desc">Data-driven insights into global market trends, pricing, and demand forecasting. Make smarter trade decisions with our expert market analysis and strategic intelligence reports.</p>
+    <a href="index.html#inquiry" class="btn-gold">Request Market Report</a>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><strong>50+</strong><span>Markets Covered</span></div>
+  <div class="stat"><strong>Weekly</strong><span>Price Updates</span></div>
+  <div class="stat"><strong>Real</strong><span>Time Data</span></div>
+  <div class="stat"><strong>Expert</strong><span>Analysis</span></div>
+</div>
+
+<div class="section" style="background:var(--cream)">
+  <span class="section-tag reveal">Intelligence Services</span>
+  <h2 class="section-title reveal">What We <em>Analyse</em></h2>
+  <p class="section-desc reveal">Comprehensive market intelligence to help you identify opportunities and mitigate risks in global trade.</p>
+  <div class="intel-grid">
+    <div class="intel-card reveal">
+      <div class="intel-icon"><i class="fas fa-chart-line"></i></div>
+      <h3>Price Intelligence</h3>
+      <p>Real-time commodity price tracking and historical trend analysis across global markets.</p>
+    </div>
+    <div class="intel-card reveal" style="transition-delay:0.1s">
+      <div class="intel-icon"><i class="fas fa-globe-asia"></i></div>
+      <h3>Market Entry Analysis</h3>
+      <p>Comprehensive market entry reports for new geographies including regulations, competition, and demand.</p>
+    </div>
+    <div class="intel-card reveal" style="transition-delay:0.2s">
+      <div class="intel-icon"><i class="fas fa-balance-scale"></i></div>
+      <h3>Trade Policy Updates</h3>
+      <p>Regular updates on tariff changes, FTA developments, and trade policy shifts affecting your business.</p>
+    </div>
+    <div class="intel-card reveal" style="transition-delay:0.3s">
+      <div class="intel-icon"><i class="fas fa-users"></i></div>
+      <h3>Buyer & Seller Identification</h3>
+      <p>Verified buyer and seller databases across target markets for new business development.</p>
+    </div>
+    <div class="intel-card reveal" style="transition-delay:0.4s">
+      <div class="intel-icon"><i class="fas fa-seedling"></i></div>
+      <h3>Crop & Supply Forecasting</h3>
+      <p>Agricultural supply chain forecasting to help you plan procurement and sales strategies ahead.</p>
+    </div>
+    <div class="intel-card reveal" style="transition-delay:0.5s">
+      <div class="intel-icon"><i class="fas fa-shield-alt"></i></div>
+      <h3>Risk Assessment</h3>
+      <p>Country risk, buyer credit risk, and political risk assessments for informed trade decisions.</p>
+    </div>
+  </div>
+</div>
+
+<div class="reports-section">
+  <span class="section-tag reveal" style="color:var(--gold)">Our Reports</span>
+  <h2 class="section-title reveal" style="color:var(--white)">Intelligence <em>Reports</em> We Deliver</h2>
+  <div class="reports-grid">
+    <div class="report-item reveal"><div class="report-num">01</div><div class="report-text"><h4>Weekly Price Report</h4><p>Commodity price movements across key global markets with trend analysis.</p></div></div>
+    <div class="report-item reveal" style="transition-delay:0.1s"><div class="report-num">02</div><div class="report-text"><h4>Market Entry Report</h4><p>Deep-dive analysis for entering new export or import markets successfully.</p></div></div>
+    <div class="report-item reveal" style="transition-delay:0.2s"><div class="report-num">03</div><div class="report-text"><h4>Competitor Intelligence</h4><p>Insights on competitor pricing, positioning, and market share in key markets.</p></div></div>
+    <div class="report-item reveal" style="transition-delay:0.3s"><div class="report-num">04</div><div class="report-text"><h4>Annual Trade Report</h4><p>Comprehensive annual review of your trade performance with strategic recommendations.</p></div></div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>Make Smarter <em>Trade Decisions</em></h2>
+  <p>Get your first market intelligence report free with a consultation from our analysts.</p>
+  <a href="index.html#inquiry" class="btn-gold">Get Free Report</a>
+</div>
+
+<footer>
+  <p>© 2025 <span>GR Global Agro</span>. All rights reserved.</p>
+  <div class="footer-links-row">
+    <a href="index.html">Home</a>
+    <a href="service-export.html">Export</a>
+    <a href="service-finance.html">Finance</a>
+    <a href="service-logistics.html">Logistics</a>
+    <a href="index.html#inquiry">Contact</a>
+  </div>
+</footer>
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

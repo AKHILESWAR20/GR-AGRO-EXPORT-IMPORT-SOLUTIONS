@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Logistics & Tracking | GR Global Agro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--navy:#0B1F3A;--gold:#C9A84C;--gold-lite:#E2C97E;--cream:#F7F2E8;--white:#fff;--text-gray:#6B7280;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:'Lato',sans-serif;background:var(--cream);}
+    nav{position:fixed;top:0;left:0;width:100%;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(11,31,58,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,168,76,0.2);}
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .logo-icon{width:40px;height:40px;background:linear-gradient(135deg,var(--gold),var(--gold-lite));border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--navy);}
+    .logo-text span:first-child{display:block;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;color:var(--white);}
+    .logo-text span:last-child{font-size:0.6rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+    .nav-back{color:rgba(255,255,255,0.7);text-decoration:none;font-size:0.82rem;text-transform:uppercase;font-weight:700;transition:color 0.3s;display:flex;align-items:center;gap:8px;letter-spacing:1px;}
+    .nav-back:hover{color:var(--gold);}
+    .nav-cta{background:var(--gold);color:var(--navy);padding:8px 20px;border-radius:4px;font-weight:700;font-size:0.8rem;text-decoration:none;text-transform:uppercase;letter-spacing:1px;}
+
+    .service-hero{min-height:70vh;background:var(--navy);display:flex;align-items:center;padding:100px 8% 60px;position:relative;overflow:hidden;}
+    .hero-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(201,168,76,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.04) 1px,transparent 1px);background-size:40px 40px;}
+    .hero-content{max-width:620px;position:relative;z-index:2;}
+    .service-tag{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:16px;padding:6px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .hero-title em{color:var(--gold);font-style:italic;}
+    .hero-desc{font-size:1.05rem;line-height:1.8;color:rgba(255,255,255,0.65);margin-bottom:36px;}
+    .btn-gold{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.82rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid var(--gold);display:inline-block;margin-right:12px;}
+    .btn-gold:hover{background:transparent;color:var(--gold);}
+
+    .stats-bar{background:var(--gold);display:grid;grid-template-columns:repeat(4,1fr);}
+    .stat{padding:28px 20px;text-align:center;border-right:1px solid rgba(11,31,58,0.15);}
+    .stat:last-child{border-right:none;}
+    .stat strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--navy);}
+    .stat span{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:rgba(11,31,58,0.7);font-weight:700;}
+
+    .section{padding:90px 8%;}
+    .section-tag{font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;display:block;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--navy);margin-bottom:16px;}
+    .section-title em{color:var(--gold);font-style:italic;}
+    .section-desc{font-size:1rem;line-height:1.8;color:var(--text-gray);max-width:600px;margin-bottom:48px;}
+
+    .modes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    .mode-card{border-radius:12px;overflow:hidden;border:1px solid rgba(0,0,0,0.08);transition:all 0.3s;}
+    .mode-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.1);}
+    .mode-header{padding:36px;background:var(--navy);text-align:center;}
+    .mode-header i{font-size:3rem;color:var(--gold);margin-bottom:16px;display:block;}
+    .mode-header h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:700;color:var(--white);}
+    .mode-body{background:var(--white);padding:28px;}
+    .mode-body ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+    .mode-body li{display:flex;align-items:center;gap:10px;font-size:0.88rem;color:var(--text-gray);}
+    .mode-body li i{color:var(--gold);width:16px;}
+
+    .track-section{background:var(--navy);padding:90px 8%;}
+    .track-section .section-title{color:var(--white);}
+    .track-demo{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:36px;max-width:700px;margin:40px auto 0;}
+    .track-input-row{display:flex;gap:12px;margin-bottom:28px;}
+    .track-input{flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:14px 18px;color:var(--white);font-size:0.92rem;outline:none;font-family:'Lato',sans-serif;}
+    .track-input::placeholder{color:rgba(255,255,255,0.3);}
+    .track-btn{background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:14px 24px;font-weight:700;font-size:0.82rem;cursor:pointer;text-transform:uppercase;letter-spacing:1px;white-space:nowrap;}
+    .track-steps{display:flex;gap:0;position:relative;}
+    .track-steps::before{content:'';position:absolute;top:20px;left:20px;right:20px;height:2px;background:rgba(255,255,255,0.1);}
+    .t-step{flex:1;text-align:center;position:relative;z-index:1;}
+    .t-dot{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.07);border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:0.85rem;color:rgba(255,255,255,0.4);}
+    .t-dot.done{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+    .t-dot.active{background:rgba(201,168,76,0.15);border-color:var(--gold);color:var(--gold);}
+    .t-step p{font-size:0.75rem;color:rgba(255,255,255,0.4);}
+    .t-step p.active-text{color:var(--gold);}
+
+    .cta-section{background:linear-gradient(135deg,var(--navy),#162D4F);padding:80px 8%;text-align:center;}
+    .cta-section h2{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:700;color:var(--white);margin-bottom:16px;}
+    .cta-section h2 em{color:var(--gold);font-style:italic;}
+    .cta-section p{color:rgba(255,255,255,0.55);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;}
+
+    footer{background:#060F1E;padding:32px 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+    footer p{color:rgba(255,255,255,0.4);font-size:0.82rem;}
+    footer p span{color:var(--gold);}
+    .footer-links-row{display:flex;gap:24px;}
+    .footer-links-row a{color:rgba(255,255,255,0.4);text-decoration:none;font-size:0.78rem;transition:color 0.3s;}
+    .footer-links-row a:hover{color:var(--gold);}
+
+    .reveal{opacity:0;transform:translateY(24px);transition:all 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    @media(max-width:768px){.modes-grid{grid-template-columns:1fr;}.stats-bar{grid-template-columns:repeat(2,1fr);}.track-input-row{flex-direction:column;}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">GR</div>
+    <div class="logo-text"><span>GR Global Agro</span><span>Agri Export & Import</span></div>
+  </a>
+  <a href="index.html#services" class="nav-back"><i class="fas fa-arrow-left"></i> All Services</a>
+  <a href="index.html#inquiry" class="nav-cta">Get a Quote</a>
+</nav>
+
+<div class="service-hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-content">
+    <span class="service-tag"><i class="fas fa-route"></i> &nbsp; Service 04</span>
+    <h1 class="hero-title">Logistics & <em>Tracking</em></h1>
+    <p class="hero-desc">Real-time shipment tracking with multi-modal logistics solutions for sea, air, and land freight. Complete visibility over your supply chain from origin to destination.</p>
+    <a href="login.html" class="btn-gold"><i class="fas fa-satellite-dish"></i> Track Your Shipment</a>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><strong>Real</strong><span>Time Tracking</span></div>
+  <div class="stat"><strong>3</strong><span>Transport Modes</span></div>
+  <div class="stat"><strong>50+</strong><span>Countries</span></div>
+  <div class="stat"><strong>24/7</strong><span>Monitoring</span></div>
+</div>
+
+<div class="section" style="background:var(--cream)">
+  <span class="section-tag reveal">Transport Modes</span>
+  <h2 class="section-title reveal">Multi-Modal <em>Logistics</em></h2>
+  <p class="section-desc reveal">We offer complete logistics solutions across all major transport modes.</p>
+  <div class="modes-grid">
+    <div class="mode-card reveal">
+      <div class="mode-header"><i class="fas fa-ship"></i><h3>Sea Freight</h3></div>
+      <div class="mode-body"><ul>
+        <li><i class="fas fa-check"></i> FCL & LCL shipments</li>
+        <li><i class="fas fa-check"></i> Reefer containers</li>
+        <li><i class="fas fa-check"></i> Bulk & break-bulk cargo</li>
+        <li><i class="fas fa-check"></i> Port to port or door to door</li>
+        <li><i class="fas fa-check"></i> All major global ports</li>
+      </ul></div>
+    </div>
+    <div class="mode-card reveal" style="transition-delay:0.1s">
+      <div class="mode-header"><i class="fas fa-plane"></i><h3>Air Freight</h3></div>
+      <div class="mode-body"><ul>
+        <li><i class="fas fa-check"></i> Express air cargo</li>
+        <li><i class="fas fa-check"></i> Charter services</li>
+        <li><i class="fas fa-check"></i> Perishable goods handling</li>
+        <li><i class="fas fa-check"></i> Airport to door delivery</li>
+        <li><i class="fas fa-check"></i> 24hr transit options</li>
+      </ul></div>
+    </div>
+    <div class="mode-card reveal" style="transition-delay:0.2s">
+      <div class="mode-header"><i class="fas fa-truck"></i><h3>Land Freight</h3></div>
+      <div class="mode-body"><ul>
+        <li><i class="fas fa-check"></i> FTL & LTL options</li>
+        <li><i class="fas fa-check"></i> Cross-border trucking</li>
+        <li><i class="fas fa-check"></i> Temperature-controlled</li>
+        <li><i class="fas fa-check"></i> First & last mile</li>
+        <li><i class="fas fa-check"></i> Pan-India coverage</li>
+      </ul></div>
+    </div>
+  </div>
+</div>
+
+<div class="track-section">
+  <span class="section-tag reveal" style="color:var(--gold)">Live Tracking</span>
+  <h2 class="section-title reveal" style="color:var(--white);text-align:center">Track Your <em>Shipment</em></h2>
+  <div class="track-demo reveal">
+    <div class="track-input-row">
+      <input type="text" class="track-input" placeholder="Enter Tracking ID (e.g. TRK-20250101-001)"/>
+      <button class="track-btn" onclick="window.location.href='login.html'"><i class="fas fa-search"></i> Track</button>
+    </div>
+    <div class="track-steps">
+      <div class="t-step"><div class="t-dot done"><i class="fas fa-check"></i></div><p>Order Placed</p></div>
+      <div class="t-step"><div class="t-dot done"><i class="fas fa-check"></i></div><p>Picked Up</p></div>
+      <div class="t-step"><div class="t-dot active"><i class="fas fa-ship"></i></div><p class="active-text">In Transit</p></div>
+      <div class="t-step"><div class="t-dot"><i class="fas fa-anchor"></i></div><p>At Destination</p></div>
+      <div class="t-step"><div class="t-dot"><i class="fas fa-home"></i></div><p>Delivered</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <h2>Ship Smarter with <em>Real-Time</em> Visibility</h2>
+  <p>Get complete logistics support and live tracking for all your international shipments.</p>
+  <a href="index.html#inquiry" class="btn-gold">Get Logistics Quote</a>
+</div>
+
+<footer>
+  <p>© 2025 <span>GR Global Agro</span>. All rights reserved.</p>
+  <div class="footer-links-row">
+    <a href="index.html">Home</a>
+    <a href="service-export.html">Export</a>
+    <a href="service-import.html">Import</a>
+    <a href="service-finance.html">Finance</a>
+    <a href="index.html#inquiry">Contact</a>
+  </div>
+</footer>
+<script>
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
