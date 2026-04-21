@@ -802,8 +802,8 @@
   if (!token) window.location.href = "login.html";
 
   // ── Set user info
-  document.getElementById("userName").textContent    = user.name || "Client";
-  document.getElementById("avatarText").textContent  = (user.name || "C")[0].toUpperCase();
+  document.getElementById("userName").textContent   = user.name || "Client";
+  document.getElementById("avatarText").textContent = (user.name || "C")[0].toUpperCase();
 
   // ── Set date
   document.getElementById("currentDate").textContent =
@@ -815,12 +815,11 @@
 
   // ── Navigation
   function showPage(pageId, el) {
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-  document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-  document.getElementById("page-" + pageId).classList.add("active");
-
-  if (el) el.classList.add("active");
-}
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+    const pg = document.getElementById("page-" + pageId);
+    if (pg) pg.classList.add("active");
+    if (el) el.classList.add("active");
 
     const titles = {
       "overview":    "Overview",
@@ -831,25 +830,22 @@
       "upload":      "Upload Document",
       "inquiry":     "Send Inquiry"
     };
-    document.getElementById("pageTitle").textContent = titles[pageId] || pageId;
+    const titleEl = document.getElementById("pageTitle");
+    if (titleEl) titleEl.textContent = titles[pageId] || pageId;
 
     if (pageId === "overview" || pageId === "orders") loadOrders();
     if (pageId === "place-order") loadProducts();
     if (pageId === "documents") loadDocuments();
 
     // Close sidebar on mobile
-    document.getElementById("sidebar").classList.remove("open");
-  
+    const sb = document.getElementById("sidebar");
+    if (sb) sb.classList.remove("open");
+  }
 
   function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-
-  if (sidebar.classList.contains("open")) {
-    sidebar.classList.remove("open");
-  } else {
-    sidebar.classList.add("open");
+    const sidebar = document.getElementById("sidebar");
+    if (sidebar) sidebar.classList.toggle("open");
   }
-}
 
   // ── File preview
   document.getElementById("fileInput")?.addEventListener("change", function() {
@@ -866,52 +862,55 @@
       const res  = await fetch(`${BASE_URL}/orders/my`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
+      if (res.status === 401) { localStorage.clear(); window.location.href = "login.html"; return; }
       const data = await res.json();
 
       if (data.success && data.orders.length > 0) {
         const rows = data.orders.map(o => `
           <tr>
-            <td><strong>#${o.ORDER_ID}</strong></td>
-            <td>${o.PRODUCT_NAME}</td>
-            <td>${o.QUANTITY}</td>
-            <td>₹${parseFloat(o.TOTAL_PRICE).toLocaleString()}</td>
-            <td><span class="badge badge-${o.STATUS.toLowerCase()}">${o.STATUS}</span></td>
-            <td>${new Date(o.CREATED_AT).toLocaleDateString("en-IN")}</td>
+            <td><strong>#${o.order_id}</strong></td>
+            <td>${o.product_name}</td>
+            <td>${o.quantity}</td>
+            <td>₹${parseFloat(o.total_price).toLocaleString()}</td>
+            <td><span class="badge badge-${(o.status||'').toLowerCase()}">${o.status}</span></td>
+            <td>${new Date(o.created_at).toLocaleDateString("en-IN")}</td>
           </tr>`).join("");
 
-        document.getElementById("ordersTable").innerHTML = rows;
-        document.getElementById("overviewOrdersTable").innerHTML = rows;
+        const ot = document.getElementById("ordersTable");
+        const oot = document.getElementById("overviewOrdersTable");
+        if (ot)  ot.innerHTML  = rows;
+        if (oot) oot.innerHTML = rows;
 
-        // Stats
-        document.getElementById("stat-orders").textContent    = data.orders.length;
-        document.getElementById("stat-processing").textContent = data.orders.filter(o => o.STATUS === "Processing").length;
-        document.getElementById("stat-shipped").textContent    = data.orders.filter(o => o.STATUS === "Shipped").length;
-        document.getElementById("stat-delivered").textContent  = data.orders.filter(o => o.STATUS === "Delivered").length;
+        document.getElementById("stat-orders").textContent     = data.orders.length;
+        document.getElementById("stat-processing").textContent = data.orders.filter(o => o.status === "Processing").length;
+        document.getElementById("stat-shipped").textContent    = data.orders.filter(o => o.status === "Shipped").length;
+        document.getElementById("stat-delivered").textContent  = data.orders.filter(o => o.status === "Delivered").length;
       }
-    } catch(err) { console.error(err); }
+    } catch(err) { console.error("loadOrders error:", err); }
   }
 
-  // ── LOAD PRODUCTS
+  // ── LOAD PRODUCTS (for Place Order dropdown)
   async function loadProducts() {
     try {
       const res  = await fetch(`${BASE_URL}/products`);
       const data = await res.json();
       const sel  = document.getElementById("orderProduct");
+      if (!sel) return;
       sel.innerHTML = '<option value="">-- Select a product --</option>';
-      if (data.success && data.products.length > 0) {
+      if (data.success && data.products && data.products.length > 0) {
         data.products.forEach(p => {
-          sel.innerHTML += `<option value="${p.PRODUCT_ID}">${p.NAME} — ₹${p.PRICE}/${p.UNIT || "unit"}</option>`;
+          sel.innerHTML += `<option value="${p.product_id}">${p.name} — ₹${p.price} / ${p.unit || "unit"}</option>`;
         });
       } else {
         sel.innerHTML += '<option disabled>No products available yet</option>';
       }
-    } catch(err) { console.error(err); }
+    } catch(err) { console.error("loadProducts error:", err); }
   }
 
   // ── PLACE ORDER
   async function placeOrder() {
     const productId = document.getElementById("orderProduct").value;
-    const quantity = parseInt(document.getElementById("orderQty").value);
+    const quantity  = parseInt(document.getElementById("orderQty").value);
     const notes     = document.getElementById("orderNotes").value;
 
     document.getElementById("orderSuccess").classList.remove("show");
@@ -924,27 +923,21 @@
     }
 
     try {
-      const res = await fetch(`${BASE_URL}/orders/my`, {
-  headers: {
-    "Authorization": `Bearer ${token}`
-  }
-});
-
-if (res.status === 401) {
-  localStorage.clear();
-  window.location.href = "login.html";
-  return;
-}
-
-const data = await res.json();
+      const res  = await fetch(`${BASE_URL}/orders`, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
+        body:    JSON.stringify({ productId, quantity, notes })
+      });
+      const data = await res.json();
 
       if (data.success) {
         document.getElementById("orderSuccess").classList.add("show");
         document.getElementById("orderProduct").value = "";
         document.getElementById("orderQty").value     = "";
         document.getElementById("orderNotes").value   = "";
+        setTimeout(() => loadOrders(), 1000);
       } else {
-        document.getElementById("orderErrorMsg").textContent = data.message;
+        document.getElementById("orderErrorMsg").textContent = data.message || "Failed to place order.";
         document.getElementById("orderError").classList.add("show");
       }
     } catch(err) {
@@ -966,18 +959,17 @@ const data = await res.json();
 
       if (data.success) {
         const s = data.shipment;
-        document.getElementById("tr-id").textContent       = s.TRACKING_ID;
-        document.getElementById("tr-carrier").textContent  = s.CARRIER || "N/A";
-        document.getElementById("tr-origin").textContent   = s.ORIGIN  || "N/A";
-        document.getElementById("tr-dest").textContent     = s.DESTINATION || "N/A";
-        document.getElementById("tr-delivery").textContent = s.ESTIMATED_DELIVERY
-          ? new Date(s.ESTIMATED_DELIVERY).toLocaleDateString("en-IN") : "TBD";
+        document.getElementById("tr-id").textContent       = s.tracking_id;
+        document.getElementById("tr-carrier").textContent  = s.carrier || "N/A";
+        document.getElementById("tr-origin").textContent   = s.origin  || "N/A";
+        document.getElementById("tr-dest").textContent     = s.destination || "N/A";
+        document.getElementById("tr-delivery").textContent = s.estimated_delivery
+          ? new Date(s.estimated_delivery).toLocaleDateString("en-IN") : "TBD";
         document.getElementById("tr-status").innerHTML =
-          `<span class="badge badge-transit">${s.STATUS}</span>`;
+          `<span class="badge badge-transit">${s.status}</span>`;
 
-        // Timeline
-        const steps = ["Pending","In Transit","Out for Delivery","Delivered"];
-        const curIdx = steps.indexOf(s.STATUS);
+        const steps  = ["Pending","In Transit","Out for Delivery","Delivered"];
+        const curIdx = steps.indexOf(s.status);
         document.getElementById("trackTimeline").innerHTML = steps.map((step, i) => `
           <div class="timeline-item">
             <div class="timeline-dot ${i < curIdx ? 'done' : i === curIdx ? 'active' : 'pending'}">
@@ -1053,10 +1045,10 @@ const data = await res.json();
 
   // ── SEND INQUIRY
   async function sendInquiry() {
-    const name    = document.getElementById("inqName").value.trim();
-    const email   = document.getElementById("inqEmail").value.trim();
-    const service = document.getElementById("inqService").value;
-    const message = document.getElementById("inqMessage").value.trim();
+    const name    = document.getElementById("inqName")?.value.trim();
+    const email   = document.getElementById("inqEmail")?.value.trim();
+    const service = document.getElementById("inqService")?.value;
+    const message = document.getElementById("inqMessage")?.value.trim();
 
     document.getElementById("inquirySuccess").classList.remove("show");
     if (!name || !email || !message) { alert("Please fill all fields."); return; }
@@ -1070,7 +1062,8 @@ const data = await res.json();
       const data = await res.json();
       if (data.success) {
         document.getElementById("inquirySuccess").classList.add("show");
-        document.getElementById("inqMessage").value = "";
+        if (document.getElementById("inqMessage"))
+          document.getElementById("inqMessage").value = "";
       }
     } catch(err) { console.error(err); }
   }
@@ -1081,16 +1074,8 @@ const data = await res.json();
     localStorage.removeItem("user");
     window.location.href = "login.html";
   }
-// ── Close sidebar when clicking outside
-  document.addEventListener("click", function(e) {
-  const sidebar = document.getElementById("sidebar");
-  const hamburger = document.querySelector(".hamburger-btn");
 
-  if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-    sidebar.classList.remove("open");
-  }
-});
-  // ── Init
+  // ── Init — load orders on start
   loadOrders();
 </script>
 </body>
