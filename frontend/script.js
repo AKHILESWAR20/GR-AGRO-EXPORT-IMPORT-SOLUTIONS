@@ -16,13 +16,11 @@ if (navbar) {
 
 // ── Mobile menu open/close
 function toggleMenu() {
-  const menu       = document.getElementById('mobileMenu');
-  const overlay    = document.getElementById('menuOverlay');
-  const hamburger  = document.getElementById('hamburger');
+  const menu      = document.getElementById('mobileMenu');
+  const overlay   = document.getElementById('menuOverlay');
+  const hamburger = document.getElementById('hamburger');
   if (!menu) return;
-
-  const isOpen = menu.classList.contains('open');
-  if (isOpen) {
+  if (menu.classList.contains('open')) {
     closeMenu();
   } else {
     menu.classList.add('open');
@@ -31,7 +29,6 @@ function toggleMenu() {
     document.body.style.overflow = 'hidden';
   }
 }
-
 function closeMenu() {
   const menu      = document.getElementById('mobileMenu');
   const overlay   = document.getElementById('menuOverlay');
@@ -41,18 +38,12 @@ function closeMenu() {
   if (hamburger) hamburger.classList.remove('active');
   document.body.style.overflow = '';
 }
-
-// Close on ESC key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeMenu();
-});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
 
 // ── Scroll reveal
 const reveals  = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) e.target.classList.add('visible');
-  });
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.12 });
 reveals.forEach(r => observer.observe(r));
 
@@ -66,23 +57,21 @@ function animateCounter(el, target, duration = 1800) {
     el.textContent = Math.floor(start).toLocaleString();
   }, 16);
 }
-
 const counterObs = new IntersectionObserver((entries) => {
   entries.forEach(e => {
-    if (e.isIntersecting) {
-      animateCounter(e.target, +e.target.dataset.target);
-      counterObs.unobserve(e.target);
-    }
+    if (e.isIntersecting) { animateCounter(e.target, +e.target.dataset.target); counterObs.unobserve(e.target); }
   });
 }, { threshold: 0.5 });
 document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObs.observe(el));
 
-// ── Load Products from Backend
+// ── Load Products from Backend (with images!)
 async function loadProducts() {
   const container = document.getElementById('productContainer');
   if (!container) return;
 
-  container.innerHTML = `<div style="text-align:center;padding:40px;grid-column:1/-1"><i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#C9A84C"></i></div>`;
+  container.innerHTML = `<div style="text-align:center;padding:40px;grid-column:1/-1">
+    <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#C9A84C"></i>
+  </div>`;
 
   try {
     const res  = await fetch(`${BASE_URL}/products`);
@@ -91,9 +80,11 @@ async function loadProducts() {
     if (data.success && data.products && data.products.length > 0) {
       container.innerHTML = data.products.slice(0, 4).map((p, i) => `
         <div class="product-card reveal" style="transition-delay:${i * 0.1}s">
-          <div class="product-img">
+          <div class="product-img" style="${p.image_url
+            ? `background-image:url('${p.image_url}');background-size:cover;background-position:center;`
+            : ''}">
             <span class="product-tag">${p.stock_status || 'Export'}</span>
-            <i class="fas fa-box-open"></i>
+            ${p.image_url ? '' : '<i class="fas fa-box-open"></i>'}
           </div>
           <div class="product-info">
             <h4>${p.name}</h4>
@@ -105,11 +96,12 @@ async function loadProducts() {
           </div>
         </div>`).join('');
       container.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+
     } else {
       container.innerHTML = `
         <div class="product-card reveal">
           <div class="product-img"><span class="product-tag">Export</span><i class="fas fa-box-open"></i></div>
-          <div class="product-info"><h4>Agricultural Products</h4><p>Premium quality agri exports. MOQ applicable.</p><a href="login.html">Inquire Now</a></div>
+          <div class="product-info"><h4>Agricultural Products</h4><p>Premium quality agri exports.</p><a href="login.html">Inquire Now</a></div>
         </div>
         <div class="product-card reveal" style="transition-delay:0.1s">
           <div class="product-img"><span class="product-tag">Import</span><i class="fas fa-cubes"></i></div>
@@ -127,7 +119,9 @@ async function loadProducts() {
     }
   } catch(err) {
     console.error('Products error:', err);
-    container.innerHTML = `<div style="text-align:center;padding:40px;grid-column:1/-1;color:#6B7280"><p>Products coming soon. <a href="login.html" style="color:#C9A84C">Login to inquire.</a></p></div>`;
+    container.innerHTML = `<div style="text-align:center;padding:40px;grid-column:1/-1;color:#6B7280">
+      <p>Products coming soon. <a href="login.html" style="color:#C9A84C">Login to inquire.</a></p>
+    </div>`;
   }
 }
 
