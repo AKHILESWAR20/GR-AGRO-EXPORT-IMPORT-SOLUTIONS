@@ -524,6 +524,22 @@
       text-transform: uppercase; font-weight: 700;
       color: var(--gold); text-decoration: none;
     }
+    /* ── Product image fallback */
+.product-img {
+  min-height: 200px;
+  background-color: #0B1F3A;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-img i {
+  font-size: 3rem;
+  color: rgba(201,168,76,0.3);
+}
+
 
     /* ─── INQUIRY CTA ─── */
     /*  Premium Inquiry Form Box */
