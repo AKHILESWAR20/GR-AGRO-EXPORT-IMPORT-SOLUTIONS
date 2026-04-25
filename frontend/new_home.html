@@ -8,531 +8,272 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root {
-      --navy: #0B1F3A;
-      --navy-mid: #162D4F;
-      --gold: #C9A84C;
-      --gold-lite: #E2C97E;
-      --white: #FFFFFF;
-      --green: #2d6a2d;
-      --green-lite: #4CAF50;
+      --navy:#0B1F3A; --navy-mid:#162D4F; --gold:#C9A84C;
+      --gold-lite:#E2C97E; --white:#FFFFFF; --green:#2d6a2d;
     }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Lato', sans-serif; background: var(--navy); overflow-x: hidden; }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{font-family:'Lato',sans-serif;background:var(--navy);overflow-x:hidden;}
 
-    /* ══════════════ NAV ══════════════ */
-    nav {
-      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%; height: 72px;
-      background: rgba(11,31,58,0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201,168,76,0.25);
-      transition: all 0.3s;
+    /* ══ NAV ══ */
+    nav{
+      position:fixed;top:0;left:0;width:100%;z-index:1000;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 5%;height:72px;
+      background:rgba(11,31,58,0.95);backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(201,168,76,0.25);transition:all 0.3s;
     }
-    nav.scrolled { height: 60px; background: rgba(11,31,58,1); box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .logo img { height: 48px; width: auto; object-fit: contain; }
-    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; }
-    .nav-links a {
-      color: rgba(255,255,255,0.85); text-decoration: none;
-      font-size: 0.82rem; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; transition: color 0.3s;
+    nav.scrolled{height:60px;background:rgba(11,31,58,1);box-shadow:0 4px 20px rgba(0,0,0,0.4);}
+
+    /* Logo + Title SEPARATE */
+    .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .logo-img-wrap{
+      width:48px;height:48px;flex-shrink:0;
+      background:white;border-radius:8px;padding:3px;
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
     }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-cta {
-      background: var(--gold) !important; color: var(--navy) !important;
-      padding: 8px 20px !important; border-radius: 4px;
+    .logo-img-wrap img{width:100%;height:100%;object-fit:contain;}
+    .logo-title{display:flex;flex-direction:column;line-height:1.1;}
+    .logo-title .title-main{
+      font-family:'Cormorant Garamond',serif;
+      font-size:1.15rem;font-weight:700;color:var(--white);
+      letter-spacing:0.5px;white-space:nowrap;
     }
-    .nav-login {
-      border: 1.5px solid var(--gold); color: var(--gold) !important;
-      padding: 7px 18px !important; border-radius: 4px;
-      transition: all 0.3s !important;
+    .logo-title .title-sub{
+      font-size:0.58rem;color:var(--gold);
+      letter-spacing:2.5px;text-transform:uppercase;font-weight:700;
     }
-    .nav-login:hover { background: var(--gold) !important; color: var(--navy) !important; }
-    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
-    .hamburger span { display: block; width: 26px; height: 2px; background: var(--white); transition: all 0.3s; }
-    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-links{display:flex;align-items:center;gap:24px;list-style:none;}
+    .nav-links a{
+      color:rgba(255,255,255,0.8);text-decoration:none;
+      font-size:0.8rem;font-weight:700;letter-spacing:1.5px;
+      text-transform:uppercase;transition:color 0.3s;
+    }
+    .nav-links a:hover{color:var(--gold);}
+    .nav-cta{background:var(--gold)!important;color:var(--navy)!important;padding:8px 18px!important;border-radius:4px;}
+    .nav-login{border:1.5px solid var(--gold);color:var(--gold)!important;padding:7px 16px!important;border-radius:4px;transition:all 0.3s!important;}
+    .nav-login:hover{background:var(--gold)!important;color:var(--navy)!important;}
+
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;}
+    .hamburger span{display:block;width:26px;height:2px;background:var(--white);transition:all 0.3s;}
+    .hamburger.active span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .hamburger.active span:nth-child(2){opacity:0;transform:scaleX(0);}
+    .hamburger.active span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
 
     /* Mobile Menu */
-    .menu-overlay {
-      display: none; position: fixed; inset: 0; z-index: 998;
-      background: rgba(0,0,0,0.5); backdrop-filter: blur(2px);
-      opacity: 0; transition: opacity 0.35s;
+    .menu-overlay{display:none;position:fixed;inset:0;z-index:998;background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);opacity:0;transition:opacity 0.35s;}
+    .menu-overlay.show{display:block;opacity:1;}
+    .mobile-menu{
+      display:flex!important;flex-direction:column;
+      position:fixed;top:72px;left:0;width:100%;
+      background:rgba(11,31,58,0.98);padding:24px 8%;z-index:999;
+      border-top:1px solid rgba(201,168,76,0.2);gap:20px;backdrop-filter:blur(12px);
+      transform:translateY(-110%);opacity:0;pointer-events:none;
+      transition:transform 0.35s cubic-bezier(0.4,0,0.2,1),opacity 0.35s ease;
     }
-    .menu-overlay.show { display: block; opacity: 1; }
-    .mobile-menu {
-      display: flex !important; flex-direction: column;
-      position: fixed; top: 72px; left: 0; width: 100%;
-      background: rgba(11,31,58,0.98);
-      padding: 24px 8%; z-index: 999;
-      border-top: 1px solid rgba(201,168,76,0.2);
-      gap: 20px; backdrop-filter: blur(12px);
-      transform: translateY(-110%); opacity: 0; pointer-events: none;
-      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease;
+    .mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:all;}
+    .mobile-menu a{
+      color:rgba(255,255,255,0.8);text-decoration:none;font-size:1rem;font-weight:700;
+      letter-spacing:1px;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:16px;
+      transform:translateX(-20px);opacity:0;transition:transform 0.3s ease,opacity 0.3s ease,color 0.2s;
     }
-    .mobile-menu.open { transform: translateY(0); opacity: 1; pointer-events: all; }
-    .mobile-menu a {
-      color: rgba(255,255,255,0.8); text-decoration: none;
-      font-size: 1rem; font-weight: 700; letter-spacing: 1px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding-bottom: 16px;
-      transform: translateX(-20px); opacity: 0;
-      transition: transform 0.3s ease, opacity 0.3s ease, color 0.2s;
-    }
-    .mobile-menu.open a { transform: translateX(0); opacity: 1; }
-    .mobile-menu.open a:nth-child(1) { transition-delay: 0.05s; }
-    .mobile-menu.open a:nth-child(2) { transition-delay: 0.1s; }
-    .mobile-menu.open a:nth-child(3) { transition-delay: 0.15s; }
-    .mobile-menu.open a:nth-child(4) { transition-delay: 0.2s; }
-    .mobile-menu.open a:nth-child(5) { transition-delay: 0.25s; }
-    .mobile-menu a:last-child { border-bottom: none; }
-    .mobile-menu a:hover { color: var(--gold); }
-    .mobile-login-btn {
-      background: var(--gold) !important; color: var(--navy) !important;
-      text-align: center; padding: 12px !important; border-radius: 4px;
-      font-weight: 700 !important; border-bottom: none !important;
-    }
+    .mobile-menu.open a{transform:translateX(0);opacity:1;}
+    .mobile-menu.open a:nth-child(1){transition-delay:0.05s;}
+    .mobile-menu.open a:nth-child(2){transition-delay:0.1s;}
+    .mobile-menu.open a:nth-child(3){transition-delay:0.15s;}
+    .mobile-menu.open a:nth-child(4){transition-delay:0.2s;}
+    .mobile-menu.open a:nth-child(5){transition-delay:0.25s;}
+    .mobile-menu a:last-child{border-bottom:none;}
+    .mobile-menu a:hover{color:var(--gold);}
+    .mobile-login-btn{background:var(--gold)!important;color:var(--navy)!important;text-align:center;padding:12px!important;border-radius:4px;font-weight:700!important;border-bottom:none!important;}
 
-    /* ══════════════ SECTION 1 — HERO SLIDESHOW ══════════════ */
-    #hero-slideshow {
-      position: relative; width: 100%; height: 100vh;
-      overflow: hidden; margin-top: 0;
+    /* ══ SECTION 1 — HERO SLIDESHOW ══ */
+    #hero-slideshow{position:relative;width:100%;height:100vh;overflow:hidden;}
+    .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease;}
+    .slide.active{opacity:1;}
+    .slide::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to bottom,rgba(11,31,58,0.25) 0%,rgba(11,31,58,0.1) 40%,rgba(11,31,58,0.6) 75%,rgba(11,31,58,0.88) 100%);
     }
-    .slide {
-      position: absolute; inset: 0;
-      background-size: cover; background-position: center;
-      opacity: 0; transition: opacity 1.2s ease;
-    }
-    .slide.active { opacity: 1; }
-    .slide::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(
-        to bottom,
-        rgba(11,31,58,0.3) 0%,
-        rgba(11,31,58,0.15) 40%,
-        rgba(11,31,58,0.6) 80%,
-        rgba(11,31,58,0.85) 100%
-      );
-    }
-    /* Individual slide backgrounds */
-    .slide-1 { background-image: url('agri1.jpg'); }
-    .slide-2 { background-image: url('agri2.jpg'); }
-    .slide-3 { background-image: url('agri3.jpg'); }
-    .slide-4 { background-image: url('agri4.jpg'); }
-    .slide-5 { background-image: url('agri5.jpg'); }
-    .slide-6 { background-image: url('agri6.jpg'); }
+    /* ⭐ FIXED IMAGE PATHS — .jpeg extension + new_home_page/ folder */
+    .slide-1{background-image:url('new_home_page/agri1.jpeg');}
+    .slide-2{background-image:url('new_home_page/agri2.jpeg');}
+    .slide-3{background-image:url('new_home_page/agri3.jpeg');}
+    .slide-4{background-image:url('new_home_page/agri4.jpeg');}
+    .slide-5{background-image:url('new_home_page/agri5.jpeg');}
+    .slide-6{background-image:url('new_home_page/agri6.jpeg');}
 
-    /* Slide caption */
-    .slide-caption {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 40px 8% 120px;
-      z-index: 2;
+    .slide-caption{position:absolute;bottom:0;left:0;right:0;padding:40px 8% 120px;z-index:2;}
+    .slide-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);
+      padding:6px 16px;border-radius:50px;margin-bottom:16px;
     }
-    .slide-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(201,168,76,0.15);
-      border: 1px solid rgba(201,168,76,0.4);
-      padding: 6px 16px; border-radius: 50px; margin-bottom: 16px;
+    .slide-badge span{font-size:0.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:700;}
+    .slide-title{
+      font-family:'Cormorant Garamond',serif;
+      font-size:clamp(2.2rem,5vw,4rem);font-weight:700;
+      color:var(--white);line-height:1.1;margin-bottom:12px;
+      text-shadow:0 2px 20px rgba(0,0,0,0.5);
     }
-    .slide-badge span { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); font-weight: 700; }
-    .slide-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      font-weight: 700; color: var(--white);
-      line-height: 1.1; margin-bottom: 12px;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
-    }
-    .slide-title em { color: var(--gold); font-style: italic; }
-    .slide-desc {
-      font-size: clamp(0.95rem, 2vw, 1.15rem);
-      color: rgba(255,255,255,0.85);
-      line-height: 1.7; max-width: 600px;
-      text-shadow: 0 1px 8px rgba(0,0,0,0.6);
-      margin-bottom: 28px;
-    }
-    .slide-btns { display: flex; gap: 16px; flex-wrap: wrap; }
-    .btn-gold {
-      background: var(--gold); color: var(--navy);
-      padding: 14px 32px; border-radius: 4px;
-      font-weight: 700; font-size: 0.85rem;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      text-decoration: none; transition: all 0.3s;
-      border: 2px solid var(--gold); display: inline-flex;
-      align-items: center; gap: 8px;
-    }
-    .btn-gold:hover { background: transparent; color: var(--gold); }
-    .btn-white {
-      background: rgba(255,255,255,0.1); color: var(--white);
-      padding: 14px 32px; border-radius: 4px;
-      font-weight: 700; font-size: 0.85rem;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      text-decoration: none; transition: all 0.3s;
-      border: 2px solid rgba(255,255,255,0.4);
-      display: inline-flex; align-items: center; gap: 8px;
-      backdrop-filter: blur(4px);
-    }
-    .btn-white:hover { border-color: var(--gold); color: var(--gold); }
+    .slide-title em{color:var(--gold);font-style:italic;}
+    .slide-desc{font-size:clamp(0.95rem,2vw,1.15rem);color:rgba(255,255,255,0.88);line-height:1.7;max-width:580px;text-shadow:0 1px 8px rgba(0,0,0,0.6);margin-bottom:28px;}
+    .slide-btns{display:flex;gap:16px;flex-wrap:wrap;}
+    .btn-gold{background:var(--gold);color:var(--navy);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.85rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid var(--gold);display:inline-flex;align-items:center;gap:8px;}
+    .btn-gold:hover{background:transparent;color:var(--gold);}
+    .btn-white{background:rgba(255,255,255,0.12);color:var(--white);padding:14px 32px;border-radius:4px;font-weight:700;font-size:0.85rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid rgba(255,255,255,0.4);display:inline-flex;align-items:center;gap:8px;backdrop-filter:blur(4px);}
+    .btn-white:hover{border-color:var(--gold);color:var(--gold);}
+    .slide-dots{position:absolute;bottom:72px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:3;}
+    .dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s;border:1px solid rgba(255,255,255,0.3);}
+    .dot.active{background:var(--gold);width:24px;border-radius:4px;}
+    .slide-arrow{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;background:rgba(255,255,255,0.1);backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);cursor:pointer;z-index:3;font-size:1rem;transition:all 0.3s;}
+    .slide-arrow:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
+    .arrow-left{left:20px;}
+    .arrow-right{right:20px;}
+    .scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:3;display:flex;flex-direction:column;align-items:center;gap:6px;}
+    .scroll-hint span{font-size:0.65rem;letter-spacing:2px;color:rgba(255,255,255,0.5);text-transform:uppercase;}
+    .scroll-hint i{color:rgba(255,255,255,0.4);animation:bounce 2s infinite;}
+    @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(6px);}}
 
-    /* Slide indicators */
-    .slide-dots {
-      position: absolute; bottom: 70px; left: 50%;
-      transform: translateX(-50%);
-      display: flex; gap: 10px; z-index: 3;
-    }
-    .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255,255,255,0.4);
-      cursor: pointer; transition: all 0.3s;
-      border: 1px solid rgba(255,255,255,0.3);
-    }
-    .dot.active { background: var(--gold); width: 24px; border-radius: 4px; }
+    /* ══ SECTION 2 — SERVICES ══ */
+    #services-section{position:relative;padding:100px 8%;background:var(--navy);overflow:hidden;}
+    .services-bg{position:absolute;inset:0;background-image:url('new_home_page/agri6.jpeg');background-size:cover;background-position:center;opacity:0.1;}
+    .services-bg::after{content:'';position:absolute;inset:0;background:rgba(11,31,58,0.92);}
+    .services-content{position:relative;z-index:2;}
+    .section-tag{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;padding:6px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:16px;}
+    .section-title em{color:var(--gold);font-style:italic;}
+    .section-desc{color:rgba(255,255,255,0.55);font-size:1rem;line-height:1.8;max-width:600px;margin-bottom:60px;}
+    .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:50px;}
+    .service-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:36px 28px;text-align:center;transition:all 0.3s;text-decoration:none;display:block;position:relative;overflow:hidden;}
+    .service-card::before{content:'';position:absolute;bottom:0;left:0;width:0;height:3px;background:var(--gold);transition:width 0.3s;}
+    .service-card:hover{background:rgba(201,168,76,0.08);border-color:rgba(201,168,76,0.3);transform:translateY(-6px);}
+    .service-card:hover::before{width:100%;}
+    .service-card-icon{width:70px;height:70px;margin:0 auto 20px;background:linear-gradient(135deg,var(--gold),var(--gold-lite));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;}
+    .service-card h3{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:var(--white);margin-bottom:10px;}
+    .service-card p{font-size:0.88rem;color:rgba(255,255,255,0.55);line-height:1.7;}
+    .card-arrow{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:0.78rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;color:var(--gold);}
+    .services-cta{text-align:center;margin-top:20px;}
+    .services-cta p{color:rgba(255,255,255,0.5);margin-bottom:20px;font-size:0.95rem;}
 
-    /* Slide arrows */
-    .slide-arrow {
-      position: absolute; top: 50%; transform: translateY(-50%);
-      width: 50px; height: 50px;
-      background: rgba(255,255,255,0.1); backdrop-filter: blur(4px);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; color: var(--white);
-      cursor: pointer; z-index: 3; font-size: 1rem;
-      transition: all 0.3s;
-    }
-    .slide-arrow:hover { background: var(--gold); border-color: var(--gold); color: var(--navy); }
-    .arrow-left { left: 20px; }
-    .arrow-right { right: 20px; }
+    /* ══ SECTION 3 — WHO WE SERVE ══ */
+    #who-we-serve{padding:100px 8%;background:linear-gradient(180deg,#0B1F3A 0%,#0d2640 50%,#0B1F3A 100%);position:relative;overflow:hidden;}
+    #who-we-serve::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+    .serve-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+    .serve-images{position:relative;padding-bottom:30px;}
+    .serve-img-main{width:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden;border:2px solid rgba(201,168,76,0.2);}
+    .serve-img-main img{width:100%;height:100%;object-fit:cover;}
+    .serve-img-float{position:absolute;bottom:-10px;right:-20px;width:200px;border-radius:8px;overflow:hidden;border:3px solid rgba(201,168,76,0.4);box-shadow:0 20px 40px rgba(0,0,0,0.5);}
+    .serve-img-float img{width:100%;height:140px;object-fit:cover;}
+    .serve-badge{position:absolute;top:-16px;left:-16px;background:var(--gold);border-radius:8px;padding:16px 20px;text-align:center;z-index:2;}
+    .serve-badge strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--navy);}
+    .serve-badge span{font-size:0.68rem;letter-spacing:2px;text-transform:uppercase;color:rgba(11,31,58,0.7);font-weight:700;}
+    .serve-desc{color:rgba(255,255,255,0.6);font-size:1rem;line-height:1.8;margin-bottom:28px;}
+    .mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+    .mini-stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:20px;text-align:center;}
+    .mini-stat strong{display:block;font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--gold);}
+    .mini-stat span{font-size:0.72rem;color:rgba(255,255,255,0.4);letter-spacing:1.5px;text-transform:uppercase;}
+    .serve-points{display:flex;flex-direction:column;gap:14px;margin-bottom:32px;}
+    .serve-point{display:flex;align-items:flex-start;gap:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:16px 20px;transition:all 0.3s;}
+    .serve-point:hover{border-color:rgba(201,168,76,0.2);background:rgba(201,168,76,0.04);}
+    .serve-point-icon{width:40px;height:40px;flex-shrink:0;background:rgba(201,168,76,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;}
+    .serve-point-text h4{font-size:0.92rem;font-weight:700;color:var(--white);margin-bottom:4px;}
+    .serve-point-text p{font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.5;}
 
-    /* Scroll indicator */
-    .scroll-hint {
-      position: absolute; bottom: 20px; left: 50%;
-      transform: translateX(-50%); z-index: 3;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
-    }
-    .scroll-hint span { font-size: 0.65rem; letter-spacing: 2px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
-    .scroll-hint i { color: rgba(255,255,255,0.4); animation: bounce 2s infinite; }
-    @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(6px);} }
+    /* ══ SECTION 4 — INQUIRY + PRODUCTS ══ */
+    #inquiry-products{padding:100px 8%;background:#060F1E;position:relative;overflow:hidden;}
+    #inquiry-products::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+    .inquiry-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+    .products-side h2,.inquiry-side h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--white);margin-bottom:8px;}
+    .products-side h2 em,.inquiry-side h2 em{color:var(--gold);font-style:italic;}
+    .products-side>p,.inquiry-side>p{color:rgba(255,255,255,0.5);font-size:0.9rem;margin-bottom:28px;}
+    .mini-product-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    .mini-product-card{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);transition:all 0.3s;text-decoration:none;}
+    .mini-product-card:hover{transform:translateY(-3px);border-color:rgba(201,168,76,0.3);}
+    .mini-product-img{width:100%;height:140px;background:linear-gradient(135deg,var(--navy-mid),#1E3A5F);display:flex;align-items:center;justify-content:center;font-size:2.5rem;color:rgba(201,168,76,0.3);background-size:cover;background-position:center;position:relative;}
+    .mini-product-tag{position:absolute;top:8px;left:8px;background:var(--gold);color:var(--navy);font-size:0.6rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
+    .mini-product-info{background:rgba(255,255,255,0.04);padding:14px;}
+    .mini-product-info h4{font-size:0.9rem;font-weight:700;color:var(--white);margin-bottom:4px;}
+    .mini-product-info p{font-size:0.75rem;color:var(--gold);font-weight:700;}
+    .inquiry-form{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:36px;}
+    .form-row{margin-bottom:16px;}
+    .form-row label{display:block;font-size:0.72rem;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);font-weight:700;margin-bottom:8px;}
+    .form-row input,.form-row select,.form-row textarea{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:13px 16px;color:var(--white);font-family:'Lato',sans-serif;font-size:0.92rem;outline:none;transition:border-color 0.3s;}
+    .form-row input::placeholder,.form-row textarea::placeholder{color:rgba(255,255,255,0.2);}
+    .form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:var(--gold);}
+    .form-row textarea{min-height:100px;resize:vertical;}
+    .form-row select option{background:var(--navy);}
+    .form-submit{width:100%;background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:15px;font-family:'Lato',sans-serif;font-size:0.85rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;cursor:pointer;transition:all 0.3s;}
+    .form-submit:hover{background:var(--gold-lite);transform:translateY(-1px);}
+    .form-submit:disabled{opacity:0.7;cursor:not-allowed;}
 
-    /* ══════════════ SECTION 2 — SERVICES ══════════════ */
-    #services-section {
-      position: relative; padding: 100px 8%;
-      background: var(--navy);
-      overflow: hidden;
-    }
-    .services-bg {
-      position: absolute; inset: 0;
-      background-image: url('agri6.jpg');
-      background-size: cover; background-position: center;
-      opacity: 0.12;
-    }
-    .services-bg::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(11,31,58,0.95) 0%, rgba(11,31,58,0.85) 100%);
-    }
-    .services-content { position: relative; z-index: 2; }
-    .section-tag {
-      display: inline-block; font-size: 0.72rem; letter-spacing: 3px;
-      text-transform: uppercase; color: var(--gold); font-weight: 700;
-      margin-bottom: 14px; padding: 6px 16px;
-      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2);
-      border-radius: 50px;
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 700; color: var(--white); line-height: 1.1;
-      margin-bottom: 16px;
-    }
-    .section-title em { color: var(--gold); font-style: italic; }
-    .section-desc { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.8; max-width: 600px; margin-bottom: 60px; }
+    /* ══ CTA BANNER ══ */
+    #cta-banner{padding:80px 8%;text-align:center;background:linear-gradient(135deg,var(--green) 0%,#1a4a1a 100%);position:relative;overflow:hidden;}
+    #cta-banner::before{content:'';position:absolute;inset:0;background-image:url('new_home_page/agri1.jpeg');background-size:cover;background-position:center;opacity:0.1;}
+    .cta-content{position:relative;z-index:2;}
+    #cta-banner h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--white);margin-bottom:16px;}
+    #cta-banner h2 em{color:var(--gold-lite);font-style:italic;}
+    #cta-banner p{color:rgba(255,255,255,0.75);font-size:1rem;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;}
+    .cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+    .btn-explore{background:var(--white);color:var(--green);padding:16px 36px;border-radius:4px;font-weight:700;font-size:0.9rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;display:inline-flex;align-items:center;gap:10px;}
+    .btn-explore:hover{background:var(--gold);color:var(--navy);}
+    .btn-login-cta{background:transparent;color:var(--white);padding:16px 36px;border-radius:4px;font-weight:700;font-size:0.9rem;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;border:2px solid rgba(255,255,255,0.5);display:inline-flex;align-items:center;gap:10px;}
+    .btn-login-cta:hover{border-color:var(--gold);color:var(--gold);}
 
-    .services-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 24px; margin-bottom: 50px;
-    }
-    .service-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px; padding: 36px 28px;
-      text-align: center; transition: all 0.3s;
-      text-decoration: none; display: block;
-      position: relative; overflow: hidden;
-    }
-    .service-card::before {
-      content: ''; position: absolute; bottom: 0; left: 0;
-      width: 0; height: 3px; background: var(--gold);
-      transition: width 0.3s;
-    }
-    .service-card:hover {
-      background: rgba(201,168,76,0.08);
-      border-color: rgba(201,168,76,0.3);
-      transform: translateY(-6px);
-    }
-    .service-card:hover::before { width: 100%; }
-    .service-card-icon {
-      width: 70px; height: 70px; margin: 0 auto 20px;
-      background: linear-gradient(135deg, var(--gold), var(--gold-lite));
-      border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; font-size: 1.8rem;
-    }
-    .service-card h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; font-weight: 700;
-      color: var(--white); margin-bottom: 10px;
-    }
-    .service-card p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.7; }
-    .service-card .card-arrow {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 16px; font-size: 0.78rem;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      font-weight: 700; color: var(--gold);
-    }
+    /* ══ FOOTER ══ */
+    footer{background:#030912;padding:36px 8%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+    .footer-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .footer-logo-img{width:42px;height:42px;background:white;border-radius:6px;padding:3px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+    .footer-logo-img img{width:100%;height:100%;object-fit:contain;}
+    .footer-logo-text .title-main{display:block;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:700;color:var(--white);}
+    .footer-logo-text .title-sub{font-size:0.55rem;color:var(--gold);letter-spacing:2px;text-transform:uppercase;}
+    footer p{color:rgba(255,255,255,0.35);font-size:0.82rem;}
+    footer p span{color:var(--gold);}
+    .footer-links{display:flex;gap:20px;flex-wrap:wrap;}
+    .footer-links a{color:rgba(255,255,255,0.35);text-decoration:none;font-size:0.78rem;transition:color 0.3s;}
+    .footer-links a:hover{color:var(--gold);}
 
-    .services-cta { text-align: center; margin-top: 20px; }
-    .services-cta p { color: rgba(255,255,255,0.5); margin-bottom: 20px; font-size: 0.95rem; }
+    #scrollTop{position:fixed;bottom:28px;right:28px;width:44px;height:44px;background:var(--gold);border:none;border-radius:4px;color:var(--navy);font-size:1rem;cursor:pointer;opacity:0;pointer-events:none;transition:all 0.3s;z-index:999;}
+    #scrollTop.visible{opacity:1;pointer-events:all;}
+    #scrollTop:hover{background:var(--gold-lite);}
 
-    /* ══════════════ SECTION 3 — WHO WE SERVE (Creative) ══════════════ */
-    #who-we-serve {
-      padding: 100px 8%;
-      background: linear-gradient(180deg, #0B1F3A 0%, #0d2640 50%, #0B1F3A 100%);
-      position: relative; overflow: hidden;
-    }
-    #who-we-serve::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 4px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .serve-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .reveal{opacity:0;transform:translateY(24px);transition:all 0.7s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
 
-    .serve-images { position: relative; }
-    .serve-img-main {
-      width: 100%; aspect-ratio: 4/3;
-      border-radius: 12px; overflow: hidden;
-      border: 2px solid rgba(201,168,76,0.2);
+    /* ══ RESPONSIVE ══ */
+    @media(max-width:1024px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:768px){
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      .services-grid{grid-template-columns:1fr;}
+      .serve-grid{grid-template-columns:1fr;gap:50px;}
+      .serve-img-float{display:none;}
+      .serve-badge{top:-10px;left:10px;}
+      .inquiry-grid{grid-template-columns:1fr;}
+      .logo-title .title-main{font-size:0.95rem;}
+      .slide-arrow{display:none;}
     }
-    .serve-img-main img { width: 100%; height: 100%; object-fit: cover; }
-    .serve-img-float {
-      position: absolute; bottom: -30px; right: -20px;
-      width: 200px; border-radius: 8px; overflow: hidden;
-      border: 3px solid rgba(201,168,76,0.4);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-    .serve-img-float img { width: 100%; height: 140px; object-fit: cover; }
-    .serve-badge {
-      position: absolute; top: -20px; left: -20px;
-      background: var(--gold); border-radius: 8px;
-      padding: 16px 20px; text-align: center;
-    }
-    .serve-badge strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--navy); }
-    .serve-badge span { font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--navy-mid); font-weight: 700; }
-
-    .serve-content .section-title { margin-bottom: 20px; }
-    .serve-desc { color: rgba(255,255,255,0.6); font-size: 1rem; line-height: 1.8; margin-bottom: 36px; }
-    .serve-points { display: flex; flex-direction: column; gap: 16px; margin-bottom: 36px; }
-    .serve-point {
-      display: flex; align-items: flex-start; gap: 14px;
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 10px; padding: 16px 20px; transition: all 0.3s;
-    }
-    .serve-point:hover { border-color: rgba(201,168,76,0.2); background: rgba(201,168,76,0.04); }
-    .serve-point-icon { width: 40px; height: 40px; flex-shrink: 0; background: rgba(201,168,76,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; }
-    .serve-point-text h4 { font-size: 0.92rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-    .serve-point-text p { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 1.5; }
-
-    /* Stats bar */
-    .mini-stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 16px; margin-bottom: 36px;
-    }
-    .mini-stat {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 8px; padding: 20px; text-align: center;
-    }
-    .mini-stat strong { display: block; font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--gold); }
-    .mini-stat span { font-size: 0.72rem; color: rgba(255,255,255,0.4); letter-spacing: 1.5px; text-transform: uppercase; }
-
-    /* ══════════════ SECTION 4 — INQUIRY + PRODUCTS ══════════════ */
-    #inquiry-products {
-      padding: 100px 8%;
-      background: #060F1E;
-      position: relative; overflow: hidden;
-    }
-    #inquiry-products::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 4px; background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .inquiry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-
-    /* Products side */
-    .products-side h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 700; color: var(--white);
-      margin-bottom: 8px;
-    }
-    .products-side h2 em { color: var(--gold); font-style: italic; }
-    .products-side p { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 28px; }
-
-    .mini-product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .mini-product-card {
-      border-radius: 10px; overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: all 0.3s; text-decoration: none;
-    }
-    .mini-product-card:hover { transform: translateY(-3px); border-color: rgba(201,168,76,0.3); }
-    .mini-product-img {
-      width: 100%; height: 140px;
-      background: linear-gradient(135deg, var(--navy-mid), #1E3A5F);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.5rem; color: rgba(201,168,76,0.3);
-      background-size: cover; background-position: center;
-      position: relative;
-    }
-    .mini-product-tag {
-      position: absolute; top: 8px; left: 8px;
-      background: var(--gold); color: var(--navy);
-      font-size: 0.6rem; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; padding: 3px 8px; border-radius: 2px;
-    }
-    .mini-product-info { background: rgba(255,255,255,0.04); padding: 14px; }
-    .mini-product-info h4 { font-size: 0.9rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
-    .mini-product-info p { font-size: 0.75rem; color: var(--gold); font-weight: 700; }
-
-    /* Inquiry form */
-    .inquiry-side h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 700; color: var(--white); margin-bottom: 8px;
-    }
-    .inquiry-side h2 em { color: var(--gold); font-style: italic; }
-    .inquiry-side p { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 28px; }
-
-    .inquiry-form {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px; padding: 36px;
-    }
-    .form-row { margin-bottom: 16px; }
-    .form-row label { display: block; font-size: 0.72rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.4); font-weight: 700; margin-bottom: 8px; }
-    .form-row input, .form-row select, .form-row textarea {
-      width: 100%; background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12); border-radius: 8px;
-      padding: 13px 16px; color: var(--white);
-      font-family: 'Lato', sans-serif; font-size: 0.92rem;
-      outline: none; transition: border-color 0.3s;
-    }
-    .form-row input::placeholder, .form-row textarea::placeholder { color: rgba(255,255,255,0.2); }
-    .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--gold); }
-    .form-row textarea { min-height: 100px; resize: vertical; }
-    .form-row select option { background: var(--navy); color: var(--white); }
-    .form-submit {
-      width: 100%; background: var(--gold); color: var(--navy);
-      border: none; border-radius: 8px; padding: 15px;
-      font-family: 'Lato', sans-serif; font-size: 0.85rem;
-      letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
-      cursor: pointer; transition: all 0.3s;
-    }
-    .form-submit:hover { background: var(--gold-lite); transform: translateY(-1px); }
-    .form-submit:disabled { opacity: 0.7; cursor: not-allowed; }
-
-    /* ══════════════ CTA BANNER ══════════════ */
-    #cta-banner {
-      padding: 80px 8%; text-align: center;
-      background: linear-gradient(135deg, var(--green) 0%, #1a4a1a 100%);
-      position: relative; overflow: hidden;
-    }
-    #cta-banner::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: url('agri1.jpg');
-      background-size: cover; background-position: center;
-      opacity: 0.1;
-    }
-    .cta-content { position: relative; z-index: 2; }
-    #cta-banner h2 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
-      color: var(--white); margin-bottom: 16px;
-    }
-    #cta-banner h2 em { color: var(--gold-lite); font-style: italic; }
-    #cta-banner p { color: rgba(255,255,255,0.75); font-size: 1rem; margin-bottom: 36px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-explore {
-      background: var(--white); color: var(--green);
-      padding: 16px 36px; border-radius: 4px;
-      font-weight: 700; font-size: 0.9rem;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      text-decoration: none; transition: all 0.3s;
-      display: inline-flex; align-items: center; gap: 10px;
-    }
-    .btn-explore:hover { background: var(--gold); color: var(--navy); }
-    .btn-login-cta {
-      background: transparent; color: var(--white);
-      padding: 16px 36px; border-radius: 4px;
-      font-weight: 700; font-size: 0.9rem;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      text-decoration: none; transition: all 0.3s;
-      border: 2px solid rgba(255,255,255,0.5);
-      display: inline-flex; align-items: center; gap: 10px;
-    }
-    .btn-login-cta:hover { border-color: var(--gold); color: var(--gold); }
-
-    /* ══════════════ FOOTER ══════════════ */
-    footer {
-      background: #030912; padding: 40px 8%;
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 20px;
-    }
-    .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-    .footer-logo img { height: 44px; width: auto; object-fit: contain; background: white; border-radius: 6px; padding: 3px 6px; }
-    footer p { color: rgba(255,255,255,0.35); font-size: 0.82rem; }
-    footer p span { color: var(--gold); }
-    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .footer-links a { color: rgba(255,255,255,0.35); text-decoration: none; font-size: 0.78rem; transition: color 0.3s; }
-    .footer-links a:hover { color: var(--gold); }
-
-    /* Scroll to top */
-    #scrollTop {
-      position: fixed; bottom: 28px; right: 28px;
-      width: 44px; height: 44px; background: var(--gold);
-      border: none; border-radius: 4px; color: var(--navy);
-      font-size: 1rem; cursor: pointer;
-      opacity: 0; pointer-events: none; transition: all 0.3s; z-index: 999;
-    }
-    #scrollTop.visible { opacity: 1; pointer-events: all; }
-    #scrollTop:hover { background: var(--gold-lite); }
-
-    /* Reveal animation */
-    .reveal { opacity: 0; transform: translateY(24px); transition: all 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-
-    /* ══════════════ RESPONSIVE ══════════════ */
-    @media (max-width: 1024px) {
-      .services-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .services-grid { grid-template-columns: 1fr; }
-      .serve-grid { grid-template-columns: 1fr; gap: 40px; }
-      .serve-img-float { display: none; }
-      .serve-badge { top: -10px; left: 10px; }
-      .inquiry-grid { grid-template-columns: 1fr; }
-      .mini-stats { grid-template-columns: repeat(3, 1fr); }
-      .slide-title { font-size: 1.8rem; }
-      .slide-arrow { display: none; }
-    }
-    @media (max-width: 500px) {
-      .mini-product-grid { grid-template-columns: 1fr; }
-      .mini-stats { grid-template-columns: 1fr; }
+    @media(max-width:500px){
+      .mini-product-grid{grid-template-columns:1fr;}
+      .mini-stats{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
 
-<!-- ══════════ NAV ══════════ -->
+<!-- ══ NAV ══ -->
 <nav id="navbar">
+  <!-- ⭐ LOGO + TITLE SEPARATE -->
   <a href="new_home.html" class="logo">
-    <img src="new_logo.jpeg" alt="GR Global Agro Exim"/>
+    <div class="logo-img-wrap">
+      <img src="new_home_page/new_logo.jpeg" alt="GR Global Agro Exim Logo"/>
+    </div>
+    <div class="logo-title">
+      <span class="title-main">GR GLOBAL AGRO EXIM</span>
+      <span class="title-sub">Agri Export & Import Solutions</span>
+    </div>
   </a>
   <ul class="nav-links">
     <li><a href="#services-section">Services</a></li>
@@ -547,20 +288,19 @@
   </div>
 </nav>
 
-<!-- Mobile Menu -->
+<!-- Mobile Menu Overlay -->
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#services-section" onclick="closeMenu()">Services</a>
-  <a href="#who-we-serve"     onclick="closeMenu()">About Us</a>
-  <a href="#inquiry-products" onclick="closeMenu()">Products</a>
-  <a href="#inquiry-products" onclick="closeMenu()">Contact</a>
-  <a href="login.html"        class="mobile-login-btn"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</a>
+  <a href="#services-section" onclick="closeMenu()">🌾 Services</a>
+  <a href="#who-we-serve"     onclick="closeMenu()">👨‍🌾 About Us</a>
+  <a href="#inquiry-products" onclick="closeMenu()">🛒 Products</a>
+  <a href="#inquiry-products" onclick="closeMenu()">📞 Contact</a>
+  <a href="login.html" class="mobile-login-btn"><i class="fas fa-sign-in-alt"></i> Login / Sign Up</a>
 </div>
 
-<!-- ══════════ SECTION 1 — HERO SLIDESHOW ══════════ -->
+<!-- ══ SECTION 1 — HERO SLIDESHOW ══ -->
 <section id="hero-slideshow">
 
-  <!-- Slide 1 -->
   <div class="slide slide-1 active">
     <div class="slide-caption">
       <div class="slide-badge"><i class="fas fa-seedling" style="color:var(--gold)"></i><span>Fields of Prosperity</span></div>
@@ -573,12 +313,11 @@
     </div>
   </div>
 
-  <!-- Slide 2 -->
   <div class="slide slide-2">
     <div class="slide-caption">
       <div class="slide-badge"><i class="fas fa-sun" style="color:var(--gold)"></i><span>The Farmer's Spirit</span></div>
       <h1 class="slide-title">The Backbone of<br><em>Our Nation's Harvest</em></h1>
-      <p class="slide-desc">We honour the hardworking farmers of India by giving them direct access to global export markets — better prices, faster payments, and trusted partnerships.</p>
+      <p class="slide-desc">We honour the hardworking farmers of India by giving them direct access to global export markets — better prices, faster payments, and trusted partnerships worldwide.</p>
       <div class="slide-btns">
         <a href="#who-we-serve" class="btn-gold"><i class="fas fa-users"></i> Our Mission</a>
         <a href="#inquiry-products" class="btn-white"><i class="fas fa-leaf"></i> Sell Your Produce</a>
@@ -586,7 +325,6 @@
     </div>
   </div>
 
-  <!-- Slide 3 -->
   <div class="slide slide-3">
     <div class="slide-caption">
       <div class="slide-badge"><i class="fas fa-water" style="color:var(--gold)"></i><span>Roots in the Soil</span></div>
@@ -599,7 +337,6 @@
     </div>
   </div>
 
-  <!-- Slide 4 -->
   <div class="slide slide-4">
     <div class="slide-caption">
       <div class="slide-badge"><i class="fas fa-tint" style="color:var(--gold)"></i><span>Water & Growth</span></div>
@@ -612,12 +349,11 @@
     </div>
   </div>
 
-  <!-- Slide 5 -->
   <div class="slide slide-5">
     <div class="slide-caption">
       <div class="slide-badge"><i class="fas fa-tractor" style="color:var(--gold)"></i><span>Modern Agriculture</span></div>
       <h1 class="slide-title">Powering the Future<br><em>of Indian Agriculture</em></h1>
-      <p class="slide-desc">With modern logistics and expert trade management, we bring international standards to Indian farmers — making global export easy, affordable, and profitable.</p>
+      <p class="slide-desc">With modern logistics and expert trade management, we bring international standards to Indian farmers — making global export easy, affordable, and profitable for all.</p>
       <div class="slide-btns">
         <a href="signup.html" class="btn-gold"><i class="fas fa-rocket"></i> Get Started Today</a>
         <a href="#services-section" class="btn-white"><i class="fas fa-arrow-down"></i> Learn More</a>
@@ -625,7 +361,6 @@
     </div>
   </div>
 
-  <!-- Slide 6 -->
   <div class="slide slide-6">
     <div class="slide-caption">
       <div class="slide-badge"><i class="fas fa-leaf" style="color:var(--gold)"></i><span>Green & Organic</span></div>
@@ -638,33 +373,22 @@
     </div>
   </div>
 
-  <!-- Arrows -->
   <div class="slide-arrow arrow-left" onclick="changeSlide(-1)"><i class="fas fa-chevron-left"></i></div>
   <div class="slide-arrow arrow-right" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></div>
-
-  <!-- Dots -->
   <div class="slide-dots" id="slideDots"></div>
-
-  <!-- Scroll hint -->
-  <div class="scroll-hint">
-    <span>Scroll Down</span>
-    <i class="fas fa-chevron-down"></i>
-  </div>
+  <div class="scroll-hint"><span>Scroll Down</span><i class="fas fa-chevron-down"></i></div>
 
 </section>
 
-<!-- ══════════ SECTION 2 — SERVICES ══════════ -->
+<!-- ══ SECTION 2 — SERVICES ══ -->
 <section id="services-section">
   <div class="services-bg"></div>
   <div class="services-content">
     <div style="text-align:center;margin-bottom:60px">
       <span class="section-tag reveal"><i class="fas fa-globe"></i> &nbsp; What We Offer</span>
       <h2 class="section-title reveal">Our Core <em>Agricultural Services</em></h2>
-      <p class="section-desc reveal" style="margin-left:auto;margin-right:auto;text-align:center">
-        We handle everything from farm to foreign market — so you can focus on what you do best: growing quality produce.
-      </p>
+      <p class="section-desc reveal" style="margin:0 auto 0;text-align:center">We handle everything from farm to foreign market — so you can focus on what you do best: growing quality produce.</p>
     </div>
-
     <div class="services-grid">
       <a href="service-export.html" class="service-card reveal">
         <div class="service-card-icon">🚢</div>
@@ -681,19 +405,19 @@
       <a href="service-docs.html" class="service-card reveal" style="transition-delay:0.2s">
         <div class="service-card-icon">📄</div>
         <h3>Trade Documentation</h3>
-        <p>All paperwork handled — certificates, invoices, permits, phytosanitary certificates. 100% accurate and 24-hour turnaround.</p>
+        <p>All paperwork handled — certificates, invoices, permits, phytosanitary certificates. 100% accurate, 24-hour turnaround.</p>
         <span class="card-arrow">Learn more <i class="fas fa-arrow-right"></i></span>
       </a>
       <a href="service-logistics.html" class="service-card reveal" style="transition-delay:0.3s">
         <div class="service-card-icon">🚛</div>
         <h3>Logistics & Tracking</h3>
-        <p>Real-time tracking of your shipments from farm to destination port. Sea, air, and land freight at the best rates.</p>
+        <p>Real-time tracking of your shipments from farm to destination. Sea, air, and land freight at the best rates.</p>
         <span class="card-arrow">Learn more <i class="fas fa-arrow-right"></i></span>
       </a>
       <a href="service-finance.html" class="service-card reveal" style="transition-delay:0.4s">
         <div class="service-card-icon">💰</div>
         <h3>Trade Finance</h3>
-        <p>Get paid faster with our invoice financing and letter of credit services. Secure international payments guaranteed.</p>
+        <p>Get paid faster with invoice financing and letter of credit services. Secure international payments guaranteed.</p>
         <span class="card-arrow">Learn more <i class="fas fa-arrow-right"></i></span>
       </a>
       <a href="service-intelligence.html" class="service-card reveal" style="transition-delay:0.5s">
@@ -703,100 +427,66 @@
         <span class="card-arrow">Learn more <i class="fas fa-arrow-right"></i></span>
       </a>
     </div>
-
     <div class="services-cta reveal">
-      <p>Want to see all our services and learn more?</p>
-      <a href="login.html" class="btn-gold">
-        <i class="fas fa-sign-in-alt"></i> Login to Access Full Portal
-      </a>
+      <p>Want to see all our services and get full access?</p>
+      <a href="login.html" class="btn-gold"><i class="fas fa-sign-in-alt"></i> Login to Access Full Portal</a>
     </div>
   </div>
 </section>
 
-<!-- ══════════ SECTION 3 — WHO WE SERVE ══════════ -->
+<!-- ══ SECTION 3 — WHO WE SERVE ══ -->
 <section id="who-we-serve">
   <div class="serve-grid">
-    <!-- Images -->
     <div class="serve-images reveal">
-      <div class="serve-badge">
-        <strong>15+</strong>
-        <span>Years</span>
-      </div>
+      <div class="serve-badge"><strong>15+</strong><span>Years</span></div>
       <div class="serve-img-main">
-        <img src="agri3.jpg" alt="Farmers in field"/>
+        <img src="new_home_page/agri3.jpeg" alt="Farmers working in field"/>
       </div>
       <div class="serve-img-float">
-        <img src="agri5.jpg" alt="Agricultural field"/>
+        <img src="new_home_page/agri5.jpeg" alt="Modern farming"/>
       </div>
     </div>
-
-    <!-- Content -->
-    <div class="serve-content reveal" style="transition-delay:0.15s">
+    <div class="reveal" style="transition-delay:0.15s">
       <span class="section-tag">Who We Serve</span>
       <h2 class="section-title">Built for <em>Farmers &</em><br><em>Traders</em> Like You</h2>
       <p class="serve-desc">We understand that most farmers and small traders don't have time to read lengthy contracts or navigate complex paperwork. That's why we do it all for you — simply tell us what you have, and we find the buyer.</p>
-
       <div class="mini-stats">
-        <div class="mini-stat">
-          <strong>1200+</strong>
-          <span>Clients</span>
-        </div>
-        <div class="mini-stat">
-          <strong>50+</strong>
-          <span>Countries</span>
-        </div>
-        <div class="mini-stat">
-          <strong>5000+</strong>
-          <span>Shipments</span>
-        </div>
+        <div class="mini-stat"><strong>1200+</strong><span>Clients</span></div>
+        <div class="mini-stat"><strong>50+</strong><span>Countries</span></div>
+        <div class="mini-stat"><strong>5000+</strong><span>Shipments</span></div>
       </div>
-
       <div class="serve-points">
         <div class="serve-point">
           <div class="serve-point-icon"><i class="fas fa-tractor"></i></div>
-          <div class="serve-point-text">
-            <h4>Farmers & Growers</h4>
-            <p>Direct access to international buyers for your crops at premium export prices.</p>
-          </div>
+          <div class="serve-point-text"><h4>Farmers & Growers</h4><p>Direct access to international buyers for your crops at premium export prices.</p></div>
         </div>
         <div class="serve-point">
           <div class="serve-point-icon"><i class="fas fa-store"></i></div>
-          <div class="serve-point-text">
-            <h4>Agricultural Traders</h4>
-            <p>Bulk trade facilitation with complete logistics and documentation support.</p>
-          </div>
+          <div class="serve-point-text"><h4>Agricultural Traders</h4><p>Bulk trade facilitation with complete logistics and documentation support.</p></div>
         </div>
         <div class="serve-point">
           <div class="serve-point-icon"><i class="fas fa-industry"></i></div>
-          <div class="serve-point-text">
-            <h4>Agri-Businesses</h4>
-            <p>End-to-end import and export management for agri-processing companies.</p>
-          </div>
+          <div class="serve-point-text"><h4>Agri-Businesses</h4><p>End-to-end import and export management for agri-processing companies.</p></div>
         </div>
       </div>
-
-      <a href="signup.html" class="btn-gold">
-        <i class="fas fa-user-plus"></i> Create Free Account
-      </a>
+      <a href="signup.html" class="btn-gold"><i class="fas fa-user-plus"></i> Create Free Account</a>
     </div>
   </div>
 </section>
 
-<!-- ══════════ SECTION 4 — INQUIRY + PRODUCTS ══════════ -->
+<!-- ══ SECTION 4 — INQUIRY + PRODUCTS ══ -->
 <section id="inquiry-products">
   <div style="text-align:center;margin-bottom:60px">
     <span class="section-tag reveal">Get In Touch</span>
     <h2 class="section-title reveal" style="color:var(--white)">Our Products & <em>Send Inquiry</em></h2>
     <p style="color:rgba(255,255,255,0.5);max-width:500px;margin:0 auto" class="reveal">Browse our featured products or send us a direct inquiry — we'll get back to you within 24 hours.</p>
   </div>
-
   <div class="inquiry-grid">
     <!-- Products -->
-    <div class="products-side reveal">
+    <div class="reveal">
       <h2>Featured <em>Products</em></h2>
       <p>Login to view all products, pricing, and place orders directly.</p>
       <div class="mini-product-grid" id="miniProductGrid">
-        <!-- Loaded from backend -->
         <div style="grid-column:1/-1;text-align:center;padding:30px;color:rgba(255,255,255,0.3)">
           <i class="fas fa-spinner fa-spin" style="font-size:1.5rem;color:var(--gold)"></i>
         </div>
@@ -807,21 +497,13 @@
         </a>
       </div>
     </div>
-
     <!-- Inquiry Form -->
-    <div class="inquiry-side reveal" style="transition-delay:0.15s">
+    <div class="reveal" style="transition-delay:0.15s">
       <h2>Send an <em>Inquiry</em></h2>
-      <p>Have a product to export or want to import? Tell us and we'll connect you to the right buyers or suppliers.</p>
-
+      <p>Have a product to export or want to import? Tell us and we'll connect you with the right buyers or suppliers.</p>
       <div class="inquiry-form">
-        <div class="form-row">
-          <label>Your Name</label>
-          <input type="text" id="inqName" placeholder="Your full name" required/>
-        </div>
-        <div class="form-row">
-          <label>Phone / Email</label>
-          <input type="email" id="inqEmail" placeholder="your@email.com" required/>
-        </div>
+        <div class="form-row"><label>Your Name</label><input type="text" id="inqName" placeholder="Your full name"/></div>
+        <div class="form-row"><label>Phone / Email</label><input type="email" id="inqEmail" placeholder="your@email.com"/></div>
         <div class="form-row">
           <label>What Do You Need?</label>
           <select id="inqService">
@@ -833,11 +515,8 @@
             <option>Market Price Information</option>
           </select>
         </div>
-        <div class="form-row">
-          <label>Your Message</label>
-          <textarea id="inqMessage" placeholder="Tell us what you grow or what you need..."></textarea>
-        </div>
-        <button type="button" class="form-submit" id="inqSubmitBtn" onclick="sendNewInquiry()">
+        <div class="form-row"><label>Your Message</label><textarea id="inqMessage" placeholder="Tell us what you grow or what you need..."></textarea></div>
+        <button type="button" class="form-submit" id="inqBtn" onclick="sendInquiry()">
           <i class="fas fa-paper-plane"></i> Send Inquiry
         </button>
       </div>
@@ -845,26 +524,26 @@
   </div>
 </section>
 
-<!-- ══════════ CTA BANNER ══════════ -->
+<!-- ══ CTA BANNER ══ -->
 <section id="cta-banner">
   <div class="cta-content">
     <h2>Ready to Take Your Produce <em>Global?</em></h2>
     <p>Join 1200+ farmers and traders who trust GR Global Agro for international trade. Start your journey today — it's free!</p>
     <div class="cta-buttons">
-      <a href="index.html" class="btn-explore">
-        <i class="fas fa-compass"></i> Explore Our Full Website
-      </a>
-      <a href="signup.html" class="btn-login-cta">
-        <i class="fas fa-user-plus"></i> Create Free Account
-      </a>
+      <a href="index.html" class="btn-explore"><i class="fas fa-compass"></i> Explore Our Full Website</a>
+      <a href="signup.html" class="btn-login-cta"><i class="fas fa-user-plus"></i> Create Free Account</a>
     </div>
   </div>
 </section>
 
-<!-- ══════════ FOOTER ══════════ -->
+<!-- ══ FOOTER ══ -->
 <footer>
   <a href="new_home.html" class="footer-logo">
-    <img src="new_logo.jpeg" alt="GR Global Agro Exim"/>
+    <div class="footer-logo-img"><img src="new_home_page/new_logo.jpeg" alt="GR Global Agro Exim"/></div>
+    <div class="footer-logo-text">
+      <span class="title-main">GR GLOBAL AGRO EXIM</span>
+      <span class="title-sub">Agri Export & Import Solutions</span>
+    </div>
   </a>
   <p>© 2025 <span>GR Global Agro Exim</span>. All rights reserved.</p>
   <div class="footer-links">
@@ -875,102 +554,77 @@
   </div>
 </footer>
 
-<!-- Scroll to Top -->
-<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <i class="fas fa-chevron-up"></i>
-</button>
+<button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
 
 <script>
   const BASE_URL = "https://gr-agro-export-import-solutions.onrender.com/api";
 
-  // ── Nav scroll
-  const navbar = document.getElementById('navbar');
+  // Nav scroll
   window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 50);
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
     document.getElementById('scrollTop').classList.toggle('visible', window.scrollY > 400);
   });
 
-  // ── Mobile menu
+  // Mobile menu
   function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const overlay = document.getElementById('menuOverlay');
-    const hamburger = document.getElementById('hamburger');
-    if (menu.classList.contains('open')) {
-      closeMenu();
-    } else {
-      menu.classList.add('open');
-      overlay.classList.add('show');
-      hamburger.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
+    const m = document.getElementById('mobileMenu');
+    const o = document.getElementById('menuOverlay');
+    const h = document.getElementById('hamburger');
+    if (m.classList.contains('open')) { closeMenu(); }
+    else { m.classList.add('open'); o.classList.add('show'); h.classList.add('active'); document.body.style.overflow='hidden'; }
   }
   function closeMenu() {
     document.getElementById('mobileMenu').classList.remove('open');
     document.getElementById('menuOverlay').classList.remove('show');
     document.getElementById('hamburger').classList.remove('active');
-    document.body.style.overflow = '';
+    document.body.style.overflow='';
   }
   document.addEventListener('keydown', e => { if(e.key==='Escape') closeMenu(); });
 
-  // ── Slideshow
+  // Slideshow
   const slides = document.querySelectorAll('.slide');
-  const dotsContainer = document.getElementById('slideDots');
-  let currentSlide = 0;
-  let slideTimer;
+  const dotsEl = document.getElementById('slideDots');
+  let cur = 0, timer;
+  slides.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'dot'+(i===0?' active':'');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+  });
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = (n+slides.length)%slides.length;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    clearInterval(timer); timer = setInterval(()=>goTo(cur+1),5000);
+  }
+  function changeSlide(d) { goTo(cur+d); }
+  timer = setInterval(()=>goTo(cur+1),5000);
 
-  // Build dots
-  slides.forEach((_, i) => {
-    const dot = document.createElement('div');
-    dot.className = 'dot' + (i===0?' active':'');
-    dot.onclick = () => goToSlide(i);
-    dotsContainer.appendChild(dot);
+  // Swipe
+  let tx=0;
+  document.getElementById('hero-slideshow').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
+  document.getElementById('hero-slideshow').addEventListener('touchend',e=>{
+    const diff=tx-e.changedTouches[0].clientX;
+    if(Math.abs(diff)>50) changeSlide(diff>0?1:-1);
   });
 
-  function goToSlide(n) {
-    slides[currentSlide].classList.remove('active');
-    document.querySelectorAll('.dot')[currentSlide].classList.remove('active');
-    currentSlide = (n + slides.length) % slides.length;
-    slides[currentSlide].classList.add('active');
-    document.querySelectorAll('.dot')[currentSlide].classList.add('active');
-    resetTimer();
-  }
+  // Scroll reveal
+  const obs = new IntersectionObserver(en=>en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-  function changeSlide(dir) { goToSlide(currentSlide + dir); }
-
-  function resetTimer() {
-    clearInterval(slideTimer);
-    slideTimer = setInterval(() => goToSlide(currentSlide + 1), 5000);
-  }
-  resetTimer();
-
-  // Swipe support
-  let touchStartX = 0;
-  document.getElementById('hero-slideshow').addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
-  document.getElementById('hero-slideshow').addEventListener('touchend', e => {
-    const diff = touchStartX - e.changedTouches[0].clientX;
-    if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
-  });
-
-  // ── Scroll reveal
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  // ── Load products
+  // Load products
   async function loadMiniProducts() {
     const grid = document.getElementById('miniProductGrid');
     try {
       const res  = await fetch(`${BASE_URL}/products`);
       const data = await res.json();
-
       if (data.success && data.products && data.products.length > 0) {
-        grid.innerHTML = data.products.slice(0, 4).map(p => `
+        grid.innerHTML = data.products.slice(0,4).map(p=>`
           <a href="login.html" class="mini-product-card">
-            <div class="mini-product-img" style="${p.image_url ?
-              `background-image:url('${p.image_url}');background-size:cover;background-position:center` :
-              ''}">
-              ${p.image_url ? '' : '<i class="fas fa-box-open"></i>'}
+            <div class="mini-product-img" style="${p.image_url?`background-image:url('${p.image_url}');background-size:cover;background-position:center`:''}">
+              ${p.image_url?'':'<i class="fas fa-box-open"></i>'}
               <span class="mini-product-tag">${p.stock_status||'Export'}</span>
             </div>
             <div class="mini-product-info">
@@ -979,7 +633,7 @@
             </div>
           </a>`).join('');
       } else {
-        grid.innerHTML = `
+        grid.innerHTML=`
           <a href="login.html" class="mini-product-card">
             <div class="mini-product-img"><span class="mini-product-tag">Export</span><i class="fas fa-seedling"></i></div>
             <div class="mini-product-info"><h4>Agricultural Products</h4><p>Contact for pricing</p></div>
@@ -990,56 +644,32 @@
           </a>`;
       }
     } catch(e) {
-      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:20px;color:rgba(255,255,255,0.3)">
-        <p>Products loading... <a href="login.html" style="color:var(--gold)">Login to view</a></p>
-      </div>`;
+      grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:20px;color:rgba(255,255,255,0.3)"><p>Products loading... <a href="login.html" style="color:var(--gold)">Login to view</a></p></div>`;
     }
   }
 
-  // ── Send Inquiry
-  async function sendNewInquiry() {
-    const btn     = document.getElementById('inqSubmitBtn');
-    const name    = document.getElementById('inqName').value.trim();
-    const email   = document.getElementById('inqEmail').value.trim();
-    const service = document.getElementById('inqService').value;
-    const message = document.getElementById('inqMessage').value.trim();
-
-    if (!name || !email || !message) { alert('Please fill in all required fields.'); return; }
-
-    btn.textContent = 'Sending...';
-    btn.disabled    = true;
-
+  // Inquiry submit
+  async function sendInquiry() {
+    const btn=document.getElementById('inqBtn');
+    const name=document.getElementById('inqName').value.trim();
+    const email=document.getElementById('inqEmail').value.trim();
+    const service=document.getElementById('inqService').value;
+    const message=document.getElementById('inqMessage').value.trim();
+    if(!name||!email||!message){alert('Please fill in all required fields.');return;}
+    btn.textContent='Sending...'; btn.disabled=true;
     try {
-      const res    = await fetch(`${BASE_URL}/contact`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ name, email, service, message })
-      });
-      const result = await res.json();
-
-      if (result.success) {
-        btn.textContent      = '✓ Inquiry Sent!';
-        btn.style.background = '#2d8a4e';
-        document.getElementById('inqName').value    = '';
-        document.getElementById('inqEmail').value   = '';
-        document.getElementById('inqMessage').value = '';
-      } else {
-        btn.textContent      = 'Failed! Try Again';
-        btn.style.background = '#e74c3c';
-      }
-    } catch(err) {
-      btn.textContent      = 'Server Error!';
-      btn.style.background = '#e74c3c';
-    }
-
-    setTimeout(() => {
-      btn.textContent      = 'Send Inquiry';
-      btn.style.background = '';
-      btn.disabled         = false;
-    }, 3000);
+      const res=await fetch(`${BASE_URL}/contact`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,service,message})});
+      const r=await res.json();
+      if(r.success){
+        btn.textContent='✓ Inquiry Sent!'; btn.style.background='#2d8a4e';
+        document.getElementById('inqName').value='';
+        document.getElementById('inqEmail').value='';
+        document.getElementById('inqMessage').value='';
+      } else { btn.textContent='Failed! Try Again'; btn.style.background='#e74c3c'; }
+    } catch(e) { btn.textContent='Server Error!'; btn.style.background='#e74c3c'; }
+    setTimeout(()=>{btn.textContent='Send Inquiry';btn.style.background='';btn.disabled=false;},3000);
   }
 
-  // ── Init
   loadMiniProducts();
 </script>
 </body>
