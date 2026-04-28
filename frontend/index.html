@@ -1,34 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>GR Global Agro | Agri Export & Import Solutions</title>
-  <meta name="google-site-verification" content="3qwEQRsDXp_eg_3AtzSRYLiiN2OuBRYRX46upBMmQUA" />
-
-  <!-- Fonts -->
+  <meta name="google-site-verification" content="3qwEQRsDXp_eg_3AtzSRYLiiN2OuBRYRX46upBMmQUA"/>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet"/>
-
-  <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-  <!-- CSS -->
   <link rel="stylesheet" href="gopi_clinte.css">
-  <link rel="stylesheet" href="agri-theme.css">
+  <style>
+    /* ══ LOGO — New style with image + separate title ══ */
+    .logo {
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      text-decoration: none !important;
+    }
+    .logo-img-wrap {
+      width: 46px; height: 46px; flex-shrink: 0;
+      background: white; border-radius: 8px; padding: 3px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .logo-img-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .logo-title { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-title .t-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 700; color: #fff;
+      letter-spacing: 0.3px; white-space: nowrap;
+    }
+    .logo-title .t-sub {
+      font-size: 0.58rem; color: #C9A84C;
+      letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
+    }
+    /* Hide old logo parts if any */
+    .logo .logo-icon { display: none !important; }
+    .logo .logo-text { display: none !important; }
+
+    /* ══ HERO BACKGROUND IMAGE ══ */
+    #hero {
+      background-image:
+        linear-gradient(135deg,
+          rgba(11,31,58,0.85) 0%,
+          rgba(11,31,58,0.65) 50%,
+          rgba(11,31,58,0.85) 100%),
+        url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=90&fit=crop') !important;
+      background-size: cover !important;
+      background-position: center !important;
+    }
+    #hero .hero-bg { display: none !important; }
+    #hero .globe-lines { opacity: 0.06; }
+
+    /* ══ ABOUT IMAGE ══ */
+    .about-img-box {
+      background-image: url('https://images.unsplash.com/photo-1595273670150-bd0c3c392e46?w=800&q=85&fit=crop') !important;
+      background-size: cover !important;
+      background-position: center !important;
+    }
+    .about-img-icon { display: none !important; }
+
+    /* ══ SERVICES — faint port bg ══ */
+    #services { position: relative; }
+    #services::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=1920&q=80&fit=crop');
+      background-size: cover; background-position: center;
+      opacity: 0.04;
+    }
+    #services .services-header,
+    #services .services-grid { position: relative; z-index: 1; }
+
+    /* ══ WHY US — farming panorama ══ */
+    #why {
+      background-image:
+        linear-gradient(135deg,
+          rgba(11,31,58,0.93) 0%,
+          rgba(11,31,58,0.88) 100%),
+        url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1920&q=85&fit=crop') !important;
+      background-size: cover !important;
+      background-position: center !important;
+    }
+    #why::before { display: none !important; }
+    #why > * { position: relative; z-index: 1; }
+
+    /* ══ PRODUCTS — subtle spice bg ══ */
+    #products { position: relative; }
+    #products::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1506484381205-f7945653044d?w=1920&q=80&fit=crop');
+      background-size: cover; background-position: center;
+      opacity: 0.04;
+    }
+    #products .products-header,
+    #products .product-cards { position: relative; z-index: 1; }
+
+    /* ══ INQUIRY — field background ══ */
+    #inquiry {
+      position: relative;
+      background: var(--navy) !important;
+    }
+    #inquiry::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=1920&q=85&fit=crop');
+      background-size: cover; background-position: center;
+      opacity: 0.12;
+    }
+    #inquiry > * { position: relative; z-index: 1; }
+
+    /* ══ TESTIMONIALS ══ */
+    #testimonials { position: relative; }
+    #testimonials::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920&q=80&fit=crop');
+      background-size: cover; background-position: center;
+      opacity: 0.04;
+    }
+    #testimonials > * { position: relative; z-index: 1; }
+
+    /* ══ FOOTER — always dark ══ */
+    footer {
+      background: #060F1E !important;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ══ STATS — gold strip ══ */
+    #stats { position: relative; }
+    #stats::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      background-image: url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=1920&q=80&fit=crop');
+      background-size: cover; background-position: center;
+      opacity: 0.06; mix-blend-mode: multiply;
+    }
+    #stats > * { position: relative; z-index: 1; }
+
+    @media(max-width:768px) {
+      .logo-title .t-main { font-size: 0.9rem; }
+      #hero { background-attachment: scroll !important; }
+      #why  { background-attachment: scroll !important; }
+    }
+  </style>
 </head>
 <body>
 
 <!-- ════════════════ NAV ════════════════ -->
-<a href="index.html" class="logo">
-  <div class="logo-img-wrap">
-    <img src="new_home_page/new_logo.jpeg" alt="GR Global Agro Exim"/>
-  </div>
-  <div class="logo-title">
-    <span class="title-main">GR GLOBAL AGRO EXIM</span>
-    <span class="title-sub">Agri Export & Import Solutions</span>
-  </div>
-</a>
+<nav id="navbar">
+  <a href="index.html" class="logo">
+    <div class="logo-img-wrap">
+      <img src="new_home_page/new_logo.jpeg" alt="GR Global Agro Exim"/>
+    </div>
+    <div class="logo-title">
+      <span class="t-main">GR GLOBAL AGRO EXIM</span>
+      <span class="t-sub">Agri Export & Import Solutions</span>
+    </div>
+  </a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
     <li><a href="#services">Services</a></li>
@@ -42,7 +172,7 @@
   </div>
 </nav>
 
-<!-- Mobile Menu Overlay — tap to close -->
+<!-- Mobile Menu Overlay -->
 <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
 
 <!-- Mobile Menu -->
@@ -60,8 +190,6 @@
 <!-- ════════════════ HERO ════════════════ -->
 <section id="hero">
   <div class="hero-bg"></div>
-
-  <!-- Globe SVG -->
   <svg class="globe-lines" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
     <circle cx="200" cy="200" r="190"/>
     <ellipse cx="200" cy="200" rx="95" ry="190"/>
@@ -71,22 +199,16 @@
     <line x1="200" y1="10" x2="200" y2="390"/>
     <ellipse cx="200" cy="200" rx="40" ry="190"/>
   </svg>
-
-  <!-- Floating dots -->
   <div class="dot" style="width:6px;height:6px;top:25%;left:60%;animation-delay:0s"></div>
   <div class="dot" style="width:4px;height:4px;top:60%;left:75%;animation-delay:1.5s"></div>
   <div class="dot" style="width:8px;height:8px;top:40%;left:85%;animation-delay:0.8s"></div>
   <div class="dot" style="width:4px;height:4px;top:70%;left:55%;animation-delay:2.2s"></div>
-
   <div class="hero-content">
     <div class="hero-badge">
       <i class="fas fa-globe"></i>
       <span>Trusted Global Trade Partner</span>
     </div>
-    <h1 class="hero-title">
-      Connecting Markets,<br>
-      <em>Crossing Borders</em>
-    </h1>
+    <h1 class="hero-title">Connecting Markets,<br><em>Crossing Borders</em></h1>
     <p class="hero-sub">
       GR Global Agro delivers end-to-end import and export solutions —
       seamlessly bridging manufacturers, suppliers, and international buyers
@@ -276,7 +398,7 @@
   </div>
 </section>
 
-<!-- ════════════════ INQUIRY CTA ════════════════ -->
+<!-- ════════════════ INQUIRY ════════════════ -->
 <section id="inquiry">
   <form class="inquiry-form">
     <div class="form-row">
@@ -307,7 +429,7 @@
 
 <!-- ════════════════ TESTIMONIALS ════════════════ -->
 <section id="testimonials">
-  <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto 50px;">
+  <div class="reveal" style="text-align:center;max-width:600px;margin:0 auto 50px;">
     <span class="section-tag">Client Stories</span>
     <h2 class="section-title">Trusted by <em>Businesses</em> Worldwide</h2>
   </div>
@@ -349,16 +471,18 @@
 </section>
 
 <!-- ════════════════ FOOTER ════════════════ -->
-<a href="index.html" class="logo">
-  <div class="logo-img-wrap">
-    <img src="new_home_page/new_logo.jpeg" alt="GR Global Agro Exim"/>
-  </div>
-  <div class="logo-title">
-    <span class="title-main">GR GLOBAL AGRO EXIM</span>
-    <span class="title-sub">Agri Export & Import Solutions</span>
-  </div>
-</a>
-      
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="logo">
+        <div class="logo-img-wrap">
+          <img src="new_home_page/new_logo.jpeg" alt="GR Global Agro Exim"/>
+        </div>
+        <div class="logo-title">
+          <span class="t-main">GR GLOBAL AGRO EXIM</span>
+          <span class="t-sub">Agri Export & Import Solutions</span>
+        </div>
+      </a>
       <p>Bridging global markets with integrity, efficiency, and expertise. Your trusted partner in international trade.</p>
       <div class="footer-socials">
         <a href="#" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
@@ -380,11 +504,11 @@
     <div class="footer-col">
       <h4>Services</h4>
       <ul class="footer-links">
-        <li><a href="#">Export Management</a></li>
-        <li><a href="#">Import Solutions</a></li>
-        <li><a href="#">Documentation</a></li>
-        <li><a href="#">Logistics</a></li>
-        <li><a href="#">Trade Finance</a></li>
+        <li><a href="service-export.html">Export Management</a></li>
+        <li><a href="service-import.html">Import Solutions</a></li>
+        <li><a href="service-docs.html">Documentation</a></li>
+        <li><a href="service-logistics.html">Logistics</a></li>
+        <li><a href="service-finance.html">Trade Finance</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -417,7 +541,6 @@
   </div>
 </footer>
 
-<!-- Scroll to Top -->
 <button id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
   <i class="fas fa-chevron-up"></i>
 </button>
