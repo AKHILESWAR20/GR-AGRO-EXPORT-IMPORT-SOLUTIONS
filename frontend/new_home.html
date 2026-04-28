@@ -6,7 +6,6 @@
   <title>GR Global Agro Exim | Agri Export & Import Solutions</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="agri-theme.css">
   <style>
     :root {
       --navy:#0B1F3A; --navy-mid:#162D4F; --gold:#C9A84C;
@@ -92,19 +91,34 @@
 
     /* ══ SECTION 1 — HERO SLIDESHOW ══ */
     #hero-slideshow{position:relative;width:100%;height:100vh;overflow:hidden;}
-    .slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.2s ease;}
+    .slide{
+      position:absolute;inset:0;
+      background-size:cover;background-position:center;
+      opacity:0;
+      transition:opacity 1.4s cubic-bezier(0.4,0,0.2,1);
+      will-change:opacity;
+    }
     .slide.active{opacity:1;}
     .slide::before{
       content:'';position:absolute;inset:0;
-      background:linear-gradient(to bottom,rgba(11,31,58,0.25) 0%,rgba(11,31,58,0.1) 40%,rgba(11,31,58,0.6) 75%,rgba(11,31,58,0.88) 100%);
+      background:
+        linear-gradient(
+          to bottom,
+          rgba(11,31,58,0.20) 0%,
+          rgba(11,31,58,0.05) 30%,
+          rgba(11,31,58,0.05) 50%,
+          rgba(11,31,58,0.55) 75%,
+          rgba(11,31,58,0.88) 100%
+        );
     }
     /* ⭐ FIXED IMAGE PATHS — .jpeg extension + new_home_page/ folder */
-    .slide-1{background-image:url('new_home_page/agri1.jpeg');}
-    .slide-2{background-image:url('new_home_page/agri2.jpeg');}
-    .slide-3{background-image:url('new_home_page/agri3.jpeg');}
-    .slide-4{background-image:url('new_home_page/agri4.jpeg');}
-    .slide-5{background-image:url('new_home_page/agri5.jpeg');}
-    .slide-6{background-image:url('new_home_page/agri6.jpeg');}
+    /* Slides: local photos + Unsplash for best quality mix */
+    .slide-1{background-image:url('new_home_page/agri1.jpeg');} /* local - strawberry field */
+    .slide-2{background-image:url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=90&fit=crop');} /* Unsplash - green farm */
+    .slide-3{background-image:url('new_home_page/agri3.jpeg');} /* local - farmer in mud */
+    .slide-4{background-image:url('https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1920&q=90&fit=crop');} /* Unsplash - tractor field */
+    .slide-5{background-image:url('new_home_page/agri5.jpeg');} /* local - tractor */
+    .slide-6{background-image:url('https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1920&q=90&fit=crop');} /* Unsplash - golden harvest */
 
     .slide-caption{position:absolute;bottom:0;left:0;right:0;padding:40px 8% 120px;z-index:2;}
     .slide-badge{
@@ -140,8 +154,16 @@
 
     /* ══ SECTION 2 — SERVICES ══ */
     #services-section{position:relative;padding:100px 8%;background:var(--navy);overflow:hidden;}
-    .services-bg{position:absolute;inset:0;background-image:url('new_home_page/agri6.jpeg');background-size:cover;background-position:center;opacity:0.1;}
-    .services-bg::after{content:'';position:absolute;inset:0;background:rgba(11,31,58,0.92);}
+    .services-bg{
+      position:absolute;inset:0;
+      background-image:url('https://images.unsplash.com/photo-1586771107445-d3ca888129ff?w=1920&q=85&fit=crop');
+      background-size:cover;background-position:center;
+      opacity:0.18;
+    }
+    .services-bg::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(135deg,rgba(11,31,58,0.95) 0%,rgba(11,31,58,0.88) 100%);
+    }
     .services-content{position:relative;z-index:2;}
     .section-tag{display:inline-block;font-size:0.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;padding:6px 16px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:50px;}
     .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:16px;}
@@ -160,7 +182,18 @@
     .services-cta p{color:rgba(255,255,255,0.5);margin-bottom:20px;font-size:0.95rem;}
 
     /* ══ SECTION 3 — WHO WE SERVE ══ */
-    #who-we-serve{padding:100px 8%;background:linear-gradient(180deg,#0B1F3A 0%,#0d2640 50%,#0B1F3A 100%);position:relative;overflow:hidden;}
+    #who-we-serve{
+      padding:100px 8%;
+      background:linear-gradient(180deg,#0B1F3A 0%,#0d2640 50%,#0B1F3A 100%);
+      position:relative;overflow:hidden;
+    }
+    #who-we-serve::after{
+      content:'';position:absolute;inset:0;
+      background-image:url('new_home_page/agri2.jpeg');
+      background-size:cover;background-position:center top;
+      opacity:0.06;z-index:0;pointer-events:none;
+    }
+    #who-we-serve>.serve-grid{position:relative;z-index:1;}
     #who-we-serve::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
     .serve-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
     .serve-images{position:relative;padding-bottom:30px;}
@@ -184,7 +217,18 @@
     .serve-point-text p{font-size:0.82rem;color:rgba(255,255,255,0.45);line-height:1.5;}
 
     /* ══ SECTION 4 — INQUIRY + PRODUCTS ══ */
-    #inquiry-products{padding:100px 8%;background:#060F1E;position:relative;overflow:hidden;}
+    #inquiry-products{
+      padding:100px 8%;background:#060F1E;
+      position:relative;overflow:hidden;
+    }
+    #inquiry-products::before{
+      content:'';position:absolute;inset:0;
+      background-image:url('https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=1920&q=80&fit=crop');
+      background-size:cover;background-position:center;
+      opacity:0.07;z-index:0;pointer-events:none;
+    }
+    #inquiry-products>.inquiry-grid,
+    #inquiry-products>div:first-child{position:relative;z-index:1;}
     #inquiry-products::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
     .inquiry-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;}
     .products-side h2,.inquiry-side h2{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--white);margin-bottom:8px;}
@@ -212,7 +256,13 @@
 
     /* ══ CTA BANNER ══ */
     #cta-banner{padding:80px 8%;text-align:center;background:linear-gradient(135deg,var(--green) 0%,#1a4a1a 100%);position:relative;overflow:hidden;}
-    #cta-banner::before{content:'';position:absolute;inset:0;background-image:url('new_home_page/agri1.jpeg');background-size:cover;background-position:center;opacity:0.1;}
+    #cta-banner::before{
+      content:'';position:absolute;inset:0;
+      background-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&q=85&fit=crop');
+      background-size:cover;background-position:center;
+      opacity:0.18;
+      mix-blend-mode:luminosity;
+    }
     .cta-content{position:relative;z-index:2;}
     #cta-banner h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--white);margin-bottom:16px;}
     #cta-banner h2 em{color:var(--gold-lite);font-style:italic;}
@@ -325,7 +375,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="slide slide-3">
     <div class="slide-caption">
       <div class="slide-badge"><i class="fas fa-water" style="color:var(--gold)"></i><span>Roots in the Soil</span></div>
@@ -441,10 +491,12 @@
     <div class="serve-images reveal">
       <div class="serve-badge"><strong>15+</strong><span>Years</span></div>
       <div class="serve-img-main">
-        <img src="new_home_page/agri3.jpeg" alt="Farmers working in field"/>
+        <img src="new_home_page/agri4.jpeg" alt="Farmers working in field"
+             style="filter:brightness(1.05) contrast(1.05);"/>
       </div>
       <div class="serve-img-float">
-        <img src="new_home_page/agri5.jpeg" alt="Modern farming"/>
+        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=600&q=85&fit=crop"
+             alt="Golden harvest field"/>
       </div>
     </div>
     <div class="reveal" style="transition-delay:0.15s">
