@@ -53,7 +53,7 @@ const sendWelcomeMail = async (clientEmail, clientName) => {
             all from your personal dashboard.
           </p>
           <div style="margin:28px 0;text-align:center;">
-            <a href="${process.env.CLIENT_URL}/login" 
+            <a href="${process.env.CLIENT_URL}/login.html" 
                style="background:#C9A84C;color:#0B1F3A;padding:12px 32px;border-radius:4px;
                       text-decoration:none;font-weight:bold;font-size:14px;letter-spacing:1px;">
               LOGIN TO YOUR ACCOUNT
@@ -144,7 +144,7 @@ const sendContactNotifyAdmin = async (clientName, clientEmail, message, service)
             </tr>
           </table>
           <div style="margin-top:28px;">
-            <a href="${process.env.CLIENT_URL}/admin/inquiries"
+            <a href="${process.env.CLIENT_URL}/admin-dashboard.html"
                style="background:#C9A84C;color:#0B1F3A;padding:12px 28px;border-radius:4px;
                       text-decoration:none;font-weight:bold;font-size:13px;">
               VIEW IN ADMIN PANEL
@@ -196,7 +196,7 @@ const sendOrderNotifyAdmin = async (clientName, clientEmail, orderId, productNam
             </tr>
           </table>
           <div style="margin-top:28px;">
-            <a href="${process.env.CLIENT_URL}/admin/orders"
+            <a href="${process.env.CLIENT_URL}/admin-dashboard.html"
                style="background:#C9A84C;color:#0B1F3A;padding:12px 28px;border-radius:4px;
                       text-decoration:none;font-weight:bold;font-size:13px;">
               MANAGE ORDER
@@ -244,7 +244,7 @@ const sendOrderConfirmClient = async (clientEmail, clientName, orderId, productN
             </tr>
           </table>
           <div style="margin-top:28px;text-align:center;">
-            <a href="${process.env.CLIENT_URL}/dashboard/orders"
+            <a href="${process.env.CLIENT_URL}/client-dashboard.html"
                style="background:#C9A84C;color:#0B1F3A;padding:12px 28px;border-radius:4px;
                       text-decoration:none;font-weight:bold;font-size:13px;">
               TRACK YOUR ORDER
